@@ -1,0 +1,40 @@
+name: Correction
+description: Something in the guide is wrong, out of date, or no longer matches Microsoft's documentation.
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for catching this. The only thing this really needs is a link to the official page.
+
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      description: Page, section, or file. A URL is ideal.
+      placeholder: docs/guide/models.html — the deployment types table
+    validations:
+      required: true
+
+  - type: textarea
+    id: says
+    attributes:
+      label: What it currently says
+    validations:
+      required: true
+
+  - type: textarea
+    id: should
+    attributes:
+      label: What it should say
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Official Microsoft source
+      description: A learn.microsoft.com URL backing the correction. Required — see CONTRIBUTING.md.
+      placeholder: https://learn.microsoft.com/en-us/azure/ai-foundry/...
+    validations:
+      required: true

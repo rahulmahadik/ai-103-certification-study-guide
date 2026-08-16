@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat sheet — AI-103 Study Guide</title>
+<meta name="description" content="The one-page AI-103 cheat sheet: all five skill areas at their published weights, the diagrams worth memorising, every service decision table, scenario cues and a glossary. Free PNG and PDF.">
+<meta name="keywords" content="AI-103, AI-103 exam, AI-103 study guide, Developing AI Apps and Agents on Azure, Azure AI Apps and Agents Developer Associate, Microsoft Foundry, Azure AI, Azure certification, Microsoft certification, AI-103 cheat sheet, AI-103 revision, Azure AI cheat sheet, AI-103 PDF, exam revision sheet">
+<meta name="author" content="Rahul Mahadik">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="AI-103 Certification Study Guide">
+<meta property="og:title" content="Cheat sheet — AI-103 Study Guide">
+<meta property="og:description" content="The one-page AI-103 cheat sheet: all five skill areas at their published weights, the diagrams worth memorising, every service decision table, scenario cues and a glossary. Free PNG and PDF.">
+<meta property="og:url" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AI-103 Certification Study Guide — Developing AI Apps and Agents on Azure">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cheat sheet — AI-103 Study Guide">
+<meta name="twitter:description" content="The one-page AI-103 cheat sheet: all five skill areas at their published weights, the diagrams worth memorising, every service decision table, scenario cues and a glossary. Free PNG and PDF.">
+<meta name="twitter:image" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/assets/og-card.png">
+
+<meta name="theme-color" content="#0B2136">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html#page","url":"https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html","name":"Cheat sheet","headline":"Cheat sheet","description":"The one-page AI-103 cheat sheet: all five skill areas at their published weights, the diagrams worth memorising, every service decision table, scenario cues and a glossary. Free PNG and PDF.","inLanguage":"en","author":{"@type":"Person","name":"Rahul Mahadik","url":"https://www.linkedin.com/in/rahulmahadik"},"isAccessibleForFree":true,"isPartOf":{"@id":"https://rahulmahadik.github.io/ai-103-certification-study-guide/#website"}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://rahulmahadik.github.io/ai-103-certification-study-guide/"},{"@type":"ListItem","position":2,"name":"Cheat sheet","item":"https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html"}]}]}</script>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/sheet.css">
+<style>
+main.cs { max-width: 76rem; margin: 0 auto; padding: clamp(1.25rem, 3vw, 2.5rem) clamp(0.75rem, 2.5vw, 2rem) 4rem; }
+
+/* The intro is capped at a readable measure, which on a 76rem page left the
+   whole right-hand side of the header blank. Put the usage guidance there
+   rather than widen the prose past the point where it reads comfortably. */
+.head {
+  display: grid;
+  grid-template-columns: minmax(0, 46rem) minmax(0, 1fr);
+  gap: clamp(1.25rem, 4vw, 3rem);
+  align-items: start;
+  margin-bottom: 2rem;
+}
+
+.head > div { min-width: 0; }
+
+.when {
+  border: 1px solid var(--hair);
+  border-top: 3px solid #C0392B;
+  padding: 1rem 1.15rem;
+  font-size: .95rem;
+  line-height: 1.5;
+}
+
+.when h2 {
+  margin: 0 0 .6rem;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: .01em;
+}
+
+.when dl { margin: 0; }
+.when dt { font-weight: 700; margin-top: .6rem; }
+.when dl > dt:first-child { margin-top: 0; }
+.when dd { margin: 0; color: var(--dim); }
+
+@media (max-width: 62rem) {
+  .head { grid-template-columns: 1fr; }
+}
+
+.head .eyebrow {
+  margin: 0 0 .5rem;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.head h1 {
+  margin: 0 0 .7rem;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: clamp(2.6rem, 7vw, 4rem);
+  font-weight: 700;
+  line-height: .98;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.head p { margin: 0; font-size: 1.12rem; line-height: 1.55; }
+
+.grabs { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.5rem 0 0; }
+
+.grabs a {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  border-radius: 8px;
+  padding: .65rem 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: .98rem;
+}
+
+.grabs .primary { background: var(--navy); color: #fff; }
+.grabs .primary:hover { background: #14324E; color: #fff; }
+.grabs .ghost { border: 1px solid var(--hair); background: var(--paper); color: var(--ink); }
+.grabs .ghost:hover { border-color: var(--link); color: var(--link); }
+.grabs small { font-weight: 500; color: var(--dim); }
+.grabs .primary small { color: #9FB6C9; }
+
+.viewer {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  padding: .6rem;
+  box-shadow: 0 1px 3px rgba(11, 22, 34, .07), 0 14px 36px -16px rgba(11, 22, 34, .22);
+}
+
+.viewer img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 7px;
+  /* Downscaling a 3840px image: let the browser resample smoothly rather than
+     drop pixels, which is what made the text look soft. */
+  image-rendering: auto;
+}
+
+.hint {
+  margin: .9rem 0 0;
+  font-size: .92rem;
+  color: var(--dim);
+  text-align: center;
+}
+
+.inside { margin-top: 3rem; }
+
+.inside h2 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 0 0 1rem;
+}
+
+.inside ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr)); gap: .7rem; }
+
+.inside li {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-left: 3px solid var(--tone, var(--link));
+  border-radius: 8px;
+  padding: .85rem 1.1rem;
+  line-height: 1.45;
+  font-size: .97rem;
+  color: var(--dim);
+}
+
+.inside li b { display: block; color: var(--ink); font-size: 1.03rem; margin-bottom: .1rem; }
+
+.foot { border-top: 1px solid var(--hair); margin-top: 3rem; padding-top: 1.5rem; font-size: .92rem; color: var(--dim); max-width: 52rem; }
+</style>
+</head>
+<body>
+
+<nav class="sitebar no-print">
+  <a class="wordmark" href="index.html">AI&#8209;103 <span>Study Guide</span></a>
+  <div class="links">
+    <a href="index.html">Home</a>
+    <a href="guide/index.html">Study guide</a>
+    <span class="here">Cheat sheet</span>
+    <a href="glossary.html">Glossary</a>
+  </div>
+  <a class="gh" href="https://github.com/rahulmahadik/ai-103-certification-study-guide" target="_blank" rel="noopener">GitHub</a>
+</nav>
+
+<main class="cs">
+
+  <div class="head">
+    <div>
+    <p class="eyebrow">Exam AI-103 · Developing AI Apps and Agents on Azure</p>
+    <h1>Cheat sheet</h1>
+    <p>The whole syllabus on one page: the five skill areas drawn to their real weights, the three diagrams worth memorising, every service decision table, the scenario cues that give the answer away, and a glossary. For the last pass before the exam, or for looking one thing up.</p>
+    <div class="grabs">
+      <a class="primary" href="assets/ai-103-cheatsheet@2x.png">Download PNG <small>3840 px wide</small></a>
+      <a class="ghost" href="assets/ai-103-cheatsheet.png">Full HD PNG <small>1920 px</small></a>
+      <a class="ghost" href="assets/ai-103-cheatsheet.pdf">PDF <small>vector, prints sharp</small></a>
+      <a class="ghost" href="cheatsheet-board.html">Open as a web page</a>
+    </div>
+    </div>
+
+    <aside class="when">
+      <h2>When to reach for it</h2>
+      <dl>
+        <dt>Two weeks out</dt>
+        <dd>Not yet. Work through the <a href="guide/index.html">study guide</a> module by module. The sheet is a set of reminders, and it can only remind you of things you have already met.</dd>
+        <dt>The week before</dt>
+        <dd>One band a day. Cover the right-hand column of each decision table and see whether you can supply it from memory.</dd>
+        <dt>The morning of</dt>
+        <dd>Scenario cues and key terms only. Those two bands are what turn a half-remembered topic into an answer.</dd>
+      </dl>
+    </aside>
+  </div>
+
+
+
+  <div class="viewer">
+    <img src="assets/ai-103-cheatsheet.png"
+         srcset="assets/ai-103-cheatsheet.png 1920w, assets/ai-103-cheatsheet@2x.png 3840w"
+         sizes="(max-width: 76rem) 100vw, 72rem"
+         width="1920" height="6800"
+         alt="The AI-103 cheat sheet: exam overview, a bar showing the five skill areas at their published weights, a card per skill area, diagrams of the Foundry hierarchy, the RAG pipeline and the optimization trade-off, tables of deployment types, endpoints and SDKs, tools and prompt patterns, evaluation metrics, responsible AI layers and the content filter matrix, four scenario-cue tables, and a glossary of key terms.">
+  </div>
+  <p class="hint">Right-click the image to save it, or use the download buttons above for the print-resolution copies.</p>
+
+  <section class="inside">
+    <h2>What is on it</h2>
+    <ul>
+      <li style="--tone:#0B2136"><b>Exam overview</b>Duration, pass mark, delivery, renewal and the exam it replaced.</li>
+      <li style="--tone:#1B5FA8"><b>Where the marks are</b>The five skill areas drawn to scale, so you can see that areas 1 and 2 are 55–65% between them.</li>
+      <li style="--tone:#6D3A9E"><b>Every sub-skill</b>All five skill areas with their published bullets, in plain language.</li>
+      <li style="--tone:#0E7C63"><b>Three diagrams</b>How Foundry is organised, how RAG works, and which optimization lever to pull.</li>
+      <li style="--tone:#BC4B10"><b>Services and syntax</b>Deployment types, endpoints and SDKs, the four tools, and the prompt patterns.</li>
+      <li style="--tone:#AB2733"><b>Evaluation and safety</b>Metric families, the six principles, the four mitigation layers, and the content filter matrix.</li>
+      <li style="--tone:#1B5FA8"><b>Scenario cues</b>Three tables mapping the wording in a question straight to the answer it wants.</li>
+      <li style="--tone:#0E7C63"><b>Key terms</b>Thirty-odd definitions, one line each.</li>
+      <li style="--tone:#2F4256"><b>Not on the sheet</b>Exam lineage, prerequisites and when to sit AI-901 first — those are decisions you make once, so they live on the <a href="index.html">home page</a>.</li>
+    </ul>
+  </section>
+
+  <p class="foot">
+    The cheat sheet is generated from <a href="https://github.com/rahulmahadik/ai-103-certification-study-guide/blob/main/cheatsheet/ai-103-cheatsheet.html" target="_blank" rel="noopener">one HTML file</a>
+    — fork it, edit it, run <code>npm run render</code> and you have your own. Icons are Microsoft's
+    Fluent UI System Icons (MIT); type is Inter, Barlow Condensed and JetBrains Mono (SIL OFL 1.1).
+    Nothing is loaded from a CDN. Compiled by <a href="https://www.linkedin.com/in/rahulmahadik" target="_blank" rel="noopener">Rahul Mahadik</a>
+    from the official Microsoft Learn AI-103 study guide and Azure product documentation.
+    Not affiliated with or endorsed by Microsoft.
+  </p>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,31 @@
+name: Hard to follow
+description: A section is technically correct but confusing.
+labels: ["clarity"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This guide is meant to be readable by someone competent but new to the material.
+        If a passage did not land, that is worth reporting even if you cannot suggest a fix.
+
+  - type: input
+    id: where
+    attributes:
+      label: Where
+      placeholder: docs/guide/optimize.html — the section on fine-tuning techniques
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What was confusing
+      description: What did you expect it to mean, and what did it actually turn out to mean?
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: A clearer wording, if you have one
+      description: Optional. Keep the technical meaning identical.

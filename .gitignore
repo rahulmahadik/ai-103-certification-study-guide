@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.npm/
+package-lock.json.bak
+
+# Puppeteer's downloaded browser, when it lands inside the project
+.cache/
+.local-chromium/
+
+# Generated assets. Rebuilt by `npm run assets` from the packages in
+# devDependencies, so they are not committed — the licence texts they carry
+# live in THIRD-PARTY-NOTICES.md, which is.
+docs/assets/fonts/
+docs/assets/fonts.css
+docs/assets/icons.svg
+
+# Rendered cheat sheet output. Rebuilt by `npm run render`.
+docs/assets/*.png
+docs/assets/*.pdf
+
+# Generated site pages. The GitHub Pages workflow runs the full build and
+# publishes the result, so these are never committed. Everything here comes
+# from design-source/ or cheatsheet/ — edit those, not these.
+#   docs/index.html and docs/cheatsheet.html are hand-authored and ARE tracked.
+docs/guide/
+docs/glossary.html
+docs/cheatsheet-board.html
+docs/sitemap.xml
+docs/robots.txt
+docs/assets/favicon.svg
+
+# Working material that is deliberately not published: review notes, reference
+# images, unverified drafts, scratch scripts. See internal/README.md.
+internal/
+
+# Editors and local tooling
+.claude/
+.vscode/
+.idea/
+*.code-workspace
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and scratch
+*.log
+*.stackdump
+npm-debug.log*
+.tmp/
+tmp/
+scratch/
+docs/_tmp*

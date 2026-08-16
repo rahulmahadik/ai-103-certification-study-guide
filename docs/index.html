@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-103 Study Guide — Developing AI Apps and Agents on Azure</title>
+<meta name="description" content="A study guide for Microsoft exam AI-103, Developing AI Apps and Agents on Azure. Module-by-module notes in plain language, a one-page cheat sheet, a glossary and an eight-lab practice ladder.">
+<meta name="keywords" content="AI-103, AI-103 exam, AI-103 study guide, Developing AI Apps and Agents on Azure, Azure AI Apps and Agents Developer Associate, Microsoft Foundry, Azure AI, Azure certification, Microsoft certification, Azure AI study guide, AI-103 preparation, AI-103 cheat sheet, pass AI-103">
+<meta name="author" content="Rahul Mahadik">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+<link rel="canonical" href="https://rahulmahadik.github.io/ai-103-certification-study-guide/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AI-103 Certification Study Guide">
+<meta property="og:title" content="AI-103 Study Guide — Developing AI Apps and Agents on Azure">
+<meta property="og:description" content="A study guide for Microsoft exam AI-103, Developing AI Apps and Agents on Azure. Module-by-module notes in plain language, a one-page cheat sheet, a glossary and an eight-lab practice ladder.">
+<meta property="og:url" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/assets/og-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="AI-103 Certification Study Guide — Developing AI Apps and Agents on Azure">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI-103 Study Guide — Developing AI Apps and Agents on Azure">
+<meta name="twitter:description" content="A study guide for Microsoft exam AI-103, Developing AI Apps and Agents on Azure. Module-by-module notes in plain language, a one-page cheat sheet, a glossary and an eight-lab practice ladder.">
+<meta name="twitter:image" content="https://rahulmahadik.github.io/ai-103-certification-study-guide/assets/og-card.png">
+
+<meta name="theme-color" content="#0B2136">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://rahulmahadik.github.io/ai-103-certification-study-guide/#website","url":"https://rahulmahadik.github.io/ai-103-certification-study-guide/","name":"AI-103 Certification Study Guide","description":"A study guide for Microsoft exam AI-103, Developing AI Apps and Agents on Azure. Module-by-module notes in plain language, a one-page cheat sheet, a glossary and an eight-lab practice ladder.","inLanguage":"en","author":{"@type":"Person","name":"Rahul Mahadik","url":"https://www.linkedin.com/in/rahulmahadik"},"publisher":{"@type":"Person","name":"Rahul Mahadik","url":"https://www.linkedin.com/in/rahulmahadik"}},{"@type":"Course","@id":"https://rahulmahadik.github.io/ai-103-certification-study-guide/#course","name":"AI-103 Certification Study Guide","description":"A study guide for Microsoft exam AI-103, Developing AI Apps and Agents on Azure. Module-by-module notes in plain language, a one-page cheat sheet, a glossary and an eight-lab practice ladder.","url":"https://rahulmahadik.github.io/ai-103-certification-study-guide/guide/index.html","inLanguage":"en","provider":{"@type":"Person","name":"Rahul Mahadik","url":"https://www.linkedin.com/in/rahulmahadik"},"author":{"@type":"Person","name":"Rahul Mahadik","url":"https://www.linkedin.com/in/rahulmahadik"},"isAccessibleForFree":true,"teaches":["Plan and manage an Azure AI solution","Implement generative AI and agentic solutions","Implement computer vision solutions","Implement text analysis solutions","Implement information extraction solutions"],"about":{"@type":"Thing","name":"Microsoft Certified: Azure AI Apps and Agents Developer Associate"}}]}</script>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/sheet.css">
+<style>
+/* Landing page only. Everything shared lives in sheet.css. */
+.hero {
+  background: var(--navy);
+  color: #E9F0F6;
+  padding: clamp(2.5rem, 7vw, 5rem) clamp(1rem, 4vw, 2rem) clamp(2.5rem, 6vw, 4rem);
+}
+
+/* 64rem, not 68rem: main.home carries its gutter as padding inside a 68rem
+   box, so its content column is 64rem wide. Matching that here keeps the
+   headline flush with everything below it. */
+.hero-in { max-width: 64rem; margin: 0 auto; }
+
+.hero .eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border: 1px solid #2E4A66;
+  border-radius: 7px;
+  padding: .35rem .8rem;
+  margin-bottom: 1.35rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #FFC53D;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: clamp(3rem, 10vw, 6.5rem);
+  font-weight: 700;
+  line-height: .9;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.hero h1 em { font-style: normal; color: #FFC53D; }
+
+.hero .sub {
+  margin: 1.25rem 0 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.5rem);
+  line-height: 1.4;
+  color: #A8BED2;
+  max-width: 42rem;
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin-top: 1.75rem;
+}
+
+.facts span {
+  background: rgba(255, 255, 255, .08);
+  border-radius: 7px;
+  padding: .45rem .85rem;
+  font-size: .95rem;
+  color: #D3E0EB;
+}
+
+.facts b { color: #fff; font-weight: 700; }
+
+.cta { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 2rem; }
+
+/* Headline on the left, the numbers on the right, so the dark band is not
+   half empty at desktop widths. */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.hero-grid > div { min-width: 0; }
+
+.at-a-glance {
+  border: 1px solid rgba(233, 240, 246, .22);
+  border-top: 3px solid var(--gold, #F5B335);
+  border-radius: 0 0 10px 10px;
+  padding: 1.1rem 1.25rem;
+  background: rgba(255, 255, 255, .04);
+}
+
+.at-a-glance h2 {
+  margin: 0 0 .8rem;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--gold, #F5B335);
+}
+
+.at-a-glance dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: .45rem .9rem;
+  font-size: .95rem;
+  line-height: 1.45;
+}
+
+.at-a-glance dt { color: #A9BDD0; white-space: nowrap; }
+.at-a-glance dd { margin: 0; color: #E9F0F6; }
+.at-a-glance dd b { color: #fff; }
+
+.at-a-glance .wide {
+  grid-column: 1 / -1;
+  margin-top: .5rem;
+  padding-top: .7rem;
+  border-top: 1px solid rgba(233, 240, 246, .16);
+  color: #A9BDD0;
+  font-size: .9rem;
+}
+
+.at-a-glance .wide b { color: #E9F0F6; }
+
+@media (max-width: 62rem) {
+  .hero-grid { grid-template-columns: 1fr; }
+}
+
+.cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  border-radius: 8px;
+  padding: .75rem 1.4rem;
+  font-size: 1.02rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cta .primary { background: #FFC53D; color: #0B2136; }
+.cta .primary:hover { background: #ffd469; color: #0B2136; }
+.cta .ghost { border: 1px solid #38556F; color: #DCE7F0; }
+.cta .ghost:hover { border-color: #FFC53D; color: #fff; }
+
+main.home { max-width: 68rem; margin: 0 auto; padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2rem) 4rem; }
+
+.two-up { display: grid; grid-template-columns: repeat(auto-fit, minmax(19rem, 1fr)); gap: 1rem; }
+
+.big {
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  padding: 1.6rem 1.75rem 1.75rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-top: 4px solid var(--tone);
+}
+
+.big:hover { border-color: var(--hair); border-top-color: var(--tone); box-shadow: 0 10px 28px -14px rgba(11, 22, 34, .3); color: inherit; }
+.big .tagline { font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--tone); }
+.big h2 { margin: .5rem 0 .55rem; font-size: 1.5rem; line-height: 1.2; color: var(--ink); }
+.big p { margin: 0; color: var(--dim); line-height: 1.55; }
+.big .go { display: inline-block; margin-top: .9rem; font-weight: 700; color: var(--tone); }
+
+h2.section {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin: 3rem 0 1rem;
+}
+
+.prose { max-width: 44rem; }
+
+/* A section laid out as prose plus something beside it, so the right third of
+   the page is not left empty below every full-width table. */
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1.25rem, 3vw, 2.25rem);
+  align-items: start;
+}
+
+.pair > .prose,
+.pair > blockquote.quote { max-width: none; }
+
+.aside-card {
+  border: 1px solid var(--hair);
+  border-top: 3px solid var(--link);
+  background: var(--paper);
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem;
+}
+
+.aside-card h3 {
+  margin: 0 0 .7rem;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+
+.aside-card table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+.aside-card th { text-align: left; font-weight: 700; padding: .4rem .6rem .4rem 0; vertical-align: top; white-space: nowrap; }
+.aside-card td { padding: .4rem 0; color: var(--dim); vertical-align: top; }
+.aside-card tr + tr th, .aside-card tr + tr td { border-top: 1px solid #EDF2F6; }
+
+/* Three routes through the material, side by side. */
+.routes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.routes div {
+  border: 1px solid var(--hair);
+  border-top: 3px solid var(--link);
+  background: var(--paper);
+  border-radius: 0 0 10px 10px;
+  padding: 1rem 1.15rem;
+  font-size: .97rem;
+  line-height: 1.55;
+}
+
+.routes b {
+  display: block;
+  margin-bottom: .35rem;
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: .02em;
+}
+
+@media (max-width: 62rem) {
+  .pair, .routes { grid-template-columns: 1fr; }
+}
+.prose p { margin: 0 0 1rem; }
+
+table.plain { width: 100%; border-collapse: collapse; background: var(--paper); border: 1px solid var(--hair); border-radius: 10px; overflow: hidden; }
+table.plain th { text-align: left; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--dim); padding: .7rem 1rem; border-bottom: 1px solid var(--hair); background: var(--wash); }
+table.plain td { padding: .75rem 1rem; border-bottom: 1px solid #EDF2F6; vertical-align: top; }
+table.plain tr:last-child td { border-bottom: 0; }
+table.plain td b { color: var(--ink); }
+
+blockquote.quote {
+  margin: 0 0 1.25rem;
+  padding: 1.1rem 1.4rem;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-left: 4px solid var(--link);
+  border-radius: 0 10px 10px 0;
+  max-width: 44rem;
+}
+
+blockquote.quote p { margin: 0 0 .7rem; font-size: 1.06rem; line-height: 1.55; color: var(--body); }
+blockquote.quote p:last-of-type { margin-bottom: .8rem; }
+blockquote.quote cite { font-style: normal; font-size: .9rem; font-weight: 700; color: var(--dim); }
+
+.dead { color: #9B2C2C; font-weight: 700; }
+.live { color: var(--ok); font-weight: 700; }
+
+.foot { border-top: 1px solid var(--hair); margin-top: 3rem; padding-top: 1.5rem; font-size: .92rem; color: var(--dim); }
+</style>
+</head>
+<body>
+
+<nav class="sitebar no-print">
+  <a class="wordmark" href="index.html">AI&#8209;103 <span>Study Guide</span></a>
+  <div class="links">
+    <span class="here">Home</span>
+    <a href="guide/index.html">Study guide</a>
+    <a href="cheatsheet.html">Cheat sheet</a>
+    <a href="glossary.html">Glossary</a>
+  </div>
+  <a class="gh" href="https://github.com/rahulmahadik/ai-103-certification-study-guide" target="_blank" rel="noopener">GitHub</a>
+</nav>
+
+<header class="hero">
+  <div class="hero-in">
+  <div class="hero-grid">
+  <div>
+    <span class="eyebrow">Microsoft Certified · Associate</span>
+    <h1>AI-103 <em>Study Guide</em></h1>
+    <p class="sub">Everything you need to pass <b>Developing AI Apps and Agents on Azure</b> — written in plain language, without changing what any of it actually means.</p>
+
+    <div class="cta">
+      <a class="primary" href="guide/index.html">Start the study guide</a>
+      <a class="ghost" href="cheatsheet.html">Revise with the cheat sheet</a>
+    </div>
+  </div>
+
+  <div class="at-a-glance">
+    <h2>The exam at a glance</h2>
+    <dl>
+      <dt>Length</dt><dd><b>120</b> minutes</dd>
+      <dt>Pass mark</dt><dd><b>700</b> of 1000</dd>
+      <dt>Skill areas</dt><dd><b>5</b>, weighted 10&ndash;35% each</dd>
+      <dt>Outline dated</dt><dd><b>16 April 2026</b></dd>
+      <dt>Assumes</dt><dd><b>Python</b>, plus general AI and Azure</dd>
+      <dt>Replaces</dt><dd><b>AI-102</b>, retired 30 June 2026</dd>
+    </dl>
+    <div class="wide">Pass it and you earn <b>Microsoft Certified: Azure AI Apps and Agents Developer Associate</b>. Associate certifications expire annually and are renewed with a free online assessment on Microsoft Learn.</div>
+  </div>
+  </div>
+  </div>
+</header>
+
+<main class="home">
+
+  <div class="two-up">
+    <a class="big" href="guide/index.html" style="--tone: #1B5FA8">
+      <span class="tagline">Preparing from scratch</span>
+      <h2>The study guide</h2>
+      <p>Eleven pages, one per module, in the order they make sense. Every unit of the Microsoft Learn path plus the three specialist skill areas, each ending with the one sentence worth remembering. Read it once, then never again.</p>
+      <span class="go">Start reading →</span>
+    </a>
+
+    <a class="big" href="cheatsheet.html" style="--tone: #B03A20">
+      <span class="tagline">Revising, or looking something up</span>
+      <h2>The cheat sheet</h2>
+      <p>One page. The five skill areas at their real weights, the three diagrams worth memorising, every service decision table, the scenario cues, and a glossary. Built at Full HD and above, so it is readable on a screen or pinned to a wall.</p>
+      <span class="go">Open the cheat sheet →</span>
+    </a>
+  </div>
+
+  <h2 class="section">What this covers</h2>
+  <table class="plain">
+    <thead><tr><th style="width:52%">Skill area</th><th style="width:16%">Weight</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td><b>Plan and manage an Azure AI solution</b></td><td>25–30%</td><td><a href="guide/plan-and-prepare.html">Part 1</a> · <a href="guide/responsible-ai.html">Part 6</a> · <a href="guide/agents-and-operations.html">Part 10</a></td></tr>
+      <tr><td><b>Implement generative AI and agentic solutions</b></td><td>30–35%</td><td><a href="guide/models.html">2</a> · <a href="guide/chat-app.html">3</a> · <a href="guide/tools.html">4</a> · <a href="guide/optimize.html">5</a> · <a href="guide/agents-and-operations.html">10</a></td></tr>
+      <tr><td><b>Implement computer vision solutions</b></td><td>10–15%</td><td><a href="guide/computer-vision.html">Part 7</a></td></tr>
+      <tr><td><b>Implement text analysis solutions</b></td><td>10–15%</td><td><a href="guide/text-analysis.html">Part 8</a></td></tr>
+      <tr><td><b>Implement information extraction solutions</b></td><td>10–15%</td><td><a href="guide/information-extraction.html">Part 9</a></td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section">Which exam is this, exactly</h2>
+  <div class="prose">
+    <p>Microsoft has now had three generations of Azure AI engineering exam, and a lot of study material online is still written for the previous two. If a course teaches you Custom Vision training, LUIS intents or prompt flow, it is preparing you for an exam that no longer exists.</p>
+  </div>
+  <table class="plain">
+    <thead><tr><th style="width:14%">Exam</th><th style="width:48%">Title and certification</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI-100</b></td><td>Designing and Implementing an Azure AI Solution</td><td class="dead">Retired 2021</td></tr>
+      <tr><td><b>AI-102</b></td><td>Designing and Implementing a Microsoft Azure AI Solution — <i>Azure AI Engineer Associate</i></td><td class="dead">Retired 30 June 2026</td></tr>
+      <tr><td><b>AI-103</b></td><td>Developing AI Apps and Agents on Azure — <i>Azure AI Apps and Agents Developer Associate</i></td><td class="live">Current</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="section">Who this exam is for</h2>
+  <div class="pair">
+  <blockquote class="quote">
+    <p>As a candidate for this Microsoft Certification, you’re an Azure AI engineer who builds, manages, and deploys agents and AI solutions that take advantage of Microsoft Foundry.</p>
+    <p>For this exam, you should have <b>experience developing apps by using Python</b>, and you need to be familiar with the capabilities of general AI, generative AI, and Azure services.</p>
+    <cite>Microsoft — <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">official AI-103 study guide</a></cite>
+  </blockquote>
+  <div class="prose">
+    <p>Read that literally. <b>Python is not optional</b> — the code questions use it and so does every exercise in the Microsoft Learn path. C# turns up in some SDK documentation, but preparing in Python is the safer choice. If you do not write it yet, the <a href="https://technoscripts.com/python-tutorial-series/" target="_blank" rel="noopener">Python tutorial series</a> is a free 247-lesson path from the basics through data science to AI and machine learning.</p>
+    <p>In the role itself you work with business stakeholders, solution architects, data scientists, DevOps engineers and cloud security engineers to design, build and maintain AI solutions.</p>
+  </div>
+</div>
+
+  <h2 class="section">Never done AI on Azure before?</h2>
+  <div class="pair">
+  <div class="prose">
+    <p>AI-103 has <b>no formal prerequisites</b>, so nothing stops you booking it. But it assumes you write Python, know your way around the Azure portal, and can already say what an embedding is.</p>
+    <p>If that is not you yet, sit <b>AI-901: Microsoft Azure AI Fundamentals</b> first. It is the beginner-level credential in the same track, and the cheapest way to find out whether the vocabulary is already there. It is not a prerequisite; nothing stops you going straight to AI-103.</p>
+    <p>The <a href="guide/overview.html">first page of the study guide</a> lists exactly what the exam assumes and never teaches.</p>
+  </div>
+  <div class="aside-card">
+    <h3>AI-901 beside AI-103</h3>
+    <table>
+      <tr><th>Level</th><td>AI-901 is fundamentals; AI-103 is associate.</td></tr>
+      <tr><th>Pass mark</th><td>700 out of 1000 for both.</td></tr>
+      <tr><th>Retirement</th><td>AI-901 has none announced. It replaced AI-900 on 30 June 2026, so ignore material written for AI-900.</td></tr>
+      <tr><th>Required?</th><td>No. AI-103 has no formal prerequisites.</td></tr>
+      <tr><th>Worth it if</th><td>You could not define an embedding, a token or a prompt without looking them up.</td></tr>
+    </table>
+  </div>
+</div>
+
+  <h2 class="section">How to use this</h2>
+  <div class="routes">
+    <div><b>Preparing properly?</b> Work through the <a href="guide/index.html">study guide</a> in order, doing the matching lab as you finish each part. The <a href="guide/labs.html">lab ladder</a> is eight builds, each ending with something that runs.</div>
+    <div><b>Exam in two days?</b> Read the <a href="cheatsheet.html">cheat sheet</a>, then the "in one line" summary at the end of each guide page. That is the whole syllabus in about an hour.</div>
+    <div><b>Just need a term?</b> The <a href="glossary.html">glossary</a> has one line for every term the AI-103 outline names.</div>
+  </div>
+
+  <p class="foot">
+    MIT licence for the code, CC BY 4.0 for the writing.
+    Compiled by <a href="https://www.linkedin.com/in/rahulmahadik" target="_blank" rel="noopener">Rahul Mahadik</a> from the official
+    <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">Microsoft Learn AI-103 study guide</a>
+    and Azure product documentation. Exam details verified August 2026 — always re-check
+    learn.microsoft.com before you book. Not affiliated with or endorsed by Microsoft.
+    <a href="https://github.com/rahulmahadik/ai-103-certification-study-guide/issues" target="_blank" rel="noopener">Found a mistake? Open an issue.</a>
+  </p>
+
+</main>
+</body>
+</html>

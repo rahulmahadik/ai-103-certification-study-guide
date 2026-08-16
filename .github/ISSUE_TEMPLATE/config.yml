@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Official AI-103 study guide
+    url: https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103
+    about: Microsoft's own page. Always the authority on what the exam covers.
+  - name: Microsoft Q&A
+    url: https://learn.microsoft.com/en-us/answers/products/
+    about: Questions about Azure services themselves, rather than about this guide.

@@ -1,0 +1,1269 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-103 Cheat Sheet — Developing AI Apps and Agents on Azure</title>
+<meta name="description" content="One-page cheat sheet for Microsoft exam AI-103, Developing AI Apps and Agents on Azure: all five skill areas, the service decision tables and the scenario cues that decide the answer.">
+<link rel="stylesheet" href="assets/fonts.css">
+<style>
+/* ---------------------------------------------------------------------------
+   AI-103 cheat sheet — one fixed 1920 x 6800 board.
+
+   Authored at exactly the pixel size it renders at, so a 1x capture is
+   Full-HD wide and a 2x capture is 3840px wide with no reflow in between.
+   Nothing here uses viewport units or media queries: the board never changes
+   size, and tools/render-cheatsheet.mjs fails the build if content spills
+   past the bottom edge.
+
+   Fonts are self-hosted (assets/fonts.css) and icons are an inlined sprite of
+   Microsoft's Fluent UI System Icons. No CDN is involved anywhere.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --page: #FFFFFF;
+  --ink: #0B1622;
+  --body: #223140;
+  --dim: #5B7085;
+  --hair: #DCE4EC;
+  --wash: #F5F8FB;
+
+  --navy: #0B2136;
+  --navy-2: #06182A;
+  --gold: #FFC53D;
+
+  /* one hue per skill area, carried consistently everywhere they appear */
+  --c1: #1B5FA8;
+  --c2: #6D3A9E;
+  --c3: #0E7C63;
+  --c4: #BC4B10;
+  --c5: #AB2733;
+  --c6: #2F4256;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #2B3644;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  color: var(--body);
+  font-feature-settings: 'kern' 1, 'liga' 1, 'cv05' 1;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scaled to the window by the inline script above, so a narrow screen
+   scrolls only vertically. Defaults to 1 when the script does not run. */
+.board {
+  transform: scale(var(--board-scale, 1));
+  transform-origin: top left;
+  width: 1920px;
+  height: 6800px;
+  margin: 0 auto;
+  background: var(--page);
+  padding: 34px 34px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+  overflow: hidden;
+}
+
+/* The board is a fixed-height flex column, so its children would otherwise
+   shrink to fit rather than overflow — which silently squashes the layout and
+   hides the fact that the board is too short. Pinning every child to its
+   natural height makes any overrun visible, and the renderer fails the build
+   on it. */
+.board > * { flex: 0 0 auto; }
+
+/* --- icons -------------------------------------------------------------- */
+
+.ic { width: 22px; height: 22px; flex: none; fill: currentColor; }
+.ic-l { width: 27px; height: 27px; }
+.ic-s { width: 18px; height: 18px; }
+
+/* --- masthead ----------------------------------------------------------- */
+
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr 660px;
+  background: var(--navy);
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+.masthead .left { padding: 32px 40px 34px; }
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 2px solid #2E4A66;
+  border-radius: 8px;
+  padding: 7px 15px;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+}
+
+h1 {
+  font-family: 'Barlow Condensed', 'Inter', sans-serif;
+  font-size: 116px;
+  font-weight: 700;
+  line-height: .86;
+  letter-spacing: .006em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+h1 em { font-style: normal; color: var(--gold); }
+
+.tagline { font-size: 30px; font-weight: 500; color: #A9BED1; margin-top: 17px; line-height: 1.27; }
+
+.earns {
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, .08);
+  border-radius: 9px;
+  padding: 10px 17px;
+  font-size: 20px;
+  color: #C6D6E4;
+}
+
+.earns b { color: #fff; font-weight: 700; }
+.earns .ic { color: #4ADE9B; }
+
+.overview { background: var(--navy-2); padding: 30px 36px; }
+
+.overview h2 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  color: var(--gold);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #16344E;
+}
+
+.overview dl { display: grid; grid-template-columns: 240px 1fr; gap: 10px 14px; }
+.overview dt { font-size: 19.5px; color: #7591AB; font-weight: 500; }
+.overview dd { font-size: 19.5px; color: #EEF4F9; font-weight: 700; }
+
+/* --- weight bar ---------------------------------------------------------- */
+
+.weights {
+  border: 2px solid var(--hair);
+  border-radius: 13px;
+  padding: 17px 21px 19px;
+  background: var(--wash);
+}
+
+.weights .cap {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+
+.weights .cap b {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.weights .cap span { font-size: 19.5px; color: var(--dim); }
+
+.bar { display: flex; gap: 4px; height: 54px; }
+
+.seg {
+  background: var(--tone);
+  border-radius: 6px;
+  color: #fff;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  overflow: hidden;
+}
+
+.seg .t { font-size: 18px; font-weight: 700; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.seg .p { font-size: 21px; font-weight: 800; letter-spacing: .01em; }
+
+/* --- section strips ------------------------------------------------------ */
+
+.strip { display: flex; align-items: center; gap: 13px; margin-top: 5px; }
+
+.strip .ic { color: var(--ink); }
+
+.strip h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.strip .hint { font-size: 20px; color: var(--dim); font-weight: 500; white-space: nowrap; }
+.strip::after { content: ""; flex: 1; height: 3px; background: var(--hair); border-radius: 2px; }
+
+/* --- cards --------------------------------------------------------------- */
+
+.grid { display: grid; gap: 16px; align-items: stretch; }
+.g5 { grid-template-columns: repeat(5, 1fr); }
+.g4 { grid-template-columns: repeat(4, 1fr); }
+.g3 { grid-template-columns: repeat(3, 1fr); }
+.g2 { grid-template-columns: 1.18fr 1fr; }
+
+.card {
+  border: 2px solid var(--hair);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.card > .hd {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: var(--tone, var(--c6));
+  color: #fff;
+  padding: 13px 16px;
+}
+
+.card > .hd .n {
+  flex: none;
+  width: 33px;
+  height: 33px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .23);
+  display: grid;
+  place-items: center;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.card > .hd h3 { font-size: 22px; font-weight: 700; line-height: 1.13; letter-spacing: -.008em; }
+
+/* Inverted rather than a translucent white wash: white text on the tone
+   lightened by 21% measured 3.49:1 on the teal card. A solid white pill with
+   the tone as the text colour clears AA on all five hues. */
+.card > .hd .pct {
+  margin-left: auto;
+  flex: none;
+  background: #fff;
+  color: var(--tone);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.card > .bd { padding: 15px 16px 16px; flex: 1; }
+
+/* --- content bits -------------------------------------------------------- */
+
+h4 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18.5px;
+  font-weight: 800;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+  color: var(--tone, var(--c6));
+  margin: 16px 0 8px;
+}
+
+.bd > h4:first-child { margin-top: 0; }
+
+ul { list-style: none; }
+
+ul li {
+  position: relative;
+  padding-left: 17px;
+  font-size: 19px;
+  line-height: 1.35;
+  margin-bottom: 7px;
+}
+
+ul li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 10px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--tone, var(--c6));
+  opacity: .55;
+}
+
+ul li:last-child { margin-bottom: 0; }
+
+.lede { font-size: 19px; line-height: 1.38; margin-bottom: 11px; }
+b, strong { color: var(--ink); font-weight: 700; }
+
+table { width: 100%; border-collapse: collapse; }
+
+th {
+  text-align: left;
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 0 9px 6px 0;
+  border-bottom: 2px solid var(--hair);
+}
+
+td {
+  font-size: 19px;
+  line-height: 1.31;
+  padding: 8px 9px 8px 0;
+  border-bottom: 1px solid #EDF2F6;
+  vertical-align: top;
+}
+
+tr:last-child td { border-bottom: 0; padding-bottom: 0; }
+td:last-child, th:last-child { padding-right: 0; }
+.win { color: var(--tone, var(--c6)); font-weight: 700; }
+
+code {
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+  font-size: 16.5px;
+  font-weight: 500;
+  background: var(--wash);
+  border: 1px solid var(--hair);
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #1A4A6B;
+  white-space: nowrap;
+}
+
+.tip {
+  display: flex;
+  gap: 9px;
+  margin-top: 11px;
+  background: color-mix(in srgb, var(--tone, var(--c6)) 6%, white);
+  border-left: 5px solid var(--tone, var(--c6));
+  border-radius: 0 8px 8px 0;
+  padding: 10px 13px;
+  font-size: 18.5px;
+  line-height: 1.33;
+}
+
+.tip .ic { margin-top: 1px; color: var(--tone, var(--c6)); }
+.tip em { font-style: normal; color: var(--tone, var(--c6)); font-weight: 800; }
+
+.pills { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 2px solid var(--hair);
+  border-radius: 999px;
+  padding: 5px 13px;
+  font-size: 18.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.pill.on { border-color: var(--tone); color: var(--tone); background: color-mix(in srgb, var(--tone) 7%, white); }
+.pill .ic { color: var(--tone); }
+
+dl.kv { display: grid; grid-template-columns: auto 1fr; gap: 7px 13px; font-size: 19px; }
+dl.kv dt { font-weight: 700; color: var(--ink); white-space: nowrap; }
+dl.kv dd { line-height: 1.3; }
+
+/* --- endpoint paths -------------------------------------------------------- */
+
+/* Inline <code> is nowrap everywhere else on the sheet, which is right for
+   short identifiers and wrong for a 55-character endpoint: the project path is
+   557px of text in a 415px column, so it was being clipped by the card's
+   overflow:hidden and losing its tail. These two wrap at the <wbr> before the
+   path segment instead. */
+dl.paths { margin-top: 12px; }
+
+dl.paths dt {
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--dim);
+  margin-top: 9px;
+}
+
+dl.paths dt:first-child { margin-top: 0; }
+dl.paths dd { margin-top: 3px; }
+
+dl.paths code {
+  display: inline-block;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
+  font-size: 16px;
+}
+
+/* --- pull quote ----------------------------------------------------------- */
+
+blockquote.quote {
+  margin: 0 0 12px;
+  padding: 12px 15px;
+  background: var(--wash);
+  border-left: 5px solid var(--tone, var(--c6));
+  border-radius: 0 8px 8px 0;
+}
+
+blockquote.quote p { font-size: 18px; line-height: 1.34; color: var(--body); }
+
+blockquote.quote cite {
+  display: block;
+  margin-top: 7px;
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--tone, var(--c6));
+}
+
+/* --- glossary ------------------------------------------------------------ */
+
+dl.gl { font-size: 18px; line-height: 1.3; }
+
+dl.gl dt {
+  font-weight: 700;
+  color: var(--tone, var(--ink));
+  margin-top: 9px;
+}
+
+dl.gl dt:first-child { margin-top: 0; }
+dl.gl dd { color: var(--body); }
+dl.gl code { font-size: 15.5px; }
+
+figure { margin: 0; }
+figcaption { font-size: 17.5px; color: var(--dim); margin-top: 9px; line-height: 1.32; }
+svg.diagram { width: 100%; display: block; }
+
+/* --- severity matrix ------------------------------------------------------ */
+
+.matrix { display: grid; grid-template-columns: 1.5fr repeat(4, 1fr); gap: 3px; font-size: 17px; }
+
+.matrix .h {
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: 0 0 5px;
+  text-align: center;
+}
+
+.matrix .rh { font-weight: 700; color: var(--ink); font-size: 17.5px; display: flex; align-items: center; padding-right: 6px; }
+
+.matrix .c {
+  height: 34px;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 16px;
+  color: #fff;
+}
+
+.s0 { background: #C9D6E2; color: #33475C; }
+.s1 { background: #7FB069; }
+.s2 { background: #E0A32E; }
+.s3 { background: #C0392B; }
+
+/* --- timeline ------------------------------------------------------------- */
+
+.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+.stage { border: 2px solid var(--hair); border-radius: 10px; padding: 14px 16px; }
+.stage.now { border-color: var(--c3); border-width: 3px; background: #F0FAF7; }
+.stage .code { font-family: 'Barlow Condensed', sans-serif; font-size: 44px; font-weight: 700; color: var(--ink); line-height: .96; }
+.stage.now .code { color: var(--c3); }
+.stage .name { font-size: 18px; color: var(--dim); margin: 7px 0 10px; line-height: 1.26; }
+
+.tag {
+  display: inline-block;
+  font-size: 15.5px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 4px 10px;
+}
+
+.tag.dead { background: #FAE7E7; color: #982525; }
+.tag.live { background: #D7F2E7; color: #0A6349; }
+
+/* --- footer --------------------------------------------------------------- */
+
+.colophon {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  padding: 17px 6px 20px;
+  font-size: 17.5px;
+  line-height: 1.4;
+  color: var(--dim);
+  border-top: 2px solid var(--hair);
+}
+
+.colophon strong { color: var(--ink); }
+.colophon .right { text-align: right; }
+</style>
+  <link rel="canonical" href="https://rahulmahadik.github.io/ai-103-certification-study-guide/cheatsheet.html">
+</head>
+<body>
+<script>
+  // Fit the fixed-width board to the window: vertical scroll only.
+  (function () {
+    var BOARD_W = 1920;
+    function fit() {
+      var k = Math.min(1, document.documentElement.clientWidth / BOARD_W);
+      document.documentElement.style.setProperty('--board-scale', k);
+      var b = document.querySelector('.board');
+      if (b) document.body.style.height = (b.offsetHeight * k) + 'px';
+    }
+    addEventListener('resize', fit);
+    addEventListener('load', fit);
+    fit();
+  })();
+</script>
+<!--ICON-SPRITE-->
+<section class="board" id="board-1">
+
+  <!-- =========================== masthead =============================== -->
+  <header class="masthead">
+    <div class="left">
+      <span class="badge"><svg class="ic ic-s"><use href="#i-certificate"/></svg> Microsoft Certified · Associate</span>
+      <h1>AI-103 <em>Cheat Sheet</em></h1>
+      <p class="tagline">Developing AI Apps and Agents on Azure — every skill area,<br>the service decision tables, and the scenario-to-service mappings.</p>
+      <span class="earns"><svg class="ic"><use href="#i-check"/></svg> Earns <b>Microsoft Certified: Azure AI Apps and Agents Developer Associate</b></span>
+    </div>
+
+    <div class="overview">
+      <h2><svg class="ic ic-s"><use href="#i-info"/></svg> Exam logistics</h2>
+      <dl>
+        <dt>Exam code</dt><dd>AI-103</dd>
+        <dt>Duration</dt><dd>120 minutes</dd>
+        <dt>Passing score</dt><dd>700 of 1000</dd>
+        <dt>Skills measured as of</dt><dd>16 April 2026</dd>
+        <dt>Level and role</dt><dd>Intermediate · AI engineer, developer</dd>
+        <dt>Assumed language</dt><dd>Python — &ldquo;you should have experience developing apps by using Python&rdquo;</dd>
+        <dt>Delivery</dt><dd>Proctored, via Pearson VUE</dd>
+        <dt>Renewal</dt><dd>Free online assessment, yearly</dd>
+        <dt>Replaces</dt><dd>AI-102, retired 30 June 2026</dd>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ========================== weight bar ============================== -->
+  <div class="weights">
+    <div class="cap">
+      <b>Weighting, drawn to scale</b>
+      <span>the five skill areas drawn to their published weight — areas 1 and 2 are 55–65% between them</span>
+    </div>
+    <div class="bar">
+      <div class="seg" style="--tone: var(--c1); flex: 27.5"><span class="t">1 · Plan and manage</span><span class="p">25–30%</span></div>
+      <div class="seg" style="--tone: var(--c2); flex: 32.5"><span class="t">2 · Generative AI and agents</span><span class="p">30–35%</span></div>
+      <div class="seg" style="--tone: var(--c3); flex: 12.5"><span class="t">3 · Computer vision</span><span class="p">10–15%</span></div>
+      <div class="seg" style="--tone: var(--c4); flex: 12.5"><span class="t">4 · Text analysis</span><span class="p">10–15%</span></div>
+      <div class="seg" style="--tone: var(--c5); flex: 12.5"><span class="t">5 · Info extraction</span><span class="p">10–15%</span></div>
+    </div>
+  </div>
+
+  <!-- ======================== five skill areas ========================== -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-checklist"/></svg>
+    <h2>The five skill areas</h2>
+    <span class="hint">weights exactly as published; each sub-skill condensed to one line</span>
+  </div>
+
+  <div class="grid g5">
+
+    <section class="card" style="--tone: var(--c1)">
+      <div class="hd"><span class="n">1</span><h3>Plan and manage an Azure AI solution</h3><span class="pct">25–30%</span></div>
+      <div class="bd">
+        <h4><svg class="ic ic-s"><use href="#i-target"/></svg> Choose services</h4>
+        <ul>
+          <li>Match the task to an LLM, small language model, multimodal model or Foundry Tool</li>
+          <li>Pick services for generation, grounding, vector search and agent workflows</li>
+          <li>Choose how to retrieve and index; choose memory, tool and knowledge integrations</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-settings"/></svg> Set up in Foundry</h4>
+        <ul>
+          <li>Design the infrastructure and choose deployment options</li>
+          <li>Configure model and agent deployments</li>
+          <li>Wire projects into CI/CD pipelines</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-gauge"/></svg> Manage and secure</h4>
+        <ul>
+          <li>Quotas, scaling, rate limits and cost</li>
+          <li>Performance, drift, safety events, grounding quality</li>
+          <li>Ingestion quality, index health, relevance</li>
+          <li>Managed identity, private networking, keyless credentials, role policies</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-shield"/></svg> Responsible AI</h4>
+        <ul>
+          <li>Safety filters, guardrails, risk detection, moderation</li>
+          <li>Evaluators, safety evaluations, explanation tooling</li>
+          <li>Trace logging, provenance, approval workflows</li>
+          <li>Oversight modes, constraints, tool-access controls</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c2)">
+      <div class="hd"><span class="n">2</span><h3>Implement generative AI and agentic solutions</h3><span class="pct">30–35%</span></div>
+      <div class="bd">
+        <h4><svg class="ic ic-s"><use href="#i-sparkle"/></svg> Generative apps</h4>
+        <ul>
+          <li>Deploy and use large, small, code and multimodal models</li>
+          <li>Build retrieval-augmented generation into an app</li>
+          <li>Design tool-augmented flows and multistep reasoning pipelines</li>
+          <li>Evaluate for hallucination, groundedness, relevance and safety</li>
+          <li>Integrate through Foundry SDKs and connectors; connect an app to a project</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-bot"/></svg> Agents</h4>
+        <ul>
+          <li>Define roles, goals, conversation tracking and tool schemas</li>
+          <li>Combine retrieval, function calling and conversation memory</li>
+          <li>Plug in APIs, knowledge stores, search and content understanding</li>
+          <li>Orchestrate several agents together</li>
+          <li>Run flows with little or no supervision, behind approval controls</li>
+          <li>Monitor agents, judge their behaviour, analyse the failures</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-gauge"/></svg> Optimize and operate</h4>
+        <ul>
+          <li>Tune with prompt engineering and model parameters</li>
+          <li>Reflection, chain-of-thought evaluation, self-critique loops</li>
+          <li>Tracing, token analytics, safety signals, latency breakdowns</li>
+          <li>Orchestrate several models, flows, or an LLM with a rules engine</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c3)">
+      <div class="hd"><span class="n">3</span><h3>Implement computer vision solutions</h3><span class="pct">10–15%</span></div>
+      <div class="bd">
+        <h4><svg class="ic ic-s"><use href="#i-image"/></svg> Generate and edit</h4>
+        <ul>
+          <li>Make images and video from text prompts and reference media</li>
+          <li>Inpainting, mask-based edits, prompt-driven changes</li>
+          <li>Edit generated video; image generation controls are size, quality and count (n) — there is no seed</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-eye"/></svg> Multimodal understanding</h4>
+        <ul>
+          <li>Read visual context; short or detailed captions, one image or many</li>
+          <li>Answer questions using only what the image actually shows</li>
+          <li>Alt text and longer descriptions that meet accessibility guidelines</li>
+          <li>Content Understanding for visual characteristics; per-segment video analysis</li>
+          <li>Single-task and pro-mode pipelines; locate objects and regions</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-shield"/></svg> Responsible AI</h4>
+        <ul>
+          <li>Filter unsafe or disallowed images</li>
+          <li>Catch instructions hidden as text inside an image</li>
+          <li>Enforce watermarks, banned symbols and brand rules</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c4)">
+      <div class="hd"><span class="n">4</span><h3>Implement text analysis solutions</h3><span class="pct">10–15%</span></div>
+      <div class="bd">
+        <h4><svg class="ic ic-s"><use href="#i-text"/></svg> Language model text analysis</h4>
+        <ul>
+          <li>Pull out entities, topics, summaries and structured JSON</li>
+          <li>Detect sentiment, tone, safety issues and sensitive content</li>
+          <li>Translate with Azure Translator or a language model</li>
+          <li>Shape the output for a specific domain — compliance summaries, clinical notes, contract clauses</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-mic"/></svg> Speech</h4>
+        <ul>
+          <li>Speech to text and text to speech inside an agent conversation</li>
+          <li>Speech as an agent modality, including custom speech models</li>
+          <li>Reason straight from the audio rather than a transcript</li>
+          <li>Translate speech with language models and Foundry Tools</li>
+        </ul>
+        <div class="tip"><svg class="ic"><use href="#i-lightbulb"/></svg><span><em>Prebuilt or model.</em> A prebuilt Azure Language capability gives a fixed, versioned label set at a predictable price per text record. A language model copes with categories and output shapes the prebuilt ones simply do not have.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c5)">
+      <div class="hd"><span class="n">5</span><h3>Implement information extraction solutions</h3><span class="pct">10–15%</span></div>
+      <div class="bd">
+        <h4><svg class="ic ic-s"><use href="#i-search"/></svg> Retrieval and grounding</h4>
+        <ul>
+          <li>Ingest and index documents, images, audio and video</li>
+          <li>Set up semantic, hybrid and vector search for grounding</li>
+          <li>Enrich with custom or built-in skills for text, images and layout</li>
+          <li>Configure RAG ingestion, including OCR over documents</li>
+          <li>Connect retrieval pipelines to workflows and agent tools</li>
+        </ul>
+        <h4><svg class="ic ic-s"><use href="#i-scan"/></svg> Extract from documents</h4>
+        <ul>
+          <li>Pipelines that combine OCR, layout analysis and field extraction — on v4.0 the <b>general document</b> model is gone (layout returns key-value pairs if you ask for them) and <b>business card</b> is deprecated; both still appear in older question banks</li>
+          <li>Content Understanding turns mixed documents, images and audio into structured output an agent can cite</li>
+          <li>Analyzers that return structured or markdown output</li>
+        </ul>
+        <div class="tip"><svg class="ic"><use href="#i-lightbulb"/></svg><span><em>Schema first.</em> Field names, types and which ones are required, decided before you build. The schema is the contract with whatever consumes the output.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-layers"/></svg><span><em>Standard or pro.</em> <b>Standard</b> reads one file and pulls the fields out. <b>Pro</b> reasons over several inputs at once and can weigh them against reference data — for judgement, not for reading.</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ========================== the diagrams ============================ -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-route"/></svg>
+    <h2>Three diagrams to draw from memory</h2>
+    <span class="hint">redraw these and the Foundry-hierarchy, grounding and tuning questions stop being guesswork</span>
+  </div>
+
+  <div class="grid g3">
+
+    <section class="card" style="--tone: var(--c1)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-layers"/></svg><h3>How Foundry is organised</h3></div>
+      <div class="bd">
+        <figure>
+          <svg class="diagram" viewBox="0 0 560 258" role="img" aria-label="A Foundry resource contains one or more projects; each project holds models, agents, tools and knowledge.">
+            <rect x="2" y="2" width="556" height="146" rx="11" fill="#EEF4FA" stroke="#1B5FA8" stroke-width="2.5"/>
+            <text x="20" y="30" font-family="Inter" font-size="17" font-weight="800" fill="#1B5FA8" letter-spacing=".08em">FOUNDRY RESOURCE</text>
+            <text x="20" y="52" font-family="Inter" font-size="15.5" fill="#4A6072">supplies compute, storage and the AI tools</text>
+
+            <rect x="20" y="66" width="255" height="66" rx="8" fill="#fff" stroke="#1B5FA8" stroke-width="2.5"/>
+            <text x="34" y="92" font-family="Inter" font-size="18" font-weight="700" fill="#0B1622">Project</text>
+            <text x="34" y="114" font-family="Inter" font-size="15" fill="#4A6072">marked default</text>
+
+            <rect x="287" y="66" width="251" height="66" rx="8" fill="#fff" stroke="#9DBBD6" stroke-width="2.5" stroke-dasharray="7 5"/>
+            <text x="301" y="92" font-family="Inter" font-size="18" font-weight="700" fill="#33475C">Project</text>
+            <text x="301" y="114" font-family="Inter" font-size="15" fill="#4A6072">one solution each</text>
+
+            <!-- The spine drops from the Project box, then branches to the
+                 centre of each asset box below: 68, 210, 352 and 493. -->
+            <path d="M147 148v22" stroke="#9DBBD6" stroke-width="2.5" fill="none"/>
+            <path d="M68 170h425" stroke="#9DBBD6" stroke-width="2.5" fill="none"/>
+            <path d="M68 170v20M210 170v20M352 170v20M493 170v20" stroke="#9DBBD6" stroke-width="2.5" fill="none"/>
+
+            <g font-family="Inter" font-size="15" font-weight="700" fill="#0B1622">
+              <rect x="2" y="190" width="132" height="62" rx="8" fill="#F5F8FB" stroke="#DCE4EC" stroke-width="2"/>
+              <text x="13" y="212">Models</text>
+              <text x="13" y="234" font-size="12.5" font-weight="400" fill="#4A6072">from the catalog</text>
+
+              <rect x="144" y="190" width="132" height="62" rx="8" fill="#F5F8FB" stroke="#DCE4EC" stroke-width="2"/>
+              <text x="155" y="212">Agents</text>
+              <text x="155" y="234" font-size="12.5" font-weight="400" fill="#4A6072">LLM + rules + tools</text>
+
+              <rect x="286" y="190" width="132" height="62" rx="8" fill="#F5F8FB" stroke="#DCE4EC" stroke-width="2"/>
+              <text x="297" y="212">Tools</text>
+              <text x="297" y="234" font-size="12.5" font-weight="400" fill="#4A6072">built-in and MCP</text>
+
+              <rect x="428" y="190" width="130" height="62" rx="8" fill="#F5F8FB" stroke="#DCE4EC" stroke-width="2"/>
+              <text x="439" y="212">Knowledge</text>
+              <text x="439" y="234" font-size="12.5" font-weight="400" fill="#4A6072">Foundry IQ</text>
+            </g>
+          </svg>
+          <figcaption>One resource holds one or more projects. A project belongs to exactly one resource, and everything the project owns hangs off it.</figcaption>
+        </figure>
+        <div class="tip"><svg class="ic"><use href="#i-warning"/></svg><span><em>Old wording vs new.</em> A project on a Foundry resource is the current architecture. A <b>hub-based</b> project is the older classic one, and the exam likes to contrast the two.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c3)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-search"/></svg><h3>How RAG works</h3></div>
+      <div class="bd">
+        <figure>
+          <!-- Two columns on a 560 grid: 2–252 on the left, 286–556 on the
+               right, with rows at y=14, 100 and 186. Every connector runs in
+               the gutter between them, so no arrow ever crosses a box. -->
+          <svg class="diagram" viewBox="0 0 560 250" role="img" aria-label="The question is turned into a vector, the vector queries an Azure AI Search index, the matches it returns are added to the prompt, and the model generates a grounded answer.">
+            <g font-family="Inter">
+              <!-- row 1: question in, vector out, index queried -->
+              <rect x="2" y="14" width="104" height="54" rx="9" fill="#fff" stroke="#DCE4EC" stroke-width="2.5"/>
+              <text x="54" y="39" font-size="16" font-weight="700" fill="#0B1622" text-anchor="middle">Question</text>
+              <text x="54" y="57" font-size="13.5" fill="#4A6072" text-anchor="middle">from the user</text>
+
+              <path d="M110 41h22" stroke="#0E7C63" stroke-width="2.5"/>
+              <path d="m132 36 9 5-9 5z" fill="#0E7C63"/>
+
+              <rect x="141" y="14" width="111" height="54" rx="9" fill="#EAF7F3" stroke="#0E7C63" stroke-width="2.5"/>
+              <text x="196" y="39" font-size="16" font-weight="700" fill="#0E7C63" text-anchor="middle">Embed</text>
+              <text x="196" y="57" font-size="13.5" fill="#4A6072" text-anchor="middle">text → vector</text>
+
+              <path d="M256 41h21" stroke="#0E7C63" stroke-width="2.5"/>
+              <path d="m277 36 9 5-9 5z" fill="#0E7C63"/>
+
+              <rect x="286" y="14" width="130" height="54" rx="9" fill="#EAF7F3" stroke="#0E7C63" stroke-width="2.5"/>
+              <text x="351" y="39" font-size="16" font-weight="700" fill="#0E7C63" text-anchor="middle">Retrieve</text>
+              <text x="351" y="57" font-size="13.5" fill="#4A6072" text-anchor="middle">nearest matches</text>
+
+              <!-- retrieve queries the index -->
+              <path d="M351 70v21" stroke="#0E7C63" stroke-width="2.5"/>
+              <path d="m346 91 5 9 5-9z" fill="#0E7C63"/>
+              <text x="361" y="86" font-size="12.5" fill="#4A6072">query</text>
+
+              <!-- the store -->
+              <rect x="286" y="100" width="270" height="54" rx="9" fill="#F5F8FB" stroke="#8FA6BA" stroke-width="2.5"/>
+              <text x="421" y="125" font-size="15.5" font-weight="700" fill="#33475C" text-anchor="middle">Azure AI Search</text>
+              <text x="421" y="143" font-size="13.5" fill="#4A6072" text-anchor="middle">your indexed content</text>
+
+              <!-- matches come back and go into the prompt -->
+              <path d="M282 127h-19" stroke="#0E7C63" stroke-width="2.5"/>
+              <path d="m263 122-9 5 9 5z" fill="#0E7C63"/>
+
+              <rect x="2" y="100" width="250" height="54" rx="9" fill="#EAF7F3" stroke="#0E7C63" stroke-width="2.5"/>
+              <text x="127" y="125" font-size="16" font-weight="700" fill="#0E7C63" text-anchor="middle">Augment</text>
+              <text x="127" y="143" font-size="13.5" fill="#4A6072" text-anchor="middle">add the matches to the prompt</text>
+
+              <path d="M127 156v21" stroke="#0E7C63" stroke-width="2.5"/>
+              <path d="m122 177 5 9 5-9z" fill="#0E7C63"/>
+
+              <rect x="2" y="186" width="250" height="56" rx="9" fill="#0E7C63"/>
+              <text x="127" y="211" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">Generate</text>
+              <text x="127" y="230" font-size="13.5" fill="#FFFFFF" text-anchor="middle">a grounded answer</text>
+
+              <!-- how the index can be searched -->
+              <rect x="286" y="180" width="270" height="66" rx="9" fill="#fff" stroke="#DCE4EC" stroke-width="2"/>
+              <text x="421" y="202" font-size="11.5" font-weight="800" letter-spacing="1.4" fill="#4A6072" text-anchor="middle">SEARCH MODES</text>
+              <text x="421" y="221" font-size="14" fill="#4A6072" text-anchor="middle">keyword · semantic · vector</text>
+              <text x="421" y="237" font-size="13.5" font-weight="700" fill="#0E7C63" text-anchor="middle">hybrid — recommended</text>
+            </g>
+          </svg>
+          <figcaption><b>Cosine similarity</b> measures the angle between two vectors. Near 1 means close in meaning, which is how retrieval finds the right passage when the words do not match.</figcaption>
+        </figure>
+        <div class="tip"><svg class="ic"><use href="#i-check"/></svg><span><em>Hybrid is the recommended mode</em> for generative AI applications. Reach for RAG when the model needs private or fast-changing knowledge, or the answer depends on events after its training cutoff.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c4)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-gauge"/></svg><h3>Prompt, RAG or fine-tune</h3></div>
+      <div class="bd">
+        <figure>
+          <svg class="diagram" viewBox="0 0 560 258" role="img" aria-label="Two axes: RAG adds context, fine-tuning changes the model, prompt engineering supports both.">
+            <g font-family="Inter">
+              <path d="M62 224h472" stroke="#B6C6D3" stroke-width="2.5"/>
+              <path d="m528 219 9 5-9 5z" fill="#B6C6D3"/>
+              <path d="M62 224V18" stroke="#B6C6D3" stroke-width="2.5"/>
+              <path d="m57 24 5-9 5 9z" fill="#B6C6D3"/>
+
+              <text x="300" y="248" font-size="16" font-weight="700" fill="#33475C" text-anchor="middle">what it needs to KNOW  →  context</text>
+              <text x="-121" y="40" font-size="16" font-weight="700" fill="#33475C" text-anchor="middle" transform="rotate(-90)">how it should ACT</text>
+
+              <rect x="80" y="132" width="196" height="76" rx="10" fill="#F5F8FB" stroke="#B6C6D3" stroke-width="2.5"/>
+              <text x="178" y="164" font-size="18" font-weight="700" fill="#33475C" text-anchor="middle">Prompt engineering</text>
+              <text x="178" y="188" font-size="15" fill="#4A6072" text-anchor="middle">start here, always</text>
+
+              <rect x="292" y="132" width="242" height="76" rx="10" fill="#EAF7F3" stroke="#0E7C63" stroke-width="2.5"/>
+              <text x="413" y="158" font-size="18" font-weight="700" fill="#0E7C63" text-anchor="middle">RAG</text>
+              <text x="413" y="180" font-size="15" fill="#3E6B60" text-anchor="middle">missing or changing knowledge</text>
+              <text x="413" y="198" font-size="14" fill="#4A6072" text-anchor="middle">a CONTEXT problem</text>
+
+              <rect x="80" y="30" width="196" height="86" rx="10" fill="#FBEFE7" stroke="#BC4B10" stroke-width="2.5"/>
+              <text x="178" y="58" font-size="18" font-weight="700" fill="#AD4410" text-anchor="middle">Fine-tuning</text>
+              <text x="178" y="80" font-size="15" fill="#7A4A2C" text-anchor="middle">style and format drift</text>
+              <text x="178" y="98" font-size="14" fill="#4A6072" text-anchor="middle">a MODEL problem</text>
+
+              <rect x="292" y="30" width="242" height="86" rx="10" fill="#F7F2FA" stroke="#6D3A9E" stroke-width="2.5" stroke-dasharray="7 5"/>
+              <text x="413" y="58" font-size="18" font-weight="700" fill="#6D3A9E" text-anchor="middle">Both together</text>
+              <text x="413" y="80" font-size="15" fill="#5A4468" text-anchor="middle">fine-tuning fixes the voice,</text>
+              <text x="413" y="98" font-size="15" fill="#5A4468" text-anchor="middle">RAG supplies the facts</text>
+            </g>
+          </svg>
+          <figcaption>Cost and effort climb left to right and bottom to top: prompt engineering is low, RAG medium, fine-tuning high.</figcaption>
+        </figure>
+        <div class="tip"><svg class="ic"><use href="#i-brain"/></svg><span><em>Three fine-tuning techniques.</em> <b>SFT</b> trains on labelled prompt-and-answer pairs. <b>RFT</b> uses a grader to reward better answers. <b>DPO</b> learns from preferred versus rejected pairs. Training data is JSONL, one conversation per line.</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======================== reference tables ========================== -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-cube"/></svg>
+    <h2>Services and syntax</h2>
+    <span class="hint">deployment types, endpoint shapes, the four built-in tools and the prompt patterns</span>
+  </div>
+
+  <div class="grid g4">
+
+    <section class="card" style="--tone: var(--c2)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-cloud"/></svg><h3>Deployment types</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:41%">Type</th><th>Scope, billing and fit</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Global Standard</strong></td><td>Any region. Pay-per-token, highest quota. <span class="win">The default</span></td></tr>
+            <tr><td><strong>Global Provisioned</strong></td><td>Any region. Reserved PTUs, predictable throughput</td></tr>
+            <tr><td><strong>Global Batch</strong></td><td>Any region. Async jobs, 24-hour <b>target</b> turnaround with no SLA, 50% cheaper</td></tr>
+            <tr><td><strong>Data Zone</strong><br>Std / Prov / Batch</td><td>One data zone. The same three, held inside a <b>US, EU or APAC</b> zone</td></tr>
+            <tr><td><strong>Standard</strong><br>Regional Provisioned</td><td>Single region. Regional residency rules, or low volume</td></tr>
+            <tr><td><strong>Developer</strong></td><td>Any region, no residency or SLA guarantee. Fine-tuned model evaluation only, fixed <b>24-hour lifetime</b></td></tr>
+          </tbody>
+        </table>
+        <div class="tip"><svg class="ic"><use href="#i-check"/></svg><span><em>Default answer.</em> Global Standard, unless the scenario names a data-residency rule, a guaranteed-throughput requirement, a large asynchronous batch job, or evaluating a fine-tuned model.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-gauge"/></svg><span><em>Quota and throttling.</em> Quota is <b>TPM</b> (tokens per minute) and <b>RPM</b> (requests per minute), set per model, per region, per subscription. Over the limit returns <b>429</b> — retry with backoff, raise the quota, or move to provisioned throughput for guaranteed capacity.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c1)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-plug"/></svg><h3>Endpoints, SDKs, chat APIs</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:27%">Decision</th><th>The production choice</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Endpoint</strong></td><td>Every project exposes both a project endpoint and an Azure OpenAI endpoint</td></tr>
+            <tr><td><strong>SDK</strong></td><td><span class="win">Foundry SDK</span> for agents, evaluations, tracing and connections. <span class="win">OpenAI SDK</span> for compatibility and portability — inference only</td></tr>
+            <tr><td><strong>Auth</strong></td><td>Microsoft Entra ID in production. Keys go in Key Vault, never in code</td></tr>
+            <tr><td><strong>Chat API</strong></td><td><span class="win">Responses</span> for new work. ChatCompletions when it has to run on many platforms</td></tr>
+          </tbody>
+        </table>
+        <dl class="paths">
+          <dt>Project endpoint</dt>
+          <dd><code>{resource}.services.ai.azure.com<wbr>/api/projects/{project}</code></dd>
+          <dt>Azure OpenAI endpoint</dt>
+          <dd><code>{resource}.openai.azure.com<wbr>/openai/v1</code></dd>
+        </dl>
+        <div class="tip"><svg class="ic"><use href="#i-lightbulb"/></svg><span><em>Stateful or not.</em> Responses remembers the conversation — chain turns with <code>previous_response_id</code>, read <code>response.output_text</code>. ChatCompletions forgets: resend the whole list every turn, read <code>choices[0].message.content</code>.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c3)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-function"/></svg><h3>Four tools you must know</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:46%">Tool</th><th>What it adds</th></tr></thead>
+          <tbody>
+            <tr><td><code>code_interpreter</code></td><td>Sandboxed Python. No network access</td></tr>
+            <tr><td><code>web_search</code></td><td>Current public web facts, fetched as it answers</td></tr>
+            <tr><td><code>file_search</code></td><td>Your uploaded files, through a vector store</td></tr>
+            <tr><td><code>function</code></td><td>Your own code, when the model asks for it</td></tr>
+          </tbody>
+        </table>
+        <div class="tip"><svg class="ic"><use href="#i-warning"/></svg><span><em>Who runs what.</em> The model decides when to use a tool. With <code>function</code> it only <i>asks</i> — your application runs the code and hands back a <code>function_call_output</code>.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-database"/></svg><span><em>One store or many.</em> <code>file_search</code> grounds one set of documents. An enterprise agent spanning many stores uses Foundry IQ instead. These four are the ones the module covers — the Responses API supports more.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-chat"/></svg><span><em>Memory and knowledge.</em> A <b>conversation</b> holds history server-side, so later turns read it without you resending. <b>Knowledge</b> is what grounds the answer — a vector store for one document set, Foundry IQ across many.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c4)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-chat"/></svg><h3>Prompt engineering</h3></div>
+      <div class="bd">
+        <dl class="kv">
+          <dt>Persona</dt><dd>Give the model a role and the answer becomes audience-aware</dd>
+          <dt>Format template</dt><dd>Fix the output shape so it is easy to parse</dd>
+          <dt>Chain of thought</dt><dd>Ask for the reasoning. Non-reasoning models only</dd>
+          <dt>Few-shot</dt><dd>Zero, one or several worked examples in the prompt</dd>
+          <dt>Delimiters</dt><dd>Split instruction from content with <code>---</code>, Markdown or XML tags</dd>
+        </dl>
+        <div class="tip"><svg class="ic"><use href="#i-settings"/></svg><span><em>Temperature or top_p.</em> Temperature and top_p both control randomness — turn one, not both. Low for factual work, higher for creative.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-clock"/></svg><span><em>Recency bias.</em> Words near the end of a prompt carry more weight, so repeat the key instruction there when it keeps getting ignored.</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ================= evaluation and responsible AI ==================== -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-shield"/></svg>
+    <h2>Evaluation and responsible AI</h2>
+    <span class="hint">named metrics, named principles, named layers — these are memorisation marks</span>
+  </div>
+
+  <div class="grid g3">
+
+    <section class="card" style="--tone: var(--c1)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-chart"/></svg><h3>Evaluation metrics</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:30%">Family</th><th>Metrics, and when they fit</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Generation quality</strong><br><span style="color:var(--dim);font-size:17px">AI-assisted</span></td><td>Groundedness (Pro is a yes-or-no verdict), relevance, coherence, fluency. Needs a GPT model as the judge</td></tr>
+            <tr><td><strong>Risk and safety</strong></td><td>Self-harm, hateful and unfair, violent, sexual, protected material, indirect attack. Reported as a <b>defect rate</b> at or above a severity threshold, usually Medium</td></tr>
+            <tr><td><strong>NLP metrics</strong><br><span style="color:var(--dim);font-size:17px">pure maths</span></td><td>F1, BLEU, METEOR, ROUGE, GLEU. No judge model needed; they generally need ground truth</td></tr>
+            <tr><td><strong>Agent behaviour</strong><br><span style="color:var(--dim);font-size:17px">pass / fail</span></td><td><b>Intent resolution</b> — did it understand the ask. <b>Task adherence</b> — did it stay inside its instructions. <b>Tool call accuracy</b> and <b>tool output utilization</b> — right tool, right arguments, and did it use the result</td></tr>
+          </tbody>
+        </table>
+        <div class="tip"><svg class="ic"><use href="#i-beaker"/></svg><span><em>You rarely write an evaluator.</em> The built-in library covers quality, RAG, safety and agents. Write a custom one only for a domain rule none of them cover.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-lightbulb"/></svg><span><em>Pick by output shape.</em> Open-ended writing with no single right answer takes AI-assisted metrics. A reference answer exists takes NLP metrics — and ROUGE leans on recall, which is why it suits summarization.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-scales"/></svg><span><em>Higher or lower is better.</em> Quality index, F1, GTPS: higher is better. ASR, cost, latency, TTFT: lower is better. A higher WMDP just means the model knows more that could be dangerous.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c3)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-people"/></svg><h3>Principles, stages and layers</h3></div>
+      <div class="bd">
+        <div class="pills" style="margin-bottom:13px">
+          <span class="pill on">Fairness</span>
+          <span class="pill on">Reliability &amp; safety</span>
+          <span class="pill on">Privacy &amp; security</span>
+          <span class="pill on">Inclusiveness</span>
+          <span class="pill on">Transparency</span>
+          <span class="pill on">Accountability</span>
+        </div>
+        <figure>
+          <!-- Boxes sized to their own captions rather than to a uniform
+               grid: "what could go wrong" is the longest and was overflowing a
+               128px box on both sides. Widths now run 132 / 126 / 112 / 106
+               with 8px gutters, and the captions sit at 12.5px. -->
+          <svg class="diagram" viewBox="0 0 560 94" role="img" aria-label="The four stages: map what could go wrong, measure how often it does, mitigate across four layers, then manage the solution in operation.">
+            <g font-family="Inter">
+              <rect x="2" y="8" width="138" height="54" rx="9" fill="#0E7C63"/>
+              <text x="71" y="32" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Map</text>
+              <text x="71" y="50" font-size="12.5" fill="#FFFFFF" text-anchor="middle">what could go wrong</text>
+              <path d="M144 35h8" stroke="#0E7C63" stroke-width="2.5"/><path d="m150 30 8 5-8 5z" fill="#0E7C63"/>
+
+              <rect x="160" y="8" width="132" height="54" rx="9" fill="#0E7C63"/>
+              <text x="226" y="32" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Measure</text>
+              <text x="226" y="50" font-size="12.5" fill="#FFFFFF" text-anchor="middle">how often it does</text>
+              <path d="M296 35h8" stroke="#0E7C63" stroke-width="2.5"/><path d="m304 30 8 5-8 5z" fill="#0E7C63"/>
+
+              <rect x="312" y="8" width="118" height="54" rx="9" fill="#0E7C63"/>
+              <text x="371" y="32" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Mitigate</text>
+              <text x="371" y="50" font-size="12.5" fill="#FFFFFF" text-anchor="middle">four layers</text>
+              <path d="M434 35h8" stroke="#0E7C63" stroke-width="2.5"/><path d="m442 30 8 5-8 5z" fill="#0E7C63"/>
+
+              <rect x="450" y="8" width="108" height="54" rx="9" fill="#0E7C63"/>
+              <text x="504" y="32" font-size="17" font-weight="700" fill="#fff" text-anchor="middle">Manage</text>
+              <text x="504" y="50" font-size="12.5" fill="#FFFFFF" text-anchor="middle">operate it</text>
+
+              <text x="2" y="86" font-size="14" fill="#4A6072">Map runs: identify → prioritize → test and verify → document and share</text>
+            </g>
+          </svg>
+        </figure>
+        <div class="tip" style="margin-top:13px"><svg class="ic"><use href="#i-beaker"/></svg><span><em>Red teaming</em> is how you verify: testers deliberately try to make the system produce harmful output before release. <em>Measuring</em> means a baseline — prompts likely to trigger each harm, run and scored against strict criteria, so you can tell later whether a fix actually helped.</span></div>
+        <h4 style="margin-top:16px"><svg class="ic ic-s"><use href="#i-layers"/></svg> Mitigate: four layers, model outward</h4>
+        <table>
+          <thead><tr><th style="width:36%">Layer</th><th>What you change</th></tr></thead>
+          <tbody>
+            <tr><td><strong>1 · Model</strong></td><td>Pick a model matched to the job, or fine-tune on your own data</td></tr>
+            <tr><td><strong>2 · Safety system</strong></td><td>Content filters and prompt shields</td></tr>
+            <tr><td><strong>3 · System message and grounding</strong></td><td>Behaviour instructions, prompt engineering, RAG from trusted sources</td></tr>
+            <tr><td><strong>4 · User experience</strong></td><td>Constrain the UI, validate in and out, be honest about limitations</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c5)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-lock"/></svg><h3>Content filters and shields</h3></div>
+      <div class="bd">
+        <h4 style="margin-top:15px"><svg class="ic ic-s"><use href="#i-flag"/></svg> Content filter: 4 harm categories × 4 severity levels</h4>
+        <div class="matrix">
+          <div></div>
+          <div class="h">Safe</div><div class="h">Low</div><div class="h">Medium</div><div class="h">High</div>
+          <div class="rh">Hate and fairness</div>
+          <div class="c s0"></div><div class="c s1"></div><div class="c s2"></div><div class="c s3"></div>
+          <div class="rh">Sexual</div>
+          <div class="c s0"></div><div class="c s1"></div><div class="c s2"></div><div class="c s3"></div>
+          <div class="rh">Violence</div>
+          <div class="c s0"></div><div class="c s1"></div><div class="c s2"></div><div class="c s3"></div>
+          <div class="rh">Self-harm</div>
+          <div class="c s0"></div><div class="c s1"></div><div class="c s2"></div><div class="c s3"></div>
+        </div>
+        <div class="tip"><svg class="ic"><use href="#i-info"/></svg><span><em>Safe is never blocked.</em> It is annotated and is not configurable. You set a threshold per category — <b>off, low, medium or high</b> — separately for prompts and for completions, and it flags that severity <i>and above</i>.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-bot"/></svg><span><em>Task adherence</em> is a fifth guardrail category, and it is about agents rather than harm: it catches an agent drifting off its instructions — a misaligned tool call, or a reply that does not match what the user asked for.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-shield"/></svg><span><em>Prompt shields</em> sit alongside the filters and catch systematic abuse, such as someone trying to talk the system out of its own system prompt.</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ========================== scenario cues =========================== -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-target"/></svg>
+    <h2>Scenario cues</h2>
+    <span class="hint">the wording in the question is usually the whole answer</span>
+  </div>
+
+  <div class="grid g4">
+
+    <section class="card" style="--tone: var(--c2)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-brain"/></svg><h3>Picking a model or service</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:52%">The question says</th><th>Answer with</th></tr></thead>
+          <tbody>
+            <tr><td>Edge device, low cost, low latency</td><td><span class="win">Small language model</span></td></tr>
+            <tr><td>Mathematics or code correctness</td><td><span class="win">Reasoning model</span></td></tr>
+            <tr><td>Search over your own data</td><td><span class="win">Embedding model + RAG</span></td></tr>
+            <tr><td>Describe an uploaded photo</td><td><span class="win">Multimodal model</span></td></tr>
+            <tr><td>Heavy industry jargon</td><td><span class="win">Domain-specific model</span></td></tr>
+            <tr><td>Structured or templated documents, accuracy and low latency</td><td><span class="win">Document Intelligence</span></td></tr>
+            <tr><td>Unstructured or varying layouts, inferred fields, no labelled data</td><td><span class="win">Content Understanding</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c4)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-speaker"/></svg><h3>Text, speech and vision</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:52%">The question says</th><th>Answer with</th></tr></thead>
+          <tbody>
+            <tr><td>Fixed label set, labelled data available</td><td><span class="win">Custom Azure Language model</span></td></tr>
+            <tr><td>Labels change often, no training data</td><td><span class="win">Few-shot prompting</span></td></tr>
+            <tr><td>Hide personal data</td><td><span class="win">PII detection</span></td></tr>
+            <tr><td>Who said what in a recording</td><td><span class="win">Speaker diarization</span></td></tr>
+            <tr><td>Product names keep being misheard</td><td><span class="win">Custom speech</span></td></tr>
+            <tr><td>The caller sounded frustrated</td><td><span class="win">Reason from the audio itself</span></td></tr>
+            <tr><td>Replace only the sign in the image</td><td><span class="win">Mask-based inpainting</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c5)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-document"/></svg><h3>Extracting from documents</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:52%">The question says</th><th>Answer with</th></tr></thead>
+          <tbody>
+            <tr><td>A named business form, fixed fields, no training needed</td><td><span class="win">Document Intelligence prebuilt</span></td></tr>
+            <tr><td>Your own form, fixed layout</td><td><span class="win">Custom template</span> — five labelled samples</td></tr>
+            <tr><td>Your own documents, layouts vary</td><td><span class="win">Custom neural</span></td></tr>
+            <tr><td>Several document types, one endpoint</td><td><span class="win">Composed model</span></td></tr>
+            <tr><td>Documents, images, audio and video together</td><td><span class="win">Content Understanding</span></td></tr>
+            <tr><td>The field needs judgement, not reading</td><td><span class="win">Generative extraction</span>, with a validated JSON schema</td></tr>
+          </tbody>
+        </table>
+        <div class="tip"><svg class="ic"><use href="#i-check"/></svg><span><em>Confidence thresholds.</em> Extraction returns a confidence score per field. Set a threshold and send anything below it to a human rather than accepting it quietly.</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="--tone: var(--c1)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-bot"/></svg><h3>Agents, evaluation and safety</h3></div>
+      <div class="bd">
+        <table>
+          <thead><tr><th style="width:52%">The question says</th><th>Answer with</th></tr></thead>
+          <tbody>
+            <tr><td>A person must sign off before the tool fires</td><td><span class="win">Tool approval</span> — <code>require_approval</code></td></tr>
+            <tr><td>Each agent’s output feeds the next</td><td><span class="win">Sequential orchestration</span></td></tr>
+            <tr><td>Hand off between specialists as it goes</td><td><span class="win">Group chat orchestration</span></td></tr>
+            <tr><td>Did the agent pick the right tool</td><td><span class="win">Tool call accuracy</span> evaluator</td></tr>
+            <tr><td>Did it stay inside its instructions</td><td><span class="win">Task adherence</span> evaluator</td></tr>
+            <tr><td>Where did the time and tokens go</td><td><span class="win">Tracing</span> to Application Insights</td></tr>
+            <tr><td>Summarising, so recall matters most</td><td><span class="win">ROUGE</span></td></tr>
+          </tbody>
+        </table>
+        <div class="tip"><svg class="ic"><use href="#i-warning"/></svg><span><em>No Application Insights, no traces.</em> Tracing is OpenTelemetry exported to Azure Monitor — connect the resource to the project or nothing is recorded.</span></div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ============================ key terms ============================= -->
+  <div class="strip">
+    <svg class="ic ic-l"><use href="#i-book"/></svg>
+    <h2>The vocabulary Microsoft keeps renaming</h2>
+    <span class="hint">32 terms, one line each, in the names the exam uses today</span>
+  </div>
+
+  <div class="grid g4">
+
+    <section class="card terms" style="--tone: var(--c1)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-layers"/></svg><h3>Platform</h3></div>
+      <div class="bd">
+        <dl class="gl">
+          <dt>Microsoft Foundry</dt><dd>The platform for AI development on Azure: a portal plus an SDK.</dd>
+          <dt>Foundry resource</dt><dd>The Azure resource that supplies compute, storage and tools to projects.</dd>
+          <dt>Project</dt><dd>Holds the connections, data, code and assets for one solution. Belongs to one resource.</dd>
+          <dt>Hub-based project</dt><dd>The older classic architecture. New work uses a project on a Foundry resource.</dd>
+          <dt>Foundry Tools</dt><dd>Prebuilt APIs and models: Language, Speech, Translator, Document Intelligence, Content Understanding. Once called Azure AI Services, before that Cognitive Services.</dd>
+          <dt>Foundry IQ</dt><dd>One <b>knowledge base</b> over many <b>knowledge sources</b>; an agent reaches it over MCP. Not an Azure AI Search <b>knowledge store</b>, which is enriched skillset output in Azure Storage.</dd>
+          <dt>MCP</dt><dd>Model Context Protocol — how custom and third-party tools plug into a project.</dd>
+          <dt>Agent</dt><dd>A named configuration of a model, its instructions and its tools.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="card terms" style="--tone: var(--c2)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-brain"/></svg><h3>Models and deployment</h3></div>
+      <div class="bd">
+        <dl class="gl">
+          <dt>LLM / SLM</dt><dd>Large: deep reasoning, long context, most compute. Small: cheap and fast, runs on modest hardware and edge devices.</dd>
+          <dt>Reasoning model</dt><dd>Works a problem step by step internally. Maths, code, science, strategy.</dd>
+          <dt>Embedding model</dt><dd>Turns text into vectors. Powers semantic search and RAG.</dd>
+          <dt>Multimodal model</dt><dd>Takes text plus images or audio and answers in words.</dd>
+          <dt>Model card</dt><dd>Provider, capabilities, benchmarks, responsible-AI notes, deployment options.</dd>
+                    <dt>PTU</dt><dd>Provisioned throughput unit — reserved capacity instead of pay-per-token.</dd>
+          <dt>Deployment name</dt><dd>What you pass in the <code>model</code> parameter to route a request.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="card terms" style="--tone: var(--c3)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-code"/></svg><h3>Building and grounding</h3></div>
+      <div class="bd">
+        <dl class="gl">
+          <dt>Responses API</dt><dd>Stateful. Chains turns with <code>previous_response_id</code>; read <code>response.output_text</code>. Recommended for new work.</dd>
+          <dt>ChatCompletions API</dt><dd>Stateless list of messages. Resend the history each turn; read <code>choices[0].message.content</code>.</dd>
+          <dt>DefaultAzureCredential</dt><dd>Entra ID identity-based authentication. The production choice over keys.</dd>
+          <dt>Streaming</dt><dd><code>stream=True</code> returns output as it is produced, so the interface never looks frozen.</dd>
+          <dt>Vector store</dt><dd>Indexed, chunked file content that <code>file_search</code> queries.</dd>
+          <dt>Grounding</dt><dd>Giving the model real facts to answer from instead of letting it guess.</dd>
+          <dt>Cosine similarity</dt><dd>The angle between two vectors. Near 1 means close in meaning.</dd>
+          <dt>Context window</dt><dd>Everything sent on one request: instructions, history, tool schemas, tool output, retrieved text.</dd>
+        </dl>
+      </div>
+    </section>
+
+    <section class="card terms" style="--tone: var(--c5)">
+      <div class="hd"><svg class="ic ic-l"><use href="#i-shield"/></svg><h3>Tuning, evaluation and safety</h3></div>
+      <div class="bd">
+        <dl class="gl">
+          <dt>Zero / one / few-shot</dt><dd>No examples, one example, several examples in the prompt.</dd>
+          <dt>Recency bias</dt><dd>Text near the end of a prompt carries more weight.</dd>
+                    <dt>Distillation</dt><dd>Fine-tune a small model on a large one's output for similar quality at lower cost.</dd>
+          <dt>Drift</dt><dd>Two senses. After fine-tuning: over-specialising until general performance degrades. In monitoring: a deployed model’s behaviour shifting from its baseline over time.</dd>
+          <dt>Conversation</dt><dd>Server-side chat history an agent reads on later turns.</dd>
+          <dt>Defect rate</dt><dd>The share of responses at or above a severity threshold, usually Medium.</dd>
+          <dt>Groundedness</dt><dd>Whether the answer is based on the supplied context. Groundedness Pro is a yes-or-no verdict.</dd>
+          <dt>Prompt shields</dt><dd>Abuse detection for systematic misuse and attempts to override the system prompt.</dd>
+          <dt>Transparency note</dt><dd>Microsoft's own documentation of a service's known limitations.</dd>
+        </dl>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="colophon">
+    <div>
+      <strong>AI-103 Certification Study Guide</strong><br>
+      The full module-by-module guide, the lab ladder and this sheet's source:<br>
+      github.com/rahulmahadik/ai-103-certification-study-guide
+    </div>
+    <div class="right">
+      Compiled by <strong>Rahul Mahadik</strong> · linkedin.com/in/rahulmahadik<br>
+      Sourced from the official Microsoft Learn AI-103 study guide and Azure product documentation.<br>
+      Verified August 2026 — re-check learn.microsoft.com before you book. Licensed CC BY 4.0.<br>
+      Microsoft, Azure and Microsoft Foundry are trademarks of Microsoft Corporation.
+      Not affiliated with, endorsed by or sponsored by Microsoft.
+    </div>
+  </footer>
+
+</section>
+</body>
+</html>

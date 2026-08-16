@@ -1,0 +1,39 @@
+{
+  "name": "ai-103-certification-study-guide",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Open study guide, notes and cheat sheet for Microsoft exam AI-103, Developing AI Apps and Agents on Azure.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "assets": "node tools/build-assets.mjs",
+    "guide": "node tools/build-guide.mjs",
+    "build": "npm run assets && npm run guide && npm run cheatsheet && npm run render && npm run seo && npm run check",
+    "render": "node tools/render-cheatsheet.mjs",
+    "serve": "node tools/serve.mjs",
+    "all": "npm run assets && npm run guide && npm run cheatsheet && npm run render && npm run seo && npm run check",
+    "check": "node tools/check-links.mjs && node tools/check-markup.mjs && node tools/check-diagrams.mjs",
+    "seo": "node tools/build-seo.mjs",
+    "audit": "node internal/responsive-audit.mjs",
+    "cheatsheet": "node tools/build-cheatsheet.mjs"
+  },
+  "devDependencies": {
+    "@fluentui/svg-icons": "^1.1.337",
+    "@fontsource/barlow-condensed": "^5.3.0",
+    "@fontsource/inter": "^5.3.0",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "puppeteer": "^24.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rahulmahadik/ai-103-certification-study-guide.git"
+  },
+  "keywords": [
+    "ai-103",
+    "azure",
+    "microsoft-foundry",
+    "certification",
+    "study-guide",
+    "cheatsheet"
+  ]
+}
