@@ -47,7 +47,9 @@ Microsoft's own description of the candidate:
 
 Read that literally. **Python is not optional** — the code questions use it and so does every
 exercise in the Microsoft Learn path. C# appears in some SDK documentation, but preparing in
-Python is the safer choice.
+Python is the safer choice. If you do not write Python yet, the
+[Python tutorial series](https://technoscripts.com/python-tutorial-series/) is a free 247-lesson
+path from the basics through data science to AI and machine learning.
 
 The listed responsibilities are the five skill areas word for word: planning and managing Azure AI
 solutions, implementing generative AI and agentic solutions, and implementing computer vision,

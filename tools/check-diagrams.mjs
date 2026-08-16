@@ -27,7 +27,7 @@
 import { readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import puppeteer from 'puppeteer';
+import { launch } from './browser.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const DOCS = join(ROOT, 'docs');
@@ -45,7 +45,7 @@ function htmlFiles(dir) {
   return out;
 }
 
-const browser = await puppeteer.launch({ headless: 'new' });
+const browser = await launch();
 const problems = [];
 let diagrams = 0;
 let labels = 0;

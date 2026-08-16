@@ -14,7 +14,7 @@
 import { mkdirSync, existsSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import puppeteer from 'puppeteer';
+import { launch } from './browser.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE = join(ROOT, "docs", "cheatsheet-board.html");
@@ -37,10 +37,7 @@ if (!existsSync(SOURCE)) {
 
 mkdirSync(OUT_DIR, { recursive: true });
 
-const browser = await puppeteer.launch({
-  headless: 'new',
-  args: ['--font-render-hinting=none', '--force-color-profile=srgb'],
-});
+const browser = await launch({ args: ['--font-render-hinting=none', '--force-color-profile=srgb'] });
 
 /** A page with the board loaded and its webfonts settled. */
 async function openBoard(scale) {

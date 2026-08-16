@@ -18,7 +18,7 @@
 import { readdirSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import puppeteer from 'puppeteer';
+import { launch } from './browser.mjs';
 import { SITE, url } from './seo.mjs';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -145,7 +145,7 @@ async function buildCard() {
   const tmp = join(DOCS, '.og-card.html');
   writeFileSync(tmp, CARD);
 
-  const browser = await puppeteer.launch({ headless: 'new', args: ['--force-color-profile=srgb'] });
+  const browser = await launch({ args: ['--force-color-profile=srgb'] });
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
