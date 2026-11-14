@@ -133,7 +133,10 @@ export function structuredData({ path, title, description, type = 'page', positi
   if (path) {
     const crumbs = [{ name: 'Home', item: url() }];
     if (path.startsWith('guide/')) crumbs.push({ name: 'Study guide', item: url('guide/index.html') });
-    if (path !== 'guide/index.html') crumbs.push({ name: title, item: url(path) });
+    if (path.startsWith('practice/')) crumbs.push({ name: 'Practice', item: url('practice/index.html') });
+    if (path !== 'guide/index.html' && path !== 'practice/index.html') {
+      crumbs.push({ name: title, item: url(path) });
+    }
 
     graph.push({
       '@type': 'BreadcrumbList',

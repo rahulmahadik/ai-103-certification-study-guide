@@ -24,6 +24,7 @@ docs/assets/*.pdf
 #   docs/index.html and docs/cheatsheet.html are hand-authored and ARE tracked.
 docs/guide/
 docs/glossary.html
+docs/practice/
 docs/cheatsheet-board.html
 docs/sitemap.xml
 docs/robots.txt

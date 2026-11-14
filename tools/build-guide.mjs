@@ -173,10 +173,21 @@ function escapeAttr(v) {
  */
 function sitebar(active, depth = 1) {
   const up = depth ? '../' : '';
+  // depth 1 is used for both guide/* and practice/* — never assume index.html
+  // means "study guide" unless we are already on a guide page.
+  const guideHref =
+    depth === 0 ? 'guide/index.html' : active === 'guide' ? 'index.html' : `${up}guide/index.html`;
+  const practiceHref =
+    depth === 0
+      ? 'practice/index.html'
+      : active === 'practice'
+        ? 'index.html'
+        : `${up}practice/index.html`;
   const items = [
     [`${up}index.html`, 'Home', 'home'],
-    [depth ? 'index.html' : 'guide/index.html', 'Study guide', 'guide'],
+    [guideHref, 'Study guide', 'guide'],
     [`${up}cheatsheet.html`, 'Cheat sheet', 'cheatsheet'],
+    [practiceHref, 'Practice', 'practice'],
     [`${up}glossary.html`, 'Glossary', 'glossary'],
   ];
 
@@ -235,6 +246,7 @@ function contentsRail(current) {
     <p class="rail-title" style="margin-top:1.4rem">Also</p>
     <ul class="plain">
       <li><a href="../cheatsheet.html">Cheat sheet</a></li>
+      <li><a href="../practice/index.html">Practice</a></li>
       <li><a href="../glossary.html">Glossary</a></li>
     </ul>
   </aside>`;
@@ -681,6 +693,7 @@ ${stageMarkup}
     <div class="sides">
 ${extras}
       <a class="side" href="../cheatsheet.html"><b>Cheat sheet</b><span>One page: every decision table and the scenario cues. For revision, and for looking one thing up.</span></a>
+      <a class="side" href="../practice/index.html"><b>Practice</b><span>Section quizzes (coming) plus Microsoft’s official practice assessment.</span></a>
       <a class="side" href="../glossary.html"><b>Glossary</b><span>Every term the outline names, one line each, plus all 38 abbreviations spelled out.</span></a>
     </div>
   </section>
@@ -689,3 +702,50 @@ ${extras}
   })
 );
 console.log('built docs/guide/index.html');
+
+/* ------------------------------------------------------- practice hub */
+
+mkdirSync(join(ROOT, 'docs', 'practice'), { recursive: true });
+writeFileSync(
+  join(ROOT, 'docs', 'practice', 'index.html'),
+  page({
+    title: 'Practice',
+    blurb:
+      'Section-wise AI-103 practice quizzes for GitHub Pages are coming soon. Until then, use Microsoft’s official practice assessment and revise from the study guide and cheat sheet.',
+    head,
+    depth: 1,
+    path: 'practice/index.html',
+    type: 'page',
+    extraKeywords: ['AI-103 practice', 'AI-103 MCQ', 'AI-103 practice assessment'],
+    body: `${sitebar('practice', 1)}
+<div class="sheet-wrap">
+<main class="home" style="padding-top:2rem;max-width:52rem">
+  <p class="eyebrow" style="margin:0 0 .4rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Exam AI-103</p>
+  <h1 style="margin:0 0 .6rem;font-family:'Barlow Condensed','Inter',sans-serif;font-weight:800;font-size:2.4rem;letter-spacing:-.02em;color:var(--ink)">Practice</h1>
+  <p style="margin:0 0 1.4rem;font-size:1.05rem;color:var(--body);max-width:40rem">Section quizzes will live here — one simple set per skill area, static on GitHub Pages, original questions only. No dumps, no recalled exam items.</p>
+
+  <div style="background:var(--wash);border:1px solid var(--hair);padding:1rem 1.15rem;margin:0 0 1.5rem">
+    <p style="margin:0 0 .45rem;font-weight:600;color:var(--ink)">Official practice first</p>
+    <p style="margin:0;font-size:.98rem">Microsoft’s <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">AI-103 study guide</a> points at the <strong>AI Skills Navigator</strong> practice assessment for Azure AI Apps and Agents Developer Associate. Use that for a timed, exam-shaped check while these section quizzes are written.</p>
+  </div>
+
+  <h2 style="font-size:1.15rem;margin:0 0 .7rem;color:var(--ink)">Planned sections</h2>
+  <table class="plain">
+    <thead><tr><th style="width:58%">Skill area</th><th style="width:16%">Weight</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>Plan and manage an Azure AI solution</td><td>25–30%</td><td>Coming</td></tr>
+      <tr><td>Implement generative AI and agentic solutions</td><td>30–35%</td><td>Coming</td></tr>
+      <tr><td>Implement computer vision solutions</td><td>10–15%</td><td>Coming</td></tr>
+      <tr><td>Implement text analysis solutions</td><td>10–15%</td><td>Coming</td></tr>
+      <tr><td>Implement information extraction solutions</td><td>10–15%</td><td>Coming</td></tr>
+    </tbody>
+  </table>
+
+  <p style="margin:1.5rem 0 0;font-size:.95rem;color:var(--dim)">Meanwhile: <a href="../guide/index.html">study guide</a> · <a href="../cheatsheet.html">cheat sheet</a> · <a href="../glossary.html">glossary</a></p>
+</main>
+${pageFooter('../')}
+</div>
+`,
+  })
+);
+console.log('built docs/practice/index.html');

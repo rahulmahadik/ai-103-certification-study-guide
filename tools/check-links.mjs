@@ -34,10 +34,11 @@ function htmlFiles(dir) {
 
 /** Each page's site-bar links, by the page's path relative to docs/. */
 const EXPECTED_NAV = {
-  'index.html': { Home: null, 'Study guide': 'guide/index.html', 'Cheat sheet': 'cheatsheet.html', Glossary: 'glossary.html' },
-  'cheatsheet.html': { Home: 'index.html', 'Study guide': 'guide/index.html', 'Cheat sheet': null, Glossary: 'glossary.html' },
-  'glossary.html': { Home: 'index.html', 'Study guide': 'guide/index.html', 'Cheat sheet': 'cheatsheet.html', Glossary: null },
-  'guide/index.html': { Home: '../index.html', 'Study guide': null, 'Cheat sheet': '../cheatsheet.html', Glossary: '../glossary.html' },
+  'index.html': { Home: null, 'Study guide': 'guide/index.html', 'Cheat sheet': 'cheatsheet.html', Practice: 'practice/index.html', Glossary: 'glossary.html' },
+  'cheatsheet.html': { Home: 'index.html', 'Study guide': 'guide/index.html', 'Cheat sheet': null, Practice: 'practice/index.html', Glossary: 'glossary.html' },
+  'glossary.html': { Home: 'index.html', 'Study guide': 'guide/index.html', 'Cheat sheet': 'cheatsheet.html', Practice: 'practice/index.html', Glossary: null },
+  'guide/index.html': { Home: '../index.html', 'Study guide': null, 'Cheat sheet': '../cheatsheet.html', Practice: '../practice/index.html', Glossary: '../glossary.html' },
+  'practice/index.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
 };
 
 const files = htmlFiles(DOCS);
