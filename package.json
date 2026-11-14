@@ -12,7 +12,8 @@
     "render": "node tools/render-cheatsheet.mjs",
     "serve": "node tools/serve.mjs",
     "all": "npm run assets && npm run guide && npm run cheatsheet && npm run render && npm run seo && npm run check",
-    "check": "node tools/check-links.mjs && node tools/check-markup.mjs && node tools/check-diagrams.mjs",
+    "check": "node tools/check-links.mjs && node tools/check-markup.mjs && node tools/check-diagrams.mjs && node tools/check-practice.mjs",
+    "check:practice": "node tools/check-practice.mjs",
     "seo": "node tools/build-seo.mjs",
     "audit": "node internal/responsive-audit.mjs",
     "cheatsheet": "node tools/build-cheatsheet.mjs"

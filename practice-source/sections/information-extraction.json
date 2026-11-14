@@ -1,0 +1,730 @@
+{
+  "sectionId": "information-extraction",
+  "skillArea": "Implement information extraction solutions",
+  "weight": "10–15%",
+  "outlineAsOf": "2026-04-16",
+  "status": "ready",
+  "holdNote": "",
+  "items": [
+    {
+      "id": "ie-001",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Ingest and index content, such as documents, images, audio, and video",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A grounding pipeline must take in policy PDFs, product photos, training videos, and call recordings, and turn each kind into text you can index. You do not want a separate OCR service, a caption model, and a classifier chained together. Which ingestion approach fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Azure Content Understanding, which reads documents, images, video, and audio and returns text you can index.",
+          "why": "The chunking guide describes Content Understanding as one multimodal service for documents, images, video, and audio."
+        },
+        {
+          "id": "B",
+          "text": "A PDF text extractor, applied unchanged to the photos, videos, and recordings.",
+          "why": "A text extractor reads a document that already has text. The same guide lists photos, video, and audio as separate Content Understanding inputs, with image, video, and audio analyzers. A PDF parser does not transcribe a call or describe a product photo."
+        },
+        {
+          "id": "C",
+          "text": "Image generations on a GPT image model, one still per source file.",
+          "why": "Image generation paints a new picture from a prompt. The chunking phase needs text extracted from files you already have. Content Understanding is the service the guide names for that extraction across all four kinds of content."
+        },
+        {
+          "id": "D",
+          "text": "Speech translation of every file, including the PDFs, into English audio.",
+          "why": "Speech translation expects spoken audio. The guide's path for a mixed library is Content Understanding: documents and images as well as audio and video, with analyzers that return text and Markdown you can index. Translation of speech is a different job, and it does not read a PDF."
+        }
+      ],
+      "concept": "It combines content extraction, field extraction, and segmentation so you do not chain an OCR service, a language model for descriptions, and a classifier. prebuilt-videoSearch segments video and returns RAG-ready Markdown with inline transcripts. Audio analyzers transcribe calls. prebuilt-imageSearch describes images. You index that output. This maps to: Ingest and index content, such as documents, images, audio, and video."
+    },
+    {
+      "id": "ie-002",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure semantic search, hybrid search, and vector search for grounding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "The index already stores plain text and vectors. Each query already runs a keyword search and a vector query together, and Azure AI Search merges them. Rare words still outrank the passage that actually answers the question. You want a second pass over that merged list. Which change fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Drop the keyword clause and keep only the vector query.",
+          "why": "Vector similarity measures relatedness. It does not, by itself, decide that a chunk answers the question. The page says hybrid queries run one or more text searches and one or more vector searches, and Azure AI Search merges them with reciprocal rank fusion. Dropping keywords removes the exact-term half. The follow-on pass is semantic ranking on that hybrid result."
+        },
+        {
+          "id": "B",
+          "text": "Keep the hybrid query and turn on semantic ranking with queryType set to semantic.",
+          "why": "Semantic ranking is a second step after BM25 or a hybrid search."
+        },
+        {
+          "id": "C",
+          "text": "Fine-tune the chat model and stop querying the index.",
+          "why": "Fine-tuning changes the generator. This page's retrieval choices are vector, full text, hybrid, and a rerank after retrieval. Semantic ranking reorders candidates that are already retrieved. It does not replace the index with a trained chat model."
+        },
+        {
+          "id": "D",
+          "text": "Raise the chat temperature so the model sounds more certain about the current order.",
+          "why": "Temperature changes token sampling in the generator. The page treats ranking as a retrieval step: reciprocal rank fusion merges hybrid hits, and semantic ranking rescores them. Temperature does not reorder the index."
+        }
+      ],
+      "concept": "You configure it on the index and set queryType to semantic. It rescores the top 50 hits from the first ranking for how well each result matches the query, and it can return captions and a direct answer. Hybrid search already merges keyword and vector with reciprocal rank fusion. Semantic ranking is the pass that asks whether a chunk answers the question. It adds latency, which this relevance problem accepts. This maps to: Configure semantic search, hybrid search, and vector search for grounding."
+    },
+    {
+      "id": "ie-003",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Implement enrichment by using custom or built-in skills for text, images, and layout",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "Policy PDFs contain section headings, tables, and figures. The index should keep that structure with the text. A prebuilt layout model already exists for this kind of document. You do not have a private form that would require a model you train. Which enrichment fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A character split of the raw file bytes, with headings discarded.",
+          "why": "The chunking guide says complex layouts are a poor fit for basic text parsing. Document layout analysis is the approach that keeps headers, titles, section headings, tables, and figures with the text. A flat character split drops that structure."
+        },
+        {
+          "id": "B",
+          "text": "A custom model you train, because every PDF enrichment starts with labeled samples.",
+          "why": "The same guide says to build a custom model for highly structured documents when no prebuilt model exists. A prebuilt layout model does exist here. prebuilt-layout supplies OCR and layout analysis without a language model, and a RAG analyzer such as prebuilt-documentSearch can emit Markdown for indexing."
+        },
+        {
+          "id": "C",
+          "text": "Document layout analysis: OCR plus headings, tables, and figures, using a prebuilt layout analyzer.",
+          "why": "Document layout analysis combines OCR with models that extract structure."
+        },
+        {
+          "id": "D",
+          "text": "Image generations that redraw each figure and skip the headings.",
+          "why": "Image generation creates a new picture. Layout analysis reads the document you have and returns its text and structure. The guide names layout analysis, not image generation, for headings, tables, and figures."
+        }
+      ],
+      "concept": "Headers, footers, titles, section headings, tables, and figures. Content Understanding exposes that as prebuilt-layout for OCR and layout without a language model, and as RAG analyzers such as prebuilt-documentSearch that output Markdown ready to index. Use a custom model only when no prebuilt model fits. Images in the document are part of that layout pass, not a separate generation step. This maps to: Implement enrichment by using custom or built-in skills for text, images, and layout."
+    },
+    {
+      "id": "ie-004",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure RAG ingestion flow, including documents and using optical character recognition (OCR)",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A batch of policy files is scanned pages and photographs. There is no text layer to chunk or embed until something reads the pixels. Native digital PDFs are not in this batch. The files go through a Content Understanding document analyzer before indexing. Which setting fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set enableOcr to false so the analyzer skips pixel reading and finishes faster.",
+          "why": "The analyzer reference says to disable OCR for native digital PDFs, where the text is already in the file, to improve performance. This batch is scanned documents and photos. Those need OCR, and enableOcr is the switch that reads them."
+        },
+        {
+          "id": "B",
+          "text": "Set enableBarcode to true and leave OCR off, because a paragraph is a code.",
+          "why": "enableBarcode detects barcodes and QR codes and returns the decoded values. Printed paragraphs are text in an image. enableOcr is the setting for scanned documents, photos, and image-based PDFs."
+        },
+        {
+          "id": "C",
+          "text": "Set config.workflow to agentic so a reasoning pass replaces OCR.",
+          "why": "Agentic mode, on API version 2026-06-01-preview, reasons across a document to build an answer. It does not replace OCR. The reference says to enable OCR when the input is a scan or a photo. This batch needs that read before anyone chunks the words."
+        },
+        {
+          "id": "D",
+          "text": "Leave enableOcr on so the document analyzer reads the scanned pages and photos.",
+          "why": "enableOcr turns on optical character recognition for images and scanned documents."
+        }
+      ],
+      "concept": "The reference says to enable it for scanned documents, photos, and image-based PDFs, and that the default is true. Disable it only for native digital PDFs. With the text extracted, the same analyzer output can be chunked and indexed. Document analyzers are the ones that support this setting. This maps to: Configure RAG ingestion flow, including documents and using optical character recognition (OCR)."
+    },
+    {
+      "id": "ie-005",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Connect retrieval pipelines directly to workflows and agent tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "The nightly indexer already fills an Azure AI Search index of the policy library. A Foundry agent must query that living index, share the setup with a second agent, and cite the passage. Copying chunks into the instructions, or uploading one static PDF, will go stale. Which connection fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Foundry IQ knowledge base whose knowledge source is that existing search index, connected to the agent.",
+          "why": "Foundry IQ is a knowledge base over one or more knowledge sources, including an existing Azure AI Search index."
+        },
+        {
+          "id": "B",
+          "text": "file_search on a PDF exported from the index once a quarter.",
+          "why": "file_search grounds a model in files uploaded to a vector store. A quarterly export is a second copy that drifts from the nightly index. Foundry IQ can use the existing index as a knowledge source so both agents query the same pipeline."
+        },
+        {
+          "id": "C",
+          "text": "Paste the top policies into the agent instructions every night.",
+          "why": "Instructions set the agent's behavior. They are not a search index, and they do not cite a passage from the pipeline. The knowledge base is the tool-facing layer over that index."
+        },
+        {
+          "id": "D",
+          "text": "A Content Understanding analyzer that extracts fields and is not connected to the index.",
+          "why": "Content Understanding reads a file into fields. It does not query the index the indexer refreshes, and it does not give two agents one cited retrieval tool over that index. Foundry IQ is the connection from that index to the agent."
+        }
+      ],
+      "concept": "Agents share it, and retrieval returns grounded answers with citations. The index the pipeline already maintains stays the source, so the agent calls that knowledge instead of a private copy. Some retrieval features are still preview depending on API version. This maps to: Connect retrieval pipelines directly to workflows and agent tools."
+    },
+    {
+      "id": "ie-006",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Extract information by using multimodal pipelines that combine OCR, layout analysis, and field extraction",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/general-document?view=doc-intel-4.0.0",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A supplier form is not an invoice, a receipt, or another prebuilt business model. You have no labeled samples. You still need the text, the tables, and the labeled boxes (keys and values) from Document Intelligence v4.0. An older app called prebuilt-document for the keys. Which call fits now?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "prebuilt-document on v4.0, the general document model, with no extra feature flag.",
+          "why": "On v4.0 the general document model (prebuilt-document) is deprecated. The page says key-value pairs, selection marks, text, tables, and structure now come from the layout model with features=keyValuePairs. Calling prebuilt-document is the v3.1 path, not the v4.0 replacement."
+        },
+        {
+          "id": "B",
+          "text": "prebuilt-layout on v4.0 with the query parameter features=keyValuePairs.",
+          "why": "For v4.0 (2024-11-30) and the v4.0 previews going forward, key-value extraction moves to the layout model."
+        },
+        {
+          "id": "C",
+          "text": "The Read OCR model only, which returns lines and words.",
+          "why": "Read returns the text lines. It does not return tables and key-value pairs. The v4.0 page points that combination at layout plus features=keyValuePairs."
+        },
+        {
+          "id": "D",
+          "text": "A custom neural model, which needs no labeled samples for a varying form.",
+          "why": "A custom model is for a form you train. This stem has no labeled samples. Layout with features=keyValuePairs is the pretrained path for keys and values that are not covered by a scenario-specific prebuilt model."
+        }
+      ],
+      "concept": "Model id. prebuilt-layout, with features=keyValuePairs on the request. Layout already returns text, tables, selection marks, and structure from the Read OCR engine. The key-value pairs are the add-on, not the default. prebuilt-document remains on v3.1 for older apps. Business card is a separate deprecated case and is not this form. This maps to: Extract information by using multimodal pipelines that combine OCR, layout analysis, and field extraction."
+    },
+    {
+      "id": "ie-007",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Produce clean, grounded representations to use with agents and RAG by using Content Understanding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/document/analyzer-improvement",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "An agent must show the termination clause it extracted and open the contract on the page and box where that sentence sits. A later reviewer has to confirm the value without guessing which paragraph was used. The result is going into a RAG context that should keep that trace. Which representation fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A one-sentence vision caption of the page, with no source coordinates.",
+          "why": "A caption describes the page in prose. Content Understanding grounding attaches a source and a span to the extracted value so a reviewer can open the page and the box. A caption has neither."
+        },
+        {
+          "id": "B",
+          "text": "The clause text only, after stripping page numbers and coordinates to save tokens.",
+          "why": "The plain string can be retrieved, and the reviewer still cannot see where it came from. Grounding keeps the source (page and coordinates) and the span (offset and length) with the field. That is the trace the agent and the reviewer were asked for."
+        },
+        {
+          "id": "C",
+          "text": "Content Understanding field grounding: source page and coordinates plus the span into the content.",
+          "why": "The grounding section says every field, answer, or classification should reference its original location."
+        },
+        {
+          "id": "D",
+          "text": "A harm-category filter score stored in place of the clause location.",
+          "why": "A harm score says whether content is unsafe. It is not the page and box of a termination clause. Grounding is the source and span on the extracted field."
+        }
+      ],
+      "concept": "Source (page number and spatial coordinates) and spans (offset and length). The example is a termination clause whose span points into the content and whose source is a page and a bounding box, so a reviewer jumps to that paragraph. Keep that grounding with the value you pass to the agent and into RAG. This maps to: Produce clean, grounded representations to use with agents and RAG by using Content Understanding."
+    },
+    {
+      "id": "ie-008",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Implement analyzers for generating structured or markdown outputs for downstream reasoning by using Content Understanding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A contract agent should read headed markdown, and a rules engine should read the same analysis as JSON fields from a schema you define. One reusable configuration has to produce both, for documents, without a free-form chat reply. Which configuration fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "A chat completion asked to \"emit markdown and JSON\" with no analyzer.",
+          "why": "A chat reply is not the reusable analyzer configuration. An analyzer defines the content type, what to extract, and the output shape: markdown, JSON fields, and segments. Downstream reasoning is supposed to consume that result."
+        },
+        {
+          "id": "B",
+          "text": "The Document Intelligence Read model, which returns OCR lines only.",
+          "why": "Read returns recognized text. It is not a Content Understanding analyzer with a field schema and markdown output. The analyzer reference is the component that defines both shapes together."
+        },
+        {
+          "id": "C",
+          "text": "A sora-2 video job, because the contract might be filmed later.",
+          "why": "sora-2 generates video. The input here is a contract document. A document analyzer, extending prebuilt-document or a RAG analyzer such as prebuilt-documentSearch, is the configuration that returns markdown and fields for that file."
+        },
+        {
+          "id": "D",
+          "text": "A Content Understanding document analyzer whose output is markdown plus the JSON fields in your schema.",
+          "why": "An analyzer defines how output is structured: markdown, JSON fields, and segments."
+        }
+      ],
+      "concept": "Custom analyzers extend a base such as prebuilt-document with your field schema. RAG analyzers such as prebuilt-documentSearch are aimed at retrieval and grounding. Table output can be markdown, and the document content is what the agent reads as headed text while the rules engine reads the fields. Use the GA API 2025-11-01 unless you specifically need a preview feature such as agentic mode. This maps to: Implement analyzers for generating structured or markdown outputs for downstream reasoning by using Content Understanding."
+    },
+    {
+      "id": "ie-009",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Ingest and index content, such as documents, images, audio, and video",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A grounding team must turn handbook PDFs, screenshot images, onboarding videos, and support call audio into text that can be chunked and indexed. They refuse to wire a separate OCR service, a caption model, and a classifier into one fragile chain. Which ingestion approach fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Run Azure Vision OCR on images only and leave video and audio out of the index.",
+          "why": "Vision OCR alone covers images and still leaves video and audio requiring other services. The team wants one multimodal path for documents, images, video, and audio."
+        },
+        {
+          "id": "B",
+          "text": "Upload raw binary blobs into the vector index without extracting text from any modality.",
+          "why": "A vector index for grounding needs text or embeddings derived from content. Raw binaries without extraction do not produce the searchable text the pipeline requires."
+        },
+        {
+          "id": "C",
+          "text": "Use Azure Content Understanding so one multimodal service reads documents, images, video, and audio and returns text ready to index.",
+          "why": "Content Understanding combines content extraction, field extraction, and segmentation across those modalities in one API path, avoiding a chained OCR, caption, and classifier pipeline."
+        },
+        {
+          "id": "D",
+          "text": "Call only Whisper transcription and ignore PDFs and still images entirely.",
+          "why": "Whisper-style transcription addresses audio. Handbook PDFs and screenshots still need document and image extraction, which Content Understanding covers in one multimodal service."
+        }
+      ],
+      "concept": "Azure Content Understanding is a multimodal service that processes documents, images, video, and audio into structured text for indexing, combining extraction and segmentation so you do not chain separate OCR, captioning, and classification services."
+    },
+    {
+      "id": "ie-010",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure semantic search, hybrid search, and vector search for grounding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "An Azure AI Search index already holds chunk text and embeddings. Each user question already runs a keyword query and a vector query together, and the service merges those hits. Exact rare tokens still float above the passage that actually answers the question. You want a second, meaning-aware pass over that merged list. Which change fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Drop the keyword query and run vector search alone so rare tokens never appear.",
+          "why": "Removing keyword search loses exact-token matching. The index already merges hybrid results; the gap is a semantic second pass over that list, not deleting keyword recall."
+        },
+        {
+          "id": "B",
+          "text": "Increase HNSW efConstruction only, without changing how queries are ranked at search time.",
+          "why": "efConstruction affects index build quality for approximate nearest neighbor search. It does not add the query-time semantic rerank over the merged hybrid hits."
+        },
+        {
+          "id": "C",
+          "text": "Replace the entire index with a BM25-only full-text index and abandon vectors.",
+          "why": "Abandoning vectors removes semantic similarity the hybrid query already uses. The need is semantic ranking on top of the existing hybrid merge, not a keyword-only redesign."
+        },
+        {
+          "id": "D",
+          "text": "Keep the hybrid query and enable semantic ranking with queryType set to semantic so the top merged hits are rescored for meaning.",
+          "why": "Semantic ranking is a secondary pass that rescored the top results from BM25 or hybrid search for semantic relevance when queryType is semantic."
+        }
+      ],
+      "concept": "In Azure AI Search, hybrid queries merge keyword and vector hits, and semantic ranking with queryType set to semantic rescored the top results for how well each document matches the query's meaning."
+    },
+    {
+      "id": "ie-011",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Implement enrichment by using custom or built-in skills for text, images, and layout",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-chunking-phase",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "Operations manuals include nested headings, wide tables, and labeled figures that chunking should keep with the nearby text. A prebuilt layout analyzer already covers this document shape. You do not have a private form that would require training your own model. Which enrichment fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Document layout analysis that combines OCR with headings, tables, and figures through a prebuilt layout analyzer.",
+          "why": "Document layout analysis extracts structure such as section headings, tables, and figures with the text, and Learn points to prebuilt layout analyzers when you do not need a custom-trained form model."
+        },
+        {
+          "id": "B",
+          "text": "Train a custom Document Intelligence model on labeled manuals before any enrichment runs.",
+          "why": "A custom model needs labeled samples for a private form. The manuals are covered by a prebuilt layout analyzer, so training is unnecessary for this enrichment."
+        },
+        {
+          "id": "C",
+          "text": "Strip every document to plain whitespace-normalized text and discard headings and tables.",
+          "why": "Discarding structure removes the headings, tables, and figures the index must keep with the text. Layout enrichment exists specifically to preserve that structure."
+        },
+        {
+          "id": "D",
+          "text": "Run key phrase extraction only so topics replace any need for document structure.",
+          "why": "Key phrase extraction returns main concepts from text. It does not recover layout elements such as headings, tables, and figures for structured enrichment."
+        }
+      ],
+      "concept": "Document layout analysis combines OCR with deep learning to recover headers, section headings, tables, and figures so enrichment can keep structural meaning; Content Understanding exposes prebuilt layout analyzers for that job without a custom-trained model."
+    },
+    {
+      "id": "ie-012",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure RAG ingestion flow, including documents and using optical character recognition (OCR)",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "Tonight's RAG ingest is only camera photos of printed SOPs and flatbed scans. None of the files have a digital text layer to chunk. A Content Understanding document analyzer will run before embedding. Which OCR setting fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set enableOcr to false because scanned pages are faster when OCR is skipped.",
+          "why": "Disabling OCR is for native digital PDFs that already have a text layer. Scans and photos need OCR on so the analyzer can read the pixels before chunking."
+        },
+        {
+          "id": "B",
+          "text": "Leave enableOcr on so the document analyzer reads text from the scanned pages and photographs.",
+          "why": "The analyzer reference defaults enableOcr to true and says to enable it for scanned documents, photos, and image-based PDFs so text exists for indexing."
+        },
+        {
+          "id": "C",
+          "text": "Replace the document analyzer with a speech translation session on the image bytes.",
+          "why": "Speech translation processes audio streams, not page images. Scanned SOPs need document OCR through the Content Understanding document analyzer."
+        },
+        {
+          "id": "D",
+          "text": "Disable enableLayout and enableFormula only, leaving OCR off as well for every file.",
+          "why": "Turning OCR off removes the only path to text on scans and photos. Layout or formula flags do not replace enableOcr for image-based documents."
+        }
+      ],
+      "concept": "Content Understanding document analyzers expose enableOcr, which defaults to true and should stay on for scanned documents, photos, and image-based PDFs so OCR produces the text layer RAG ingestion needs."
+    },
+    {
+      "id": "ie-013",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Connect retrieval pipelines directly to workflows and agent tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A search indexer already keeps an Azure AI Search index of living product manuals. Two Foundry agents must query that same index, share one retrieval setup, and return citations. Pasting chunks into system instructions or attaching a one-time PDF upload will go stale after the next indexer run. Which connection fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Copy the current top manuals into each agent's instructions so retrieval is not required.",
+          "why": "Instruction paste goes stale when the indexer refreshes manuals. Foundry IQ keeps the living search index as the shared knowledge source with citations."
+        },
+        {
+          "id": "B",
+          "text": "Upload a single static PDF to each agent playground session and skip the search index.",
+          "why": "A static PDF upload is a snapshot that drifts from the nightly index. The agents need a knowledge base bound to the existing living search index."
+        },
+        {
+          "id": "C",
+          "text": "Create a Foundry IQ knowledge base whose knowledge source is that existing search index and connect both agents to it.",
+          "why": "Foundry IQ knowledge bases wrap knowledge sources such as an Azure AI Search index, can be shared by multiple agents, and return grounded answers with citations."
+        },
+        {
+          "id": "D",
+          "text": "Disable the indexer and retrain a fine-tuned model whenever a manual changes.",
+          "why": "Fine-tuning encodes behavior in weights and is a poor fit for frequently refreshed manuals. The living index should stay the retrieval source through Foundry IQ."
+        }
+      ],
+      "concept": "Foundry IQ knowledge bases connect agents to knowledge sources such as an existing Azure AI Search index so multiple agents share retrieval, honor the living index, and return grounded answers with citations instead of stale pasted context."
+    },
+    {
+      "id": "ie-014",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Extract information by using multimodal pipelines that combine OCR, layout analysis, and field extraction",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/general-document?view=doc-intel-4.0.0",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A partner onboarding packet is not an invoice, receipt, or ID card prebuilt. You have no labeled training set. On Document Intelligence v4.0 you still need text, tables, and key-value pairs. An older service called prebuilt-document for those keys. Which call fits now?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep calling prebuilt-document on v4.0 because that model id remains the supported general document path.",
+          "why": "On v4.0 and later, prebuilt-document is deprecated. Key-value extraction moves to prebuilt-layout with features=keyValuePairs."
+        },
+        {
+          "id": "B",
+          "text": "Train a custom neural model even though no labeled samples exist yet.",
+          "why": "Custom models require labeled samples. The packet has none, and the prebuilt layout path with key-value features covers unlabeled general forms."
+        },
+        {
+          "id": "C",
+          "text": "Call prebuilt-invoice and ignore fields that do not look like invoice lines.",
+          "why": "prebuilt-invoice targets invoice schemas. A partner onboarding packet is explicitly not an invoice and needs general layout plus key-value extraction."
+        },
+        {
+          "id": "D",
+          "text": "Call prebuilt-layout on v4.0 with the query parameter features=keyValuePairs for text, tables, and keys.",
+          "why": "Learn replaces general document on v4.0 with prebuilt-layout plus features=keyValuePairs, which returns text, tables, selection marks, structure, and key-value pairs."
+        }
+      ],
+      "concept": "For Document Intelligence v4.0, the deprecated prebuilt-document general model is replaced by prebuilt-layout with features=keyValuePairs so you still get OCR text, tables, structure, and key-value pairs without training labels."
+    },
+    {
+      "id": "ie-015",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Produce clean, grounded representations to use with agents and RAG by using Content Understanding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/document/analyzer-improvement",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "An agent surfaces a liability limit extracted from a master service agreement. A reviewer must open the exact page and bounding box of that sentence, and the RAG context must keep a span into the content string. Guessing which paragraph was used is not allowed. Which representation fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Content Understanding field grounding that returns source page and coordinates plus a span offset and length into the content.",
+          "why": "Grounding attaches source page and spatial coordinates and spans with offset and length so reviewers and RAG can trace each extracted field to the document."
+        },
+        {
+          "id": "B",
+          "text": "Confidence scores alone without page, box, or span metadata on the field.",
+          "why": "Confidence quantifies certainty but does not show where the value came from. Reviewers need source location and spans for true reference."
+        },
+        {
+          "id": "C",
+          "text": "A free-form chat paraphrase of the clause with no link back to the PDF.",
+          "why": "A paraphrase without grounding breaks traceability. Content Understanding grounding exists so every extracted field cites its page, box, and span."
+        },
+        {
+          "id": "D",
+          "text": "Key phrase extraction on the whole agreement so topics replace location metadata.",
+          "why": "Key phrase extraction lists main concepts. It does not attach page coordinates or content spans to an extracted liability limit for reviewer validation."
+        }
+      ],
+      "concept": "Content Understanding grounding returns source page number and spatial coordinates plus spans with offset and length for each extracted field, which gives agents and RAG a traceable path back to the original document location."
+    },
+    {
+      "id": "ie-016",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Implement analyzers for generating structured or markdown outputs for downstream reasoning by using Content Understanding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "One reusable Content Understanding configuration must feed a contract agent that reads headed markdown and a rules engine that reads the same analysis as JSON fields from your schema. The input is documents, and a free-form chat completion is not the analyzer output. Which configuration fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A speech-only prebuilt-audio analyzer that returns waveform metadata without document markdown.",
+          "why": "prebuilt-audio targets audio content. Contract documents need a document analyzer that can emit markdown and schema-bound JSON fields together."
+        },
+        {
+          "id": "B",
+          "text": "A Content Understanding document analyzer that emits markdown for retrieval plus JSON fields defined in your field schema.",
+          "why": "Analyzers define how to structure output as markdown, JSON fields, and segments; custom document analyzers extend a base such as prebuilt-document with your field schema for both shapes."
+        },
+        {
+          "id": "C",
+          "text": "A one-off Chat Completions prompt with no analyzer configuration and no reusable field schema.",
+          "why": "A free-form chat reply is not a reusable analyzer configuration. Content Understanding analyzers are the reusable unit that produce markdown and schema fields for documents."
+        },
+        {
+          "id": "D",
+          "text": "Enable barcode detection only so decoded codes replace both markdown and JSON field output.",
+          "why": "Barcode extraction returns decoded code values. It does not produce headed markdown and a caller-defined JSON field schema for contract reasoning."
+        }
+      ],
+      "concept": "Content Understanding analyzers are reusable configurations that structure document output as markdown for search and JSON fields from your schema for automation, with custom analyzers extending bases such as prebuilt-document."
+    },
+    {
+      "id": "ie-017",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure semantic search, hybrid search, and vector search for grounding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "An Azure AI Search index already holds chunk text and embeddings. Each support question already runs a keyword query and a vector query together, and the service merges those hits. Exact SKU tokens still float above the passage that actually answers the question. You want a second, meaning-aware pass over that merged list. Which change fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Drop the keyword clause and keep only the vector query.",
+          "why": "Removing keyword search loses exact-token recall the hybrid path already provides. The need is a semantic second pass over the merged list, not dropping one of the first-stage queries."
+        },
+        {
+          "id": "B",
+          "text": "Keep the hybrid query and enable semantic ranking with queryType set to semantic so the top merged hits are rescored for meaning.",
+          "why": "Semantic ranking rescores the top hybrid hits for how well each result matches the query's meaning."
+        },
+        {
+          "id": "C",
+          "text": "Fine-tune the chat model and stop querying the index.",
+          "why": "Stopping retrieval removes grounded passages. Fine-tuning the chat model does not rescore the merged search hits the index already returns."
+        },
+        {
+          "id": "D",
+          "text": "Raise the chat temperature so the model sounds more certain about the current order.",
+          "why": "Higher temperature changes generation randomness. It does not rerank Azure AI Search results or promote the passage that answers the question."
+        }
+      ],
+      "concept": "After hybrid search merges keyword and vector hits, Azure AI Search semantic ranking is a second pass: configure it on the index and set queryType to semantic so the top 50 results are rescored for semantic relevance, optionally with captions and answers. This maps to: Configure semantic search, hybrid search, and vector search for grounding."
+    },
+    {
+      "id": "ie-018",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Configure RAG ingestion flow, including documents and using optical character recognition (OCR)",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/concepts/analyzer-reference",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "Tonight's RAG ingest is only warehouse-shelf photos of printed labels and flatbed scans of faxed statements of work. None of the files have a digital text layer to chunk. A Content Understanding document analyzer will run before embedding. Which OCR setting fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set enableOcr to false so the analyzer skips pixel reading and finishes faster.",
+          "why": "Disabling OCR is for native digital PDFs that already have a text layer. These photos and fax scans have no text layer until OCR reads the pixels."
+        },
+        {
+          "id": "B",
+          "text": "Set enableBarcode to true and leave OCR off, because a paragraph is a barcode.",
+          "why": "Barcode detection reads codes, not full paragraphs of label and SOW text. Leaving OCR off leaves nothing to chunk or embed from the scans."
+        },
+        {
+          "id": "C",
+          "text": "Leave enableOcr on so the document analyzer reads text from the scanned pages and photographs.",
+          "why": "enableOcr defaults to true and is required so the analyzer extracts text from scans and photos before indexing."
+        },
+        {
+          "id": "D",
+          "text": "Set config.workflow to agentic so a reasoning pass replaces OCR on the pixels.",
+          "why": "Agentic mode reasons over already-available document evidence for complex fields. It does not replace OCR for extracting a text layer from image-only files."
+        }
+      ],
+      "concept": "In Content Understanding document analyzers, enableOcr turns on optical character recognition for scanned documents, photos, and image-based PDFs and defaults to true. Disable it only for native digital PDFs. With text extracted, the same analyzer output can be chunked and embedded for RAG. This maps to: Configure RAG ingestion flow, including documents and using optical character recognition (OCR)."
+    },
+    {
+      "id": "ie-019",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Build retrieval and grounding pipelines",
+      "bullet": "Connect retrieval pipelines directly to workflows and agent tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A search indexer already keeps an Azure AI Search index of living safety manuals. Two Foundry agents must query that same index, share one retrieval setup, and return citations. Pasting chunks into system instructions or attaching a one-time PDF upload will go stale after the next indexer run. Which connection fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "file_search on a PDF exported from the index once a quarter.",
+          "why": "A quarterly PDF export freezes content until the next export. The living index continues to change with each indexer run, so agents would cite stale material."
+        },
+        {
+          "id": "B",
+          "text": "Paste the top manuals into the agent instructions every night.",
+          "why": "Pasting text into instructions creates a private copy that drifts from the index and does not give shared, cited retrieval from the living search index."
+        },
+        {
+          "id": "C",
+          "text": "A Content Understanding analyzer that extracts fields and is not connected to the index.",
+          "why": "Field extraction alone does not attach agents to the living Azure AI Search index or share a cited retrieval setup across agents."
+        },
+        {
+          "id": "D",
+          "text": "Create a Foundry IQ knowledge base whose knowledge source is that existing search index and connect both agents to it.",
+          "why": "Foundry IQ knowledge bases connect agents to indexed sources, share one setup, and return grounded answers with citations."
+        }
+      ],
+      "concept": "A Foundry IQ knowledge base references knowledge sources such as an existing Azure AI Search index, lets multiple agents share that retrieval setup, and returns grounded answers with citations so agents stay on the living index instead of stale instruction pastes or one-time uploads. This maps to: Connect retrieval pipelines directly to workflows and agent tools."
+    },
+    {
+      "id": "ie-020",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement information extraction solutions",
+      "subsection": "Extract content from documents",
+      "bullet": "Produce clean, grounded representations to use with agents and RAG by using Content Understanding",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/document/analyzer-improvement",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "An agent surfaces a notice period extracted from a facilities lease. A reviewer must open the exact page and bounding box of that sentence, and the RAG context must keep a span into the content string. Guessing which paragraph was used is not allowed. Which representation fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Content Understanding field grounding that returns source page and coordinates plus a span offset and length into the content.",
+          "why": "Field grounding supplies page and spatial source plus span offset and length so reviewers and RAG can trace the value."
+        },
+        {
+          "id": "B",
+          "text": "A one-sentence vision caption of the page, with no source coordinates.",
+          "why": "A caption summarizes the page visually. It does not return page coordinates or a character span into the extracted content string."
+        },
+        {
+          "id": "C",
+          "text": "The clause text only, after stripping page numbers and coordinates to save tokens.",
+          "why": "Stripping location data removes the page, box, and span a reviewer needs to confirm the notice period without guessing the paragraph."
+        },
+        {
+          "id": "D",
+          "text": "A harm-category filter score stored in place of the clause location.",
+          "why": "Harm scores classify unsafe content severity. They do not locate an extracted lease clause on a page or in the content string."
+        }
+      ],
+      "concept": "Content Understanding field grounding attaches source (page number and spatial coordinates) and spans (offset and length into the content) to extracted fields so agents and RAG keep a traceable citation into the original document. This maps to: Produce clean, grounded representations to use with agents and RAG by using Content Understanding."
+    }
+  ]
+}

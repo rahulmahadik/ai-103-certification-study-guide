@@ -1,0 +1,1450 @@
+{
+  "sectionId": "generative-and-agentic",
+  "skillArea": "Implement generative AI and agentic solutions",
+  "weight": "30–35%",
+  "outlineAsOf": "2026-04-16",
+  "status": "ready",
+  "holdNote": "",
+  "items": [
+    {
+      "id": "gen-001",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Deploy and consume LLMs, small models, code models, and multimodal models",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
+      "guideUrl": "../guide/models.html",
+      "stem": "A handheld warehouse app rewrites short text notes into one standard sentence. It runs on the device, the notes are text only, and the app does not accept photos, audio, or source code. You are choosing a model from the Foundry catalog to deploy for this app. Which model class fits the constraint?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Phi-4-multimodal-instruct, because a model that accepts text, images, and audio is the safest default for any note.",
+          "why": "The catalog lists Phi-4-multimodal-instruct with text, image, and audio input. This app sends text only and must run on the device. The catalog line that matches on-device inferencing is the small language model class, not the multimodal model."
+        },
+        {
+          "id": "B",
+          "text": "A 1B or 3B instruct model, the small language model class the catalog lists for on-device and edge inferencing.",
+          "why": "The partner-model catalog describes small language models such as 1B and 3B Base and Instruct models for on-device and edge inferencing."
+        },
+        {
+          "id": "C",
+          "text": "Codestral, because the notes contain aisle codes and a code-generation model understands codes.",
+          "why": "The same catalog groups Codestral with Mistral models for code generation. An aisle label is not a request to generate or transform source code. A code model does not answer the on-device text constraint."
+        },
+        {
+          "id": "D",
+          "text": "Meta Llama 3.1 405B Instruct, because the largest model is the one to deploy for every text rewrite.",
+          "why": "The catalog describes high-performance models such as Meta Llama 3.1-405B Instruct for synthetic data generation and distillation. That is a different job from a short rewrite on a device with limited compute."
+        }
+      ],
+      "concept": "The app is a short text rewrite on a handheld, with no image, audio, or code, so that class matches the constraint. This maps to: Deploy and consume LLMs, small models, code models, and multimodal models."
+    },
+    {
+      "id": "gen-002",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Implement retrieval-augmented generation (RAG) in an application",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "A policy assistant answers questions about an employee handbook that changes every month and is not public. Replies invent sections that are not in the handbook, and reviewers want a citation back to the source page. What do you implement?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fine-tune the deployed model on this month's handbook so the policy lives in the weights.",
+          "why": "The Foundry RAG article says to use fine-tuning when you need to change behavior, style, or task performance, rather than to add fresh knowledge. A handbook that changes every month is private, changing data. Fine-tuning does not retrieve the current page or give you a citation to it."
+        },
+        {
+          "id": "B",
+          "text": "Add a system message that says not to invent policy, and leave the handbook out of the request.",
+          "why": "The article says large language models are trained on public data available at training time. A private handbook is not in that training data. An instruction with no grounding data does not retrieve passages or support a citation to a source page."
+        },
+        {
+          "id": "C",
+          "text": "Raise the token limit so the model can reproduce the handbook from what it learned in training.",
+          "why": "A larger token budget does not put a private document into the model. The article says you retrieve relevant content from your data and provide it as grounding data when the answer must come from private or frequently changing information."
+        },
+        {
+          "id": "D",
+          "text": "Index the handbook and send the matching passages with the question.",
+          "why": "Retrieval augmented generation retrieves relevant content, adds it to the prompt as grounding data, and generates a response that can cite the source."
+        }
+      ],
+      "concept": "That is the pattern the article describes for private or frequently changing documents, which is this handbook. This maps to: Implement retrieval-augmented generation (RAG) in an application."
+    },
+    {
+      "id": "gen-003",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Design workflows, tool-augmented flows, and multistep reasoning pipelines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/function-calling",
+      "guideUrl": "../guide/tools.html",
+      "stem": "A claims assistant must answer with today's claim status. The status lives in an internal API, and the model has no copy of it. The app should let the model request the lookup, run the API, and then finish the reply from that result. What do you add?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A function tool with a name, parameters, and a purpose; your app returns the API output.",
+          "why": "Function calling on Foundry agents works by defining a function's name, parameters, and description."
+        },
+        {
+          "id": "B",
+          "text": "A fine-tune on last quarter's claim export, so the status is stored in the model weights.",
+          "why": "A fine-tune on an old export cannot see a claim that changed today. The function-calling article is about returning live output from your systems into the same conversation, which a weight update does not do."
+        },
+        {
+          "id": "C",
+          "text": "A nightly paste of the claim export into the agent instructions, refreshed each night.",
+          "why": "Instructions are not a call to the claims API. The article's loop is: the model requests a function, your app executes it, and the agent uses that output. A stale paste misses claims that changed after the nightly copy."
+        },
+        {
+          "id": "D",
+          "text": "An instruction that says to state the claim status, with no function tool registered.",
+          "why": "Without a function tool, the model can only write text. The article says the model requests a defined function and your app runs it. Prose in the instructions does not query the API or return its result."
+        }
+      ],
+      "concept": "The model requests the call, your app runs it, and you submit the output so the agent can continue from real-time data in your systems. That is the tool-augmented loop this status lookup needs. This maps to: Design workflows, tool-augmented flows, and multistep reasoning pipelines."
+    },
+    {
+      "id": "gen-004",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Evaluate models and apps, including detecting fabrications, relevance, quality, and safety",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+      "guideUrl": "../guide/models.html",
+      "stem": "A grounded assistant is given the passage \"Items can be returned within 30 days with the original receipt.\" The user asks how returns work. The reply states that rule and adds \"Refunds are paid in cash the same day,\" which is not in the passage. The reply does answer the question. Which evaluator do you run for the added sentence?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Relevance, because any weak answer is a relevance failure.",
+          "why": "Relevance measures how well the response addresses the query: accuracy, completeness, and direct relevance to the question. This reply does answer how returns work. Relevance is not the check for a sentence that sits outside the grounding passage."
+        },
+        {
+          "id": "B",
+          "text": "Response completeness, because the reply added a fact the passage did not contain.",
+          "why": "Response completeness is the recall check: whether the response misses critical information compared with ground truth. It is marked preview on the evaluator page. The failure here is extra content, which that page assigns to groundedness, the precision side."
+        },
+        {
+          "id": "C",
+          "text": "Groundedness, because the cash sentence is not supported by the passage.",
+          "why": "Groundedness measures whether the generated response aligns with the given context without fabricating content."
+        },
+        {
+          "id": "D",
+          "text": "Retrieval, because a bad final answer means the search step returned the wrong passage.",
+          "why": "Retrieval scores how relevant the retrieved context chunks are to the query. It does not score the generated reply. The passage here supports the 30-day rule. The unsupported sentence was added in the response, which is a groundedness failure."
+        }
+      ],
+      "concept": "The page describes it as the precision check: the response should not contain content outside the grounding context. The cash sentence is that kind of addition. This maps to: Evaluate models and apps, including detecting fabrications, relevance, quality, and safety."
+    },
+    {
+      "id": "gen-005",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Integrate generative workflows into applications by using Foundry SDKs and connectors",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview",
+      "guideUrl": "../guide/chat-app.html",
+      "stem": "A Python service must list a Foundry project's connections and enable tracing, and it must also call the Responses API for a model in that same project. Which client setup matches the Foundry SDK guidance?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "The standalone OpenAI SDK against the resource's openai.azure.com endpoint, using an API key for every call.",
+          "why": "The SDK overview gives the OpenAI SDK the openai.azure.com /openai/v1 endpoint for the OpenAI-compatible surface, including embeddings and chat completions. Listing connections and enabling tracing are project-client operations, which that page says have no OpenAI equivalent."
+        },
+        {
+          "id": "B",
+          "text": "AIProjectClient for project operations, then get_openai_client() from that client for the Responses call.",
+          "why": "The Foundry SDK page says the project client is for operations OpenAI does not cover, including listing connections and enabling tracing."
+        },
+        {
+          "id": "C",
+          "text": "The Anthropic SDK, because the Foundry host name ends in services.ai.azure.com.",
+          "why": "The overview reserves the Anthropic SDK and the /anthropic endpoint for Claude models deployed in Foundry. Listing project connections and calling the Responses API for a Foundry model are Foundry SDK operations, not Anthropic SDK calls."
+        },
+        {
+          "id": "D",
+          "text": "A Foundry Tools SDK for Speech, because every Foundry project is reached through a tool-specific endpoint.",
+          "why": "The overview assigns Foundry Tools SDKs to specific services such as Vision, Speech, and Content Safety, each with its own endpoint. Speech does not list project connections or call the Responses API for a chat model."
+        }
+      ],
+      "concept": "The OpenAI-compatible client from that project client calls the Responses API. The page says most apps use both, with Microsoft Entra ID via DefaultAzureCredential in the sample. This maps to: Integrate generative workflows into applications by using Foundry SDKs and connectors."
+    },
+    {
+      "id": "gen-006",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Configure an application to connect to a Foundry project",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview",
+      "guideUrl": "../guide/chat-app.html",
+      "stem": "The claims app creates an AIProjectClient so it can use agents and models in the Foundry project claims-prod on the resource contoso-ai. Which endpoint do you pass to that client?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "https://contoso-ai.openai.azure.com/openai/v1",
+          "why": "The SDK overview lists that host as the OpenAI SDK endpoint for chat completions and embeddings. AIProjectClient is constructed with the Foundry project endpoint, which includes /api/projects/ and the project name."
+        },
+        {
+          "id": "B",
+          "text": "https://contoso-ai.services.ai.azure.com/anthropic",
+          "why": "The /anthropic path is the Anthropic SDK endpoint for Claude models. It does not identify the Foundry project claims-prod, which is what AIProjectClient takes."
+        },
+        {
+          "id": "C",
+          "text": "https://contoso-ai.services.ai.azure.com",
+          "why": "The resource host alone does not name the project. The Foundry SDK sample sets the project endpoint to https://<resource-name>.services.ai.azure.com/api/projects/<project-name>."
+        },
+        {
+          "id": "D",
+          "text": "https://contoso-ai.services.ai.azure.com/api/projects/claims-prod",
+          "why": "The SDK overview shows AIProjectClient taking the project endpoint https://<resource-name>.services.ai.azure.com/api/projects/<project-name>, with DefaultAzureCredential in the sample."
+        }
+      ],
+      "concept": "That path is the one that binds the app to claims-prod. This maps to: Configure an application to connect to a Foundry project."
+    },
+    {
+      "id": "gen-007",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Define agent roles, goals, conversation-tracking approach, and tool schemas",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/function-calling",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "You are defining a returns agent before the first customer message. It must stay a returns clerk, keep later turns of the same chat on the service, and call create_return only with the arguments you specify. Where do the role, the thread, and the callable API belong?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Instructions for the role, a conversation for the thread, and a function tool schema.",
+          "why": "The function-calling article creates the agent with instructions, registers a function tool whose schema has a name, a parameters object, and a description, and creates a conversation for the multi-turn exchange."
+        },
+        {
+          "id": "B",
+          "text": "Role pasted into every user message, no conversation, and the parameter list written as a paragraph in that message.",
+          "why": "The article stores instructions on the agent definition and registers a function tool, then creates a conversation so later turns stay on the service. Repeating the role in the user message and describing parameters only in prose does not create that definition or that thread."
+        },
+        {
+          "id": "C",
+          "text": "A new agent version on every turn, with empty instructions and no function tool.",
+          "why": "The sample sets instructions and tools once on the agent, then reuses a conversation. A new empty agent each turn drops the role and gives the model no function schema to call."
+        },
+        {
+          "id": "D",
+          "text": "The function schema only, with empty instructions and no conversation id on later responses.",
+          "why": "A function tool supplies the call shape. The article also sets instructions on the agent and passes a conversation id so the thread continues. Empty instructions do not carry the returns-clerk role, and omitting the conversation drops server-side history."
+        }
+      ],
+      "concept": "Later responses pass that conversation id. That places the role, the thread, and the tool schema where the article places them. This maps to: Define agent roles, goals, conversation-tracking approach, and tool schemas."
+    },
+    {
+      "id": "gen-008",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build agents that integrate retrieval, function-calling, and conversation memory",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "One warranty agent must cite a manual the company uploaded, call a function for the live warranty status, and on the next message of this same chat still know the serial number. The app must not resend the earlier messages. What do you attach and reuse?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A memory store only, with no file tool and no function, because memory replaces both retrieval and history.",
+          "why": "The runtime-components article describes a memory store as the preview feature for retaining information across sessions, such as preferences. It does not search the uploaded manual or call a warranty function. The next message of this same chat is the conversation case: later turns need server-side history."
+        },
+        {
+          "id": "B",
+          "text": "Three separate responses with no tools, and the manual pasted into the first prompt only.",
+          "why": "A response can run with no agent and no conversation, and the app then has to carry context itself. The article says tools are how an agent searches files and calls functions during generation, and a conversation is how the next turn keeps that history without the app resending it."
+        },
+        {
+          "id": "C",
+          "text": "One agent with a file-search tool and a function tool, invoked again with the same conversation.",
+          "why": "An agent combines a model, instructions, and tools."
+        },
+        {
+          "id": "D",
+          "text": "A function tool on a response that sets store to false, so the service keeps the serial number anyway.",
+          "why": "The article says that when store is false the service does not persist the response, and the app must pass earlier items on the next request. That breaks the requirement that the app not resend the transcript. File search is also still missing, so the manual is not retrieved."
+        }
+      ],
+      "concept": "The article says tools let the agent search files and use function calling while it generates a response. A conversation persists history across turns, so the next response on that conversation still has the serial number. This maps to: Build agents that integrate retrieval, function-calling, and conversation memory."
+    },
+    {
+      "id": "gen-009",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Integrate agent tools, including APIs, knowledge stores, search, content understanding, and custom functions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/integrations/agent-framework",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A user attaches a photo of a delivery note that is not in any index. Before the agent replies, it must read that note and have the tracking number and line items as extracted fields. Which integration does that?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Search an index built from last week's notes, and do not analyze the attachment.",
+          "why": "The Content Understanding integration for the Microsoft Agent Framework analyzes documents and images attached to the agent input and adds extracted fields to the model context. A prior index does not contain this photo, so search over last week's notes never sees the tracking number."
+        },
+        {
+          "id": "B",
+          "text": "Content Understanding on the attachment, so Markdown and extracted fields are added to the model context.",
+          "why": "The Agent Framework provider detects supported documents and images in the agent input, analyzes them, and adds Markdown and extracted fields before the model runs."
+        },
+        {
+          "id": "C",
+          "text": "Only the optional file-search upload, with fields kept out of the model context.",
+          "why": "The same page says file search is optional and uploads extracted Markdown to a vector store instead of adding the full content to the model context. The default sections are Markdown and fields. This reply needs those fields on this turn, which is the provider's default path."
+        },
+        {
+          "id": "D",
+          "text": "A custom function that returns the current time, leaving the model to read the photo with no analyzer.",
+          "why": "A function that does not analyze the file adds nothing from the note. The integration page's provider is what detects the attachment and puts the analyzer's fields into the model context before the reply."
+        }
+      ],
+      "concept": "For a domain such as a delivery note, the page says to set the analyzer id so those fields are the ones added. The install note on that page uses the prerelease package flag, which was still the case on 14 November 2026. This maps to: Integrate agent tools, including APIs, knowledge stores, search, content understanding, and custom functions."
+    },
+    {
+      "id": "gen-010",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Implement orchestrated multi-agent solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Three agents must run in a fixed order: extract the claim, check the policy wording, then draft the letter. Each step uses the previous result. No person has to approve a step. This is new work, started in November 2026. Which orchestration do you build?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Group chat, so any of the three agents can take the next turn when it wants to.",
+          "why": "The workflow article describes group chat as dynamically passing control for escalation, fallback, or expert handoff. This job is a fixed pipeline. The sequential pattern is the one that passes each result to the next agent in a defined order."
+        },
+        {
+          "id": "B",
+          "text": "Human in the loop after every agent, so a person confirms each stage before the next one starts.",
+          "why": "Human in the loop asks the user a question and waits, which the article uses for approvals or for collecting information. Nobody needs to approve these stages. Waiting for a person on every step adds a gate the scenario does not have."
+        },
+        {
+          "id": "C",
+          "text": "The Foundry visual designer, and keep running that designer flow in the portal after 1 December 2026.",
+          "why": "The article says Foundry is retiring workflows on 1 December 2026 and tells you to use Microsoft Agent Framework for new workflows. After that date the visual designer and in-portal execution are not supported. The sequential pattern itself is one you keep by building it in Agent Framework."
+        },
+        {
+          "id": "D",
+          "text": "A sequential orchestration in Microsoft Agent Framework, each agent taking the previous result.",
+          "why": "Sequential orchestration passes the result from one agent to the next in a defined order, which matches extract, then check, then draft."
+        }
+      ],
+      "concept": "The article tells you to build new workflows in Microsoft Agent Framework. The same patterns remain after the visual designer retirement on 1 December 2026. This maps to: Implement orchestrated multi-agent solutions."
+    },
+    {
+      "id": "gen-011",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build autonomous or semiautonomous workflows with safeguards and approval flow controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/use-toolbox-hosted-agent",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A hosted agent can post a refund through a toolbox tool. The instructions say to ask a person first. In a test, the refund posts as soon as the model requests the tool. require_approval is never, and the runtime does not pause. What makes the refund wait?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set require_approval to always, and pause in the runtime until that call is approved.",
+          "why": "The hosted-agent toolbox article says require_approval always means show the proposed tool name and arguments, wait for an explicit approval, and invoke the tool only after that approval, on every call."
+        },
+        {
+          "id": "B",
+          "text": "Add another instruction that says never to refund without agreement, and leave require_approval at never.",
+          "why": "The article says a system-prompt instruction alone does not enforce approval. The value never means the runtime invokes the tool without an approval prompt, which is what the test already did."
+        },
+        {
+          "id": "C",
+          "text": "Leave require_approval at never, and review the refund in a trace after it has posted.",
+          "why": "A trace can show that the call happened. The value never still invokes the tool with no approval prompt, so the refund posts first. The article's control for a wait is require_approval always, enforced by the runtime before the call."
+        },
+        {
+          "id": "D",
+          "text": "Set require_approval to always, and rely on the toolbox endpoint to reject the call until a person approves.",
+          "why": "The article says the toolbox MCP endpoint does not block tools/call when require_approval is always. Enforcement is the agent runtime's job: it must pause, collect the decision, and only then invoke that call."
+        }
+      ],
+      "concept": "The agent runtime must enforce the pause. That is the safeguard before a refund posts. This maps to: Build autonomous or semiautonomous workflows with safeguards and approval flow controls."
+    },
+    {
+      "id": "gen-012",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Integrate monitoring into deployed agents, evaluate agent behavior, and perform error analysis",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Traces for a warranty agent show a successful get_warranty call with the serial number the user supplied. The tool result says the warranty is expired. The reply says the warranty is active and offers a repair. Which evaluator catches that step?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Tool Call Success, because the reply disagreed with the tool result.",
+          "why": "Tool Call Success measures whether tool calls succeeded or failed with a technical error, timeout, or exception. This call succeeded. The broken step is the reply ignoring a result that came back, which is a different evaluator."
+        },
+        {
+          "id": "B",
+          "text": "Tool Call Accuracy, because any tool-related failure is an accuracy failure.",
+          "why": "Tool Call Accuracy measures whether the agent made the right tool calls with the correct parameters. The trace shows the right function and the serial number the user gave. That check can pass while the reply still contradicts the tool output."
+        },
+        {
+          "id": "C",
+          "text": "Tool Output Utilization, because the reply did not use the tool result.",
+          "why": "Tool Output Utilization measures whether the agent understood the tool result and used it in its reasoning and final response."
+        },
+        {
+          "id": "D",
+          "text": "Intent Resolution, because the agent must have misunderstood the user's request.",
+          "why": "Intent Resolution, marked preview on the evaluator page, measures whether the agent identified the user's intent. The agent did call the warranty tool for the serial number. The error analysis for a reply that drops the tool result is Tool Output Utilization."
+        }
+      ],
+      "concept": "The result said expired, and the reply said active. That is the process check the agent-evaluators article defines for this failure. This maps to: Integrate monitoring into deployed agents, evaluate agent behavior, and perform error analysis."
+    },
+    {
+      "id": "gen-013",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Tune generation behavior, such as prompt engineering and adjusting model parameters",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Two features call a chat model that accepts temperature and top_p. One drafts customer letters that must stay close to approved wording. The other writes short stories where variety is the point. The instructions for each feature are already specific. How do you set sampling?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set temperature and top_p both high on the letters so the two controls reinforce each other.",
+          "why": "The prompt-engineering article says temperature and top_p both control randomness and tells you to alter one of them at a time, not both. Letters that must stay close to approved wording are the case for a lower temperature, the setting it recommends for a legal-style document."
+        },
+        {
+          "id": "B",
+          "text": "Lower temperature for the letters, higher for the stories, and change only one of temperature or top_p.",
+          "why": "The article sets temperature from 0 to 2."
+        },
+        {
+          "id": "C",
+          "text": "Use a high temperature for the letters so they sound warmer, and a low temperature for the stories.",
+          "why": "On this page, a higher temperature means more random wording, not a warmer tone. Stories are the higher-temperature case. Letters that must stay with approved wording are the lower-temperature case."
+        },
+        {
+          "id": "D",
+          "text": "Set temperature to 0 for both features, and add a few-shot story example when you want variety.",
+          "why": "Few-shot examples condition the current inference toward a demonstrated format. They are not the sampling control. The article uses a higher temperature when the task is a fictional story and a lower temperature when the wording must stay concrete. Zero on both features keeps the stories focused."
+        }
+      ],
+      "concept": "A higher value, such as 0.7, makes output more random, which it ties to a fictional story. A lower value, such as 0.2, makes output more focused, which it recommends for a legal document. It also says to change temperature or top_p, not both, on the same call. This maps to: Tune generation behavior, such as prompt engineering and adjusting model parameters."
+    },
+    {
+      "id": "gen-014",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Implement model reflection, chain-of-thought evaluations, and self-critique loops",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-chat-reasoning",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "The deployment is a reasoning model. It already explores alternatives and checks its own answer before it replies. A draft prompt says to show the full chain of thought and then critique that chain. The team also plans to append that chain on the next turn. What should the call do instead?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep the step-by-step prompt, because a reasoning model only reasons when the prompt demands a visible chain.",
+          "why": "The reasoning-model article says these models already use a chain of thought and verify their answers, which it describes as self-reflective behavior. It tells you to use simple instructions and to avoid chain-of-thought prompting, including asking the model to reveal a chain of thought."
+        },
+        {
+          "id": "B",
+          "text": "Lower temperature so the self-critique is stricter, and keep the request to print the chain.",
+          "why": "The article says reasoning models often do not support temperature, top_p, presence_penalty, or frequency_penalty. The chain is already internal. Asking the model to reveal it is the prompting pattern the page tells you to avoid."
+        },
+        {
+          "id": "C",
+          "text": "Append the reasoning content on the next turn so the model can critique that chain again.",
+          "why": "The article says to append the final answer on later turns, not the reasoning content, when the model returns both. Reasoning tokens also count toward the limit. Passing the chain forward is not how the page says to carry the conversation."
+        },
+        {
+          "id": "D",
+          "text": "Use a short direct prompt, do not ask for the chain, and pass forward the final answer only.",
+          "why": "The article says reasoning models explore paths with a chain of thought and self-verify as they answer, so a simple prompt is enough."
+        }
+      ],
+      "concept": "It says not to ask them to reveal a chain of thought, and to append the final answer rather than the reasoning content on the next turn. This maps to: Implement model reflection, chain-of-thought evaluations, and self-critique loops."
+    },
+    {
+      "id": "gen-015",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Set up observability by implementing tracing, token analytics, safety signals, and latency breakdowns",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "After a generative app is deployed, the team needs token consumption, the step that adds latency, and an alert when live output misses a quality threshold or contains harmful content. What do you turn on?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Application Insights tracing plus dashboards that alert on quality and harmful content.",
+          "why": "The observability article describes tracing, on OpenTelemetry and Application Insights, as the way to see model calls, tool steps, and where time is spent."
+        },
+        {
+          "id": "B",
+          "text": "A single pre-production evaluation on a test file, with no tracing after deployment.",
+          "why": "The article treats pre-production evaluation as the check before you deploy. Token consumption, latency, and alerts on harmful live output are the post-production monitoring path, backed by Application Insights. A one-time test file does not watch production traffic."
+        },
+        {
+          "id": "C",
+          "text": "A weekly read of saved assistant messages, with no metrics and no traces.",
+          "why": "Saved reply text does not record token consumption or a latency breakdown across tool steps. The article's production view is the Application Insights dashboards and traces, including alerts when output is harmful or misses a quality threshold."
+        },
+        {
+          "id": "D",
+          "text": "Tracing only, and no alert when a live response is harmful or misses the quality bar.",
+          "why": "Tracing shows the execution flow and the step that added latency. The article also says to alert when outputs fail quality thresholds or produce harmful content. The stem asks for that safety signal as well as tokens and the latency breakdown, which is the monitoring side of the same observability setup."
+        }
+      ],
+      "concept": "Production monitoring on the same integration tracks token consumption and latency and can alert when outputs fail a quality threshold or contain harmful content. This maps to: Set up observability by implementing tracing, token analytics, safety signals, and latency breakdowns."
+    },
+    {
+      "id": "gen-016",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Orchestrate multiple models, flows, or hybrid LLM and rules engines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-how-it-works",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Most calls are a mix of simple and harder prompts, and each of those should go to a suitable model without a hand-maintained routing table. A monthly compliance memo must use one approved model on every request, with parameters that must not change underneath it. How do you split the traffic?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Send every call, including the memo, through model router in Cost mode.",
+          "why": "Cost mode favors cheaper models and accepts slightly lower quality on complex prompts. It also does not pin the memo to one model. The article says a workflow that needs the same model on every request uses a direct deployment."
+        },
+        {
+          "id": "B",
+          "text": "Send the memo through model router in Quality mode so the router picks the best model each time.",
+          "why": "Quality mode selects the highest-quality model for each prompt. The article says that if every request must use the same model, you pin that workload to a direct deployment. Quality mode is still per-prompt selection, not a pinned model."
+        },
+        {
+          "id": "C",
+          "text": "Use model router for the everyday mix, and a direct deployment of the approved model for the memo.",
+          "why": "The article calls this the hybrid pattern: model router is the default path for general traffic, and a direct deployment is for compliance-mandated or parameter-sensitive workloads that must stay on one model."
+        },
+        {
+          "id": "D",
+          "text": "Replace the router with a static keyword table in the app that maps every prompt, including the memo, to a model.",
+          "why": "The article says model router exists so teams do not maintain static rules or manual selection for diverse traffic. A keyword table brings that maintenance back, and it is not the hybrid pattern the page describes for a workload that must stay on one approved model."
+        }
+      ],
+      "concept": "Router still chooses per prompt on the everyday path, which is what that mix needs. This maps to: Orchestrate multiple models, flows, or hybrid LLM and rules engines."
+    },
+    {
+      "id": "gen-017",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Deploy and consume LLMs, small models, code models, and multimodal models",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/models-from-partners",
+      "guideUrl": "../guide/models.html",
+      "stem": "A field tablet must caption a photo of a damaged pallet and also answer a spoken question about that photo. The device has limited RAM, and the team will not ship a separate speech or vision pipeline. Which Foundry catalog class should you deploy?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "A 1B instruct small language model, because every tablet workload should prefer the smallest text-only model.",
+          "why": "Small language models suit on-device text inferencing, but this workload needs image and audio input in one model, which the catalog groups under multimodal instruct models."
+        },
+        {
+          "id": "B",
+          "text": "A code-generation model such as Codestral, because pallet IDs look like identifiers in source code.",
+          "why": "Code models target source-code generation and transformation. Captioning a photo and answering spoken questions are multimodal perception tasks, not code jobs."
+        },
+        {
+          "id": "C",
+          "text": "The largest text-only instruct model in the catalog, because more parameters always improve photo captions.",
+          "why": "A text-only model cannot take the photo or the spoken question as native inputs. Catalog size alone does not add vision or audio modalities."
+        },
+        {
+          "id": "D",
+          "text": "A multimodal instruct model that accepts text, image, and audio in a single deployment.",
+          "why": "The partner catalog describes multimodal instruct models for combined text, image, and audio input in one deployment."
+        }
+      ],
+      "concept": "When the device must reason over a photo and spoken audio without separate pipelines, choose a multimodal instruct model from the Foundry partner catalog rather than a text-only or code-only class."
+    },
+    {
+      "id": "gen-018",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Implement retrieval-augmented generation (RAG) in an application",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "A benefits chatbot must answer from a private 80-page plan PDF that HR updates each quarter. The base model never trained on that PDF, and auditors require every reply to point to the matching page. Which design do you ship?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Index the plan PDF and pass the retrieved passages with the user question into the model prompt.",
+          "why": "RAG indexes private or changing documents and grounds each answer in the retrieved passages so citations can map back to source pages."
+        },
+        {
+          "id": "B",
+          "text": "Raise temperature so the model invents more coverage of benefits topics without storing the PDF.",
+          "why": "Higher temperature increases randomness; it does not inject private PDF content or produce auditable page citations."
+        },
+        {
+          "id": "C",
+          "text": "Fine-tune once on last year's plan and skip retrieval so responses stay faster.",
+          "why": "Quarterly PDF updates would stale a one-time fine-tune, and fine-tuning alone does not return page-level citations for each answer."
+        },
+        {
+          "id": "D",
+          "text": "Rely on the model's public pretraining and ask it to guess which section applies.",
+          "why": "The private plan was never in public pretraining. Guessing without retrieval cannot satisfy the citation requirement."
+        }
+      ],
+      "concept": "For a private, periodically updated PDF that must be cited by page, index the document and send matching passages with the question—the RAG pattern for grounded private knowledge."
+    },
+    {
+      "id": "gen-019",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Design workflows, tool-augmented flows, and multistep reasoning pipelines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/function-calling",
+      "guideUrl": "../guide/tools.html",
+      "stem": "A booking assistant must quote live seat availability from Contoso's inventory API before it confirms a reservation. The model has no inventory snapshot. Your service should run the lookup when the model asks, then let the model finish from that payload. What do you add?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A nightly export of inventory into the system prompt so the model never calls an API.",
+          "why": "A nightly export is stale by definition for live seat counts and skips the tool-augmented request-and-return loop the scenario needs."
+        },
+        {
+          "id": "B",
+          "text": "A retrieval index of last week's booking emails instead of calling inventory.",
+          "why": "Email search cannot replace a live inventory API for current seat availability; that is the wrong grounding source for this workflow."
+        },
+        {
+          "id": "C",
+          "text": "A function tool schema for the inventory lookup; your app executes the API and returns the result to the model.",
+          "why": "Function calling lets the model request a named tool with parameters; the app runs the API and submits the output so the reply uses live data."
+        },
+        {
+          "id": "D",
+          "text": "A second chat completion that ignores tools and asks the model to invent remaining seats.",
+          "why": "Inventing seat counts without a tool call fabricates availability and never hits the inventory API the assistant must use."
+        }
+      ],
+      "concept": "Live system data that the model does not hold belongs in a tool-augmented loop: declare a function tool, run the API in your app, and return the payload so the model can finish the reply."
+    },
+    {
+      "id": "gen-020",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Evaluate models and apps, including detecting fabrications, relevance, quality, and safety",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+      "guideUrl": "../guide/models.html",
+      "stem": "Grounding context for a shipping bot is only \"Standard shipping arrives in 5–7 business days.\" The user asks about delivery timing. The reply restates that window and adds \"Express always arrives next morning,\" which is absent from the context. Which RAG evaluator targets the fabricated express claim?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Relevance alone, because any answer that mentions shipping is automatically grounded.",
+          "why": "Relevance checks whether the reply addresses the question; it does not verify that every sentence is supported by the grounding context."
+        },
+        {
+          "id": "B",
+          "text": "Groundedness, because the express claim is not supported by the provided passage.",
+          "why": "Groundedness is the precision check that flags response content outside the grounding context, which matches the added express sentence."
+        },
+        {
+          "id": "C",
+          "text": "Fluency only, because polished wording proves the facts came from the passage.",
+          "why": "Fluency scores language quality, not whether claims are backed by the grounding passage, so it misses the fabrication."
+        },
+        {
+          "id": "D",
+          "text": "Latency scoring, because slower replies are more likely to invent shipping options.",
+          "why": "Latency measures timing, not factual support from context, and does not detect unsupported express claims."
+        }
+      ],
+      "concept": "When a reply adds facts that never appear in the grounding passage, run the groundedness evaluator—the precision check for unsupported content in RAG answers."
+    },
+    {
+      "id": "gen-021",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Integrate generative workflows into applications by using Foundry SDKs and connectors",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview",
+      "guideUrl": "../guide/chat-app.html",
+      "stem": "Your .NET worker must enumerate Foundry project connections and enable tracing, then issue a Responses API call against a model in that same project. Which client pattern matches the Foundry SDK overview?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Call only a raw HttpClient against a public OpenAI URL and skip the project client entirely.",
+          "why": "Skipping the project client loses project connections, tracing hooks, and the documented path to an OpenAI-compatible client bound to that Foundry project."
+        },
+        {
+          "id": "B",
+          "text": "Use a storage SDK only, because listing connections is treated as a blob inventory job.",
+          "why": "Storage SDKs do not list Foundry project connections or provide get_openai_client-style access to the Responses API."
+        },
+        {
+          "id": "C",
+          "text": "Hard-code a subscription key in appsettings and call models without AIProjectClient.",
+          "why": "The SDK guidance centers on AIProjectClient with Microsoft Entra ID via DefaultAzureCredential, not a hard-coded key without the project client."
+        },
+        {
+          "id": "D",
+          "text": "Create AIProjectClient for project operations, then obtain the OpenAI-compatible client from it for Responses.",
+          "why": "The overview shows AIProjectClient for project work and get_openai_client from that client for Responses API calls in the same project."
+        }
+      ],
+      "concept": "Foundry SDK apps typically pair AIProjectClient for project operations and tracing with an OpenAI-compatible client obtained from it for Responses API calls under Entra ID."
+    },
+    {
+      "id": "gen-022",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Configure an application to connect to a Foundry project",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/develop/sdk-overview",
+      "guideUrl": "../guide/chat-app.html",
+      "stem": "The returns portal constructs an AIProjectClient for agents and models in Foundry project returns-east on resource fabrikam-ai. Which endpoint string do you pass when creating that client?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "https://fabrikam-ai.services.ai.azure.com/api/projects/returns-east",
+          "why": "The project endpoint path binds the client to the named Foundry project on that AI resource, which is the documented connection URL shape."
+        },
+        {
+          "id": "B",
+          "text": "https://portal.azure.com/#blade/fabrikam-ai/returns-east",
+          "why": "The Azure portal blade URL is for interactive management in a browser, not the AIProjectClient project endpoint."
+        },
+        {
+          "id": "C",
+          "text": "https://fabrikam-ai.openai.azure.com/openai/deployments/returns-east",
+          "why": "A classic OpenAI deployment URL does not address the Foundry project API path that AIProjectClient expects for returns-east."
+        },
+        {
+          "id": "D",
+          "text": "https://management.azure.com/subscriptions/fabrikam-ai/projects/returns-east",
+          "why": "The ARM management endpoint manages Azure resources; it is not the services.ai.azure.com project endpoint used by AIProjectClient."
+        }
+      ],
+      "concept": "AIProjectClient must receive the Foundry project endpoint of the form https://{resource}.services.ai.azure.com/api/projects/{project} so the app binds to that project."
+    },
+    {
+      "id": "gen-023",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Define agent roles, goals, conversation-tracking approach, and tool schemas",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/function-calling",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Before the first message, you configure a scheduling agent that must stay a scheduling clerk, keep multi-turn context on the service, and expose book_slot only with the argument names you define. Where do those pieces belong?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Put the role in a local JSON file only, skip conversations, and hard-code tool args in free text with no schema.",
+          "why": "Without instructions, a conversation id, and a function schema, the agent cannot keep a fixed role, persist turns on the service, or constrain book_slot arguments."
+        },
+        {
+          "id": "B",
+          "text": "Store the role only in the client UI label and let the model invent tool parameter names each turn.",
+          "why": "A UI label is not agent instructions, and inventing parameter names breaks a stable function tool schema the runtime can call."
+        },
+        {
+          "id": "C",
+          "text": "Instructions for the role, a conversation for the thread, and a function tool schema for book_slot.",
+          "why": "Instructions fix the role, conversations track the thread across turns, and a function tool schema defines the callable API and its arguments."
+        },
+        {
+          "id": "D",
+          "text": "Encode the role only as a higher temperature and omit both the conversation and the tool definition.",
+          "why": "Temperature does not define a role or tool schema, and omitting the conversation drops multi-turn tracking on the service."
+        }
+      ],
+      "concept": "Agent setup places the clerk role in instructions, multi-turn state in a conversation, and callable APIs in function tool schemas so later turns pass the conversation id."
+    },
+    {
+      "id": "gen-024",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build agents that integrate retrieval, function-calling, and conversation memory",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A parts agent must quote from an uploaded service bulletin, call get_stock for live inventory, and on the follow-up message still recall the part number without the app resending earlier turns. What do you configure and reuse?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Three separate agents with no shared conversation, each started from an empty history every turn.",
+          "why": "Separate empty histories force the app to resend prior turns and break the single-agent pattern that keeps file search, functions, and memory together."
+        },
+        {
+          "id": "B",
+          "text": "One agent with file search and a function tool, invoked again on the same conversation.",
+          "why": "Runtime components combine file-search and function tools on one agent while a conversation persists history so the next response reuses prior context."
+        },
+        {
+          "id": "C",
+          "text": "A prompt-only bot with neither file search nor functions, relying on the model weights for stock counts.",
+          "why": "Model weights cannot cite an uploaded bulletin or return live inventory; those require retrieval and function calling plus conversation memory."
+        },
+        {
+          "id": "D",
+          "text": "A batch job that emails stock counts overnight and never maintains a conversation id.",
+          "why": "Overnight email is not interactive retrieval or function calling during a chat, and without a conversation the follow-up cannot recall the part number."
+        }
+      ],
+      "concept": "Combine file-search and function tools on one agent and reuse the same conversation so retrieval, live calls, and multi-turn memory work without resending history."
+    },
+    {
+      "id": "gen-025",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Integrate agent tools, including APIs, knowledge stores, search, content understanding, and custom functions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/integrations/agent-framework",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A customer uploads a photo of a handwritten packing slip that is not in any search index. Before the agent answers, it must extract ship-to address and SKU lines as structured fields into the model context. Which tool path does that?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Vector search over an empty product catalog, hoping the slip text already exists there.",
+          "why": "An empty catalog cannot supply fields from a brand-new handwritten attachment that was never indexed."
+        },
+        {
+          "id": "B",
+          "text": "A temperature increase so the model guesses SKUs from the photo without analyzing it.",
+          "why": "Sampling changes do not OCR or extract structured fields from an attached image into the agent context."
+        },
+        {
+          "id": "C",
+          "text": "A custom function that only returns today's date and ignores the attachment bytes.",
+          "why": "A date-only function never reads the packing slip, so ship-to and SKU fields never enter the model context."
+        },
+        {
+          "id": "D",
+          "text": "Content Understanding on the attachment so Markdown and extracted fields are added to context.",
+          "why": "The Content Understanding agent integration analyzes the attachment and adds Markdown plus analyzer-defined fields to the model context before the reply."
+        }
+      ],
+      "concept": "For attachments not already in an index, Content Understanding extracts domain fields into the agent context so the model can reason over structured slip data."
+    },
+    {
+      "id": "gen-026",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Implement orchestrated multi-agent solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Four agents must run in a fixed pipeline: parse the intake form, score risk, draft a summary, then format the PDF. Each step consumes the prior output, no human gate is required, and the work is a new workflow started after the visual designer retirement window. Which orchestration do you choose?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A sequential orchestration in Microsoft Agent Framework where each agent receives the previous result.",
+          "why": "New workflows should use Microsoft Agent Framework sequential orchestration so each agent takes the prior step's output in a fixed order without human approval."
+        },
+        {
+          "id": "B",
+          "text": "Four independent chat sessions with no shared handoff of intermediate results.",
+          "why": "Independent sessions do not pass each step's result forward, so the fixed parse-score-draft-format pipeline cannot run."
+        },
+        {
+          "id": "C",
+          "text": "A single model call with no agents, hoping one completion invents all four stages at once.",
+          "why": "A single undifferentiated completion does not implement multi-agent orchestration with explicit stage handoffs."
+        },
+        {
+          "id": "D",
+          "text": "Rely only on the retired visual designer and refuse to use Agent Framework for new work.",
+          "why": "Guidance is to build new workflows in Microsoft Agent Framework; clinging to the retired designer blocks the supported sequential pattern."
+        }
+      ],
+      "concept": "Fixed multi-step agent pipelines with handoffs and no human gate belong in Microsoft Agent Framework sequential orchestration for new workflows after the designer retirement."
+    },
+    {
+      "id": "gen-027",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build autonomous or semiautonomous workflows with safeguards and approval flow controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/use-toolbox-hosted-agent",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A hosted agent can cancel an order through a toolbox tool. Policy requires a human before any cancel. In staging, cancels fire immediately when the model requests the tool because require_approval is never and the runtime never pauses. What change enforces the hold?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lower temperature so the model becomes less likely to call cancel without changing approval settings.",
+          "why": "Temperature does not pause toolbox execution; with require_approval set to never, cancels still run as soon as the model requests the tool."
+        },
+        {
+          "id": "B",
+          "text": "Delete the tool schema but keep require_approval as never so cancels somehow wait.",
+          "why": "Removing the schema breaks the intended cancel capability and still leaves no approval pause when the tool exists again with never."
+        },
+        {
+          "id": "C",
+          "text": "Set require_approval to always and pause in the runtime until a person approves the call.",
+          "why": "Hosted-agent toolbox guidance uses require_approval always so the runtime waits for human approval before the cancel tool runs."
+        },
+        {
+          "id": "D",
+          "text": "Enable tracing only, because observability dashboards automatically block cancel tools.",
+          "why": "Tracing observes runs; it does not enforce approval gates or pause toolbox tool execution by itself."
+        }
+      ],
+      "concept": "Semiautonomous cancel flows need require_approval set to always with a runtime pause so a person must approve before a hosted toolbox tool executes."
+    },
+    {
+      "id": "gen-028",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Integrate monitoring into deployed agents, evaluate agent behavior, and perform error analysis",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/agent-evaluators",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Traces show lookup_balance succeeded and returned a balance of $12.40 for the account the user named. The agent's reply tells the user the balance is $540 and offers a large transfer. Which agent evaluator flags that failure?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Intent resolution only, because any mention of money means the tool output was used correctly.",
+          "why": "Intent resolution checks whether the agent understood the ask; it does not verify that the reply consumed the tool's returned balance."
+        },
+        {
+          "id": "B",
+          "text": "Tool Output Utilization, because the reply ignored the successful tool result.",
+          "why": "Tool Output Utilization catches replies that fail to use tool results; here $12.40 was returned but the reply claimed $540."
+        },
+        {
+          "id": "C",
+          "text": "Task adherence for spelling quality in the transfer offer sentence.",
+          "why": "Spelling is not the failure mode; the process error is unused tool output, which Tool Output Utilization targets."
+        },
+        {
+          "id": "D",
+          "text": "A pure latency evaluator, because slow tools always cause wrong balances.",
+          "why": "Latency does not compare the tool payload to the spoken balance, so it cannot flag this utilization error."
+        }
+      ],
+      "concept": "When a tool returns the true balance but the agent states a different figure, Tool Output Utilization is the process evaluator that detects unused or contradicted tool results."
+    },
+    {
+      "id": "gen-029",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Tune generation behavior, such as prompt engineering and adjusting model parameters",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "One API drafts regulated claim denial letters that must stay near approved phrasing. Another generates playful product slogans where novelty matters. Both already have precise prompts and support temperature and top_p. How should you set sampling?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Max out both temperature and top_p on the denial letters so wording stays conservative.",
+          "why": "High temperature and top_p increase randomness, which fights the need for focused, near-approved denial wording."
+        },
+        {
+          "id": "B",
+          "text": "Use the highest temperature for denials and the lowest for slogans, adjusting both temperature and top_p together every call.",
+          "why": "That reverses the guidance and changes both knobs at once; denials need lower randomness and slogans need higher variety."
+        },
+        {
+          "id": "C",
+          "text": "Leave temperature untouched and only rewrite prompts to delete all task instructions.",
+          "why": "Removing instructions weakens control; sampling still needs a lower value for focused letters and a higher value for varied slogans."
+        },
+        {
+          "id": "D",
+          "text": "Lower temperature for the denial letters, raise it for the slogans, and change only one of temperature or top_p.",
+          "why": "Prompt-engineering guidance uses lower temperature for focused legal-style text, higher for creative variety, and advises altering only one sampling control."
+        }
+      ],
+      "concept": "After prompts are specific, tune sampling so regulated drafts use lower temperature and creative slogans use higher, changing only temperature or top_p—not both—at a time."
+    },
+    {
+      "id": "gen-030",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Implement model reflection, chain-of-thought evaluations, and self-critique loops",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/how-to/use-chat-reasoning",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "You call a reasoning-model deployment that already explores options and self-checks before answering. A draft prompt asks it to print the full chain of thought, critique that chain aloud, and reuse that chain text on the next user turn. What should the API call do instead?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep the prompt short and direct, do not request the chain, and forward only the final answer next turn.",
+          "why": "Reasoning-model guidance says not to ask for chain-of-thought reveal and to pass the final answer—not reasoning content—into later turns."
+        },
+        {
+          "id": "B",
+          "text": "Force the model to dump every intermediate thought and store that dump as the next-turn system message.",
+          "why": "Asking for and replaying the chain conflicts with guidance to avoid revealing reasoning content and not to append it on later turns."
+        },
+        {
+          "id": "C",
+          "text": "Disable the reasoning model and switch to a non-reasoning chat model solely to print longer chains.",
+          "why": "Switching away from the reasoning deployment to chase visible chains ignores the built-in reflection those models already perform."
+        },
+        {
+          "id": "D",
+          "text": "Raise temperature while demanding a verbose critique of the hidden chain on every call.",
+          "why": "Higher temperature plus forced chain critique still asks the model to reveal reasoning, which the how-to tells you not to do."
+        }
+      ],
+      "concept": "With reasoning models, rely on built-in reflection via short direct prompts, never request chain-of-thought reveal, and carry forward only the final answer between turns."
+    },
+    {
+      "id": "gen-031",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Set up observability by implementing tracing, token analytics, safety signals, and latency breakdowns",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Operations needs per-request token burn, which pipeline span adds the most latency, and alerts when live generations fail a quality bar or include harmful content after deploy. What do you enable?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Only a local console.log of prompts with no Application Insights or alerting hooks.",
+          "why": "Console logs alone do not provide production token analytics, latency breakdowns, or alerts on quality and harmful content."
+        },
+        {
+          "id": "B",
+          "text": "Disable all tracing to reduce cost and rely on monthly manual spot checks of replies.",
+          "why": "Monthly spot checks miss live token, latency, and safety signals that observability with tracing and dashboards is meant to catch."
+        },
+        {
+          "id": "C",
+          "text": "Application Insights tracing plus dashboards that alert on quality failures and harmful content.",
+          "why": "Foundry observability uses Application Insights tracing with dashboards that track tokens and latency and can alert on quality and safety issues."
+        },
+        {
+          "id": "D",
+          "text": "A one-time offline spreadsheet of yesterday's token totals without span-level latency.",
+          "why": "A static spreadsheet lacks live tracing, span latency breakdowns, and automated quality or safety alerts after deployment."
+        }
+      ],
+      "concept": "Production generative apps need Application Insights tracing and dashboards for token use, latency spans, and alerts when outputs miss quality thresholds or show harmful content."
+    },
+    {
+      "id": "gen-032",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Orchestrate multiple models, flows, or hybrid LLM and rules engines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-how-it-works",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Daytime traffic mixes easy FAQ prompts with harder reasoning prompts, and each should land on a fitting model without a hand-built routing table. A nightly regulatory filing must always hit one locked approved model with fixed parameters. How do you split the calls?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Send every call, including the filing, through model router so the approved model can change per prompt.",
+          "why": "Router chooses per prompt, which breaks the filing's need for one fixed approved model and unchanged parameters on every request."
+        },
+        {
+          "id": "B",
+          "text": "Use model router for the daytime mix and a direct deployment of the approved model for the filing.",
+          "why": "Model router selects a suitable model per everyday prompt, while a direct approved deployment keeps the regulatory filing on one locked model."
+        },
+        {
+          "id": "C",
+          "text": "Hard-code a single tiny model for all traffic and skip both router and the approved deployment.",
+          "why": "One tiny model cannot cover harder daytime prompts or satisfy the locked approved-model rule for the nightly filing."
+        },
+        {
+          "id": "D",
+          "text": "Build a manual if/else table of hundreds of prompt keywords and never use model router.",
+          "why": "A hand-maintained keyword table is exactly what model router avoids for mixed everyday traffic, and it still leaves the filing path unspecified."
+        }
+      ],
+      "concept": "Route mixed everyday prompts with model router for automatic per-prompt choice, and pin regulatory traffic to a direct approved-model deployment so parameters stay fixed."
+    },
+    {
+      "id": "gen-033",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Implement retrieval-augmented generation (RAG) in an application",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/retrieval-augmented-generation",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "A lab assistant must answer from private weekly SOPs that the model never trained on. Reviewers reject replies that invent steps and require each answer to cite the matching SOP section ID. Which application pattern do you implement?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Index the SOPs and send the retrieved passages with the user question so the model can ground and cite.",
+          "why": "RAG retrieves private or changing SOPs and grounds the reply so citations can map to section IDs."
+        },
+        {
+          "id": "B",
+          "text": "Raise temperature so the model invents more lab procedures without storing the SOPs.",
+          "why": "Higher temperature only increases randomness; it does not inject private SOP text or produce auditable section citations."
+        },
+        {
+          "id": "C",
+          "text": "Fine-tune once on last year's SOPs and skip retrieval so answers stay faster.",
+          "why": "Weekly SOP updates would stale a one-time fine-tune, and fine-tuning alone does not return section-level citations per answer."
+        },
+        {
+          "id": "D",
+          "text": "Rely on public pretraining and ask the model to guess which lab steps apply.",
+          "why": "Private weekly SOPs were never in public pretraining, so guessing without retrieval cannot satisfy the citation requirement."
+        }
+      ],
+      "concept": "For private or frequently changing documents that must be cited, index the content and pass matching passages with the question—the RAG retrieve-augment-generate pattern described for Foundry."
+    },
+    {
+      "id": "gen-034",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build generative applications by using Foundry",
+      "bullet": "Design workflows, tool-augmented flows, and multistep reasoning pipelines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/function-calling",
+      "guideUrl": "../guide/tools.html",
+      "stem": "A fleet dispatcher must report a truck's live GPS coordinates from Contoso's telematics API before it proposes a reroute. The model holds no location snapshot. Your service should run the lookup when the model requests it, then finish from that payload. What do you add?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A nightly dump of last week's GPS traces into the system prompt so the model never calls an API.",
+          "why": "A nightly dump is stale for live GPS and skips the tool-augmented request-and-return loop this dispatcher needs."
+        },
+        {
+          "id": "B",
+          "text": "A function tool with a name, parameters, and purpose; your app runs the telematics API and returns the result.",
+          "why": "Function calling lets the model request a named tool; the app executes the API and submits the output for a live reply."
+        },
+        {
+          "id": "C",
+          "text": "A retrieval index of driver chat logs instead of calling telematics.",
+          "why": "Chat-log search cannot replace a live telematics API for current coordinates; that is the wrong grounding source."
+        },
+        {
+          "id": "D",
+          "text": "A second completion that ignores tools and asks the model to invent the truck's position.",
+          "why": "Inventing coordinates without a tool call fabricates location and never hits the telematics API the dispatcher must use."
+        }
+      ],
+      "concept": "Live system data the model does not hold belongs in a tool-augmented loop: declare a function tool, run the API in your app, and return the payload so the model can finish from real-time data."
+    },
+    {
+      "id": "gen-035",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build agents that integrate retrieval, function-calling, and conversation memory",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A facilities agent must cite an uploaded floor-plan PDF, call get_badge_access for live badge status, and on the next turn of the same chat still know the room number without the app resending earlier messages. What do you attach and reuse?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Three separate agents with no shared conversation, each started from empty history every turn.",
+          "why": "Separate empty conversations cannot retain the room number across turns or combine file search with the live badge function in one agent."
+        },
+        {
+          "id": "B",
+          "text": "A prompt-only bot with neither file search nor functions, relying on model weights for floor plans and badge status.",
+          "why": "Model weights do not hold the uploaded floor plan or live badge data, and they provide no conversation persistence across turns."
+        },
+        {
+          "id": "C",
+          "text": "One agent with a file-search tool and a function tool, invoked again with the same conversation.",
+          "why": "Tools enable file search and function calling while a conversation persists history so the next turn still knows the room number."
+        },
+        {
+          "id": "D",
+          "text": "A batch email of badge statuses overnight with no conversation id and no file-search tool.",
+          "why": "Overnight email cannot cite the floor-plan PDF, call live badge status mid-chat, or reuse conversation memory for the room number."
+        }
+      ],
+      "concept": "Combine retrieval and function tools on one agent, and reuse the same conversation so history persists across turns without the app resending earlier messages."
+    },
+    {
+      "id": "gen-036",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Integrate agent tools, including APIs, knowledge stores, search, content understanding, and custom functions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/content-understanding/integrations/agent-framework",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A user attaches a photo of a utility meter that is not in any search index. Before the agent replies, it must read that meter image and have the meter number and dial reading as extracted fields. Which integration does that?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Vector search over an empty facilities catalog, hoping the meter digits already exist there.",
+          "why": "An empty catalog cannot extract fields from a new meter photo that was never indexed; search alone skips attachment analysis."
+        },
+        {
+          "id": "B",
+          "text": "A temperature increase so the model guesses dial readings from the photo without analyzing it.",
+          "why": "Raising temperature does not run Content Understanding on the attachment or add structured meter fields to context."
+        },
+        {
+          "id": "C",
+          "text": "A custom function that only returns today's date and ignores the attachment bytes.",
+          "why": "A date-only function never analyzes the meter photo and cannot produce meter number or dial reading fields."
+        },
+        {
+          "id": "D",
+          "text": "Content Understanding on the attachment so Markdown and extracted fields are added to the model context.",
+          "why": "The Agent Framework provider analyzes attachments and adds Markdown plus extracted fields before the model replies."
+        }
+      ],
+      "concept": "For attachments outside any index, use Content Understanding as a context provider so Markdown and domain fields (via analyzer_id when needed) reach the model before it answers."
+    },
+    {
+      "id": "gen-037",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Implement orchestrated multi-agent solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/workflow",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Three agents must run in a fixed order: normalize a support ticket, map severity, then draft the customer update. Each step consumes the prior output, no human gate is required, and this is new work started in January 2027. Which orchestration do you build?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A sequential orchestration in Microsoft Agent Framework where each agent receives the previous result.",
+          "why": "Sequential orchestration passes each agent's output to the next in a fixed pipeline, which matches this new post-retirement workflow."
+        },
+        {
+          "id": "B",
+          "text": "Three independent chat sessions with no shared handoff of intermediate results.",
+          "why": "Independent sessions cannot feed normalize output into severity mapping or into the customer-update draft."
+        },
+        {
+          "id": "C",
+          "text": "A single model call with no agents, hoping one completion invents all three stages at once.",
+          "why": "A single unorchestrated completion does not implement a multi-agent sequential pipeline with explicit step handoffs."
+        },
+        {
+          "id": "D",
+          "text": "Rely only on the visual designer after its December 2026 retirement and refuse Agent Framework.",
+          "why": "New workflows after the designer retirement should use Microsoft Agent Framework, not a retired visual-only path."
+        }
+      ],
+      "concept": "For a fixed multi-agent pipeline with no human gate, use sequential orchestration in Microsoft Agent Framework—the supported path for new workflows after the visual designer retirement."
+    },
+    {
+      "id": "gen-038",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Build agents by using Foundry",
+      "bullet": "Build autonomous or semiautonomous workflows with safeguards and approval flow controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/use-toolbox-hosted-agent",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A hosted agent can wire funds through a toolbox tool. Policy requires a human before any transfer. In staging, wires fire immediately when the model requests the tool because require_approval is never and the runtime never pauses. What change enforces the hold?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Lower temperature so the model becomes less likely to call wire without changing approval settings.",
+          "why": "Temperature does not enforce require_approval; the runtime still invokes the tool immediately when approval is never."
+        },
+        {
+          "id": "B",
+          "text": "Set require_approval to always, and pause in the runtime until that call is approved.",
+          "why": "always requires the runtime to present the pending call and wait for explicit approval before invoking the tool."
+        },
+        {
+          "id": "C",
+          "text": "Delete the tool schema but keep require_approval as never so wires somehow wait.",
+          "why": "Removing the schema breaks the tool path entirely; never still would not pause even if the tool remained."
+        },
+        {
+          "id": "D",
+          "text": "Enable tracing only, because observability dashboards automatically block wire tools.",
+          "why": "Tracing observes calls; it does not pause toolbox invocations or replace require_approval enforcement in the runtime."
+        }
+      ],
+      "concept": "For hosted-agent toolbox tools that must wait on a person, set require_approval to always and enforce the pause in the agent runtime before each tools/call."
+    },
+    {
+      "id": "gen-039",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Tune generation behavior, such as prompt engineering and adjusting model parameters",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/prompt-engineering",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "One feature drafts medication label instructions that must stay near approved phrasing. Another invents playful jingles where novelty matters. Both already have precise prompts and support temperature and top_p. How should you set sampling?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Max out both temperature and top_p on the medication labels so wording stays conservative.",
+          "why": "Maxing both parameters increases randomness, which is the opposite of focused wording needed for medication labels."
+        },
+        {
+          "id": "B",
+          "text": "Use the highest temperature for labels and the lowest for jingles, adjusting both temperature and top_p together.",
+          "why": "That inverts the guidance and changes both sampling controls at once, which the docs advise against."
+        },
+        {
+          "id": "C",
+          "text": "Lower temperature for the medication labels, raise it for the jingles, and change only one of temperature or top_p.",
+          "why": "Lower temperature focuses legal-style text; higher temperature adds variety for creative jingles; alter only one control."
+        },
+        {
+          "id": "D",
+          "text": "Leave temperature untouched and only rewrite prompts to delete all task instructions.",
+          "why": "Deleting instructions hurts both tasks; sampling still needs tuning when prompts are already specific."
+        }
+      ],
+      "concept": "Use lower temperature for focused, approved-style text and higher temperature for creative variety, and change only temperature or top_p—not both—when tuning sampling."
+    },
+    {
+      "id": "gen-040",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement generative AI and agentic solutions",
+      "subsection": "Optimize and operationalize generative AI systems",
+      "bullet": "Orchestrate multiple models, flows, or hybrid LLM and rules engines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/concepts/model-router-how-it-works",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Weekday support traffic mixes easy FAQ prompts with harder troubleshooting prompts, and each should land on a fitting model without a hand-built routing table. A quarterly audit summary must always hit one locked approved model with fixed parameters. How do you split the calls?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Send every call, including the audit summary, through model router so the approved model can change per prompt.",
+          "why": "Router may pick different models per prompt, which violates the locked approved model and fixed parameters for the audit."
+        },
+        {
+          "id": "B",
+          "text": "Hard-code a single tiny model for all traffic and skip both router and the approved deployment.",
+          "why": "One tiny model neither routes the weekday mix intelligently nor pins the audit to the approved deployment."
+        },
+        {
+          "id": "C",
+          "text": "Build a manual if/else table of hundreds of prompt keywords and never use model router.",
+          "why": "A hand-maintained keyword table is the routing burden model router is meant to replace for mixed traffic."
+        },
+        {
+          "id": "D",
+          "text": "Use model router for the weekday mix and a direct deployment of the approved model for the audit summary.",
+          "why": "Router handles diverse prompts automatically; a direct deployment pins the compliance path to one model and parameters."
+        }
+      ],
+      "concept": "Use the hybrid pattern: model router for mixed everyday prompts, and a direct deployment when every request must use one approved model with fixed parameters."
+    }
+  ]
+}

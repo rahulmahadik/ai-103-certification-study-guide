@@ -1,0 +1,730 @@
+{
+  "sectionId": "text-analysis",
+  "skillArea": "Implement text analysis solutions",
+  "weight": "10–15%",
+  "outlineAsOf": "2026-04-16",
+  "status": "ready",
+  "holdNote": "",
+  "items": [
+    {
+      "id": "tx-001",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Implement solutions to extract entities, topics, summaries, and structured JSON outputs by using generative prompting and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A news desk wants, for each article, the predefined entity types, a list of the main concepts, and a summary built by selecting key sentences. Consumers already accept those three outputs. There is no custom label set and no requirement for one JSON schema of your own. Which approach fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Prebuilt named entity recognition, key phrase extraction, and extractive summarization in Azure Language.",
+          "why": "The Language overview maps \"extract categories of information without creating a custom model\" to prebuilt NER."
+        },
+        {
+          "id": "B",
+          "text": "Custom NER trained on a new label set for people, places, and organizations.",
+          "why": "The same table sends \"a model specific to your data\" to custom NER, which you train. People, places, and organizations are the predefined types, and the desk said there is no custom label set. Prebuilt NER is the row for categories without a custom model."
+        },
+        {
+          "id": "C",
+          "text": "One generative call with a strict JSON schema that replaces the three Language features.",
+          "why": "A JSON schema fits when a downstream system requires a shape the prebuilt features do not emit. This desk already accepts the predefined entities, the key-phrase list, and the extractive summary. The overview maps those three tasks to the Language features."
+        },
+        {
+          "id": "D",
+          "text": "Document PII detection, redacting names before the article is stored.",
+          "why": "PII detection identifies and redacts sensitive data such as names, addresses, and financial identifiers. The desk asked for entities, main concepts, and an extractive summary, which the decision table assigns to NER, key phrases, and summarization."
+        }
+      ],
+      "concept": "The same overview also maps \"extract main topics and important phrases\" to key phrase extraction, and summarization of long text to the summarization feature. Extractive summarization selects key sentences and keeps their original positions. Key phrase extraction and summarization are listed as legacy capabilities: supported for existing workloads, and still the features that table names for these outputs. This maps to: Implement solutions to extract entities, topics, summaries, and structured JSON outputs by using generative prompting and Foundry Tools."
+    },
+    {
+      "id": "tx-002",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Configure detection of sentiment, tone, safety issues, and sensitive content",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "An existing review site must keep scoring each review as negative, neutral, or positive, at sentence and document level, and must tie the opinion to the product aspect the guest mentioned. The reviews have no personal data to redact and no violent content. Which feature fits the scores they already store?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Text PII detection with redaction, because a guest opinion is sensitive content.",
+          "why": "PII detection identifies and redacts personal data. These reviews have nothing to redact. Sentiment analysis is the feature that assigns negative, neutral, and positive labels and, with opinion mining, links them to aspects such as a product or a service."
+        },
+        {
+          "id": "B",
+          "text": "Sentiment analysis with opinion mining on the existing Azure Language resource.",
+          "why": "Sentiment analysis assigns negative, neutral, and positive labels from the highest confidence score."
+        },
+        {
+          "id": "C",
+          "text": "The four harm-category filters, scoring hate, sexual, violence, and self-harm.",
+          "why": "Those four categories classify harmful content. This page's feature classifies sentiment and aspects. The stem has no unsafe content to block, and a harm score is not the negative, neutral, or positive label the site stores."
+        },
+        {
+          "id": "D",
+          "text": "Key phrase extraction, using the longest phrase as the sentiment label.",
+          "why": "Key phrase extraction returns main concepts as a list. It does not assign negative, neutral, or positive, and it does not attach an opinion to an aspect. Opinion mining is the part of sentiment analysis that does that."
+        }
+      ],
+      "concept": "At sentence level and document level, and returns confidence scores from 0 to 1. Opinion mining adds the aspects those opinions refer to. The page says this Language feature retires on 31 March 2029 and points new projects at Microsoft Foundry. That date does not change which feature produces the labels this site already stores. This maps to: Configure detection of sentiment, tone, safety issues, and sensitive content."
+    },
+    {
+      "id": "tx-003",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Build solutions that translate text by using Azure Translator in Foundry Tools or LLM-powered translation flows",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A nightly job translates two million product titles. The wording must stay literal, the cost must follow source-text characters, and nobody needs a formal or informal tone. The input is text, not audio. Which translation path fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Translator's LLM path with tone set to formal and five reference translations.",
+          "why": "API version 2026-06-06 can send a request to an LLM deployment, with tone controls and up to five reference translations for adaptive style. That path is billed by tokens. The page says to keep high-volume baseline traffic on NMT when you do not need adaptive behavior or tone. These titles are that baseline."
+        },
+        {
+          "id": "B",
+          "text": "Speech translation, streaming each title as if it were spoken audio.",
+          "why": "Speech translation takes an audio stream. These titles are text. Text translation is the Translator operation that translates source text to one or more target languages."
+        },
+        {
+          "id": "C",
+          "text": "Azure Translator text translation on the standard NMT model, billed by source characters.",
+          "why": "Text translation translates source text at production scale."
+        },
+        {
+          "id": "D",
+          "text": "Custom neural voice, so the titles are spoken in a brand voice.",
+          "why": "Custom neural voice synthesizes speech in a voice you build. It does not translate title strings. The job needs translated text at a character price, which is NMT text translation."
+        }
+      ],
+      "concept": "NMT is billed by source-text characters. The 2026-06-06 overview says to reserve the LLM path for tone, adaptive wording, or richer context, and to keep high-volume literal traffic on NMT. The input here is text, so this is the text API, not speech translation. This maps to: Build solutions that translate text by using Azure Translator in Foundry Tools or LLM-powered translation flows."
+    },
+    {
+      "id": "tx-004",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Customize language model outputs for domain tasks, such as compliance summarization and domain extraction",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "Compliance wants each contract summarized as JSON with obligation, deadline, and clause id. The schema changes every quarter. There is no labeled training set. The summary must match that schema, not merely be valid JSON. Which approach fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "JSON mode (response_format type json_object) with no schema.",
+          "why": "JSON mode guarantees that the message is valid JSON. It does not make the model follow your schema. Structured outputs set the format to json_schema, with strict true, so the response has to match the supplied schema. The page prefers json_schema when the model supports it."
+        },
+        {
+          "id": "B",
+          "text": "Custom text classification trained on last quarter's three labels.",
+          "why": "Custom text classification returns classes you define, and it needs a training project. A label that changes every quarter is a new project, and a class name is not an obligation, a deadline, and a clause id. Structured outputs put that schema on the inference call."
+        },
+        {
+          "id": "C",
+          "text": "Extractive summarization, copying the three most central sentences.",
+          "why": "Extractive summarization selects sentences from the document. It does not fill obligation, deadline, and clause id. Structured outputs are the documented way to extract structured data into a schema you supply."
+        },
+        {
+          "id": "D",
+          "text": "Structured outputs with a strict JSON schema for those three fields, validated before use.",
+          "why": "Structured outputs make the model follow a JSON schema you send on the call."
+        }
+      ],
+      "concept": "Chat Completions puts it in response_format; the Responses API puts it in text.format. strict true requires every field to be listed as required. That binds the compliance summary to obligation, deadline, and clause id, and you can change the schema next quarter without a training set. The page lists extracting structured data as a primary use. This maps to: Customize language model outputs for domain tasks, such as compliance summarization and domain extraction."
+    },
+    {
+      "id": "tx-005",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Implement workflows to convert speech to text and text to speech for agentic interactions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-services/speech-recognition-generation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A live voice agent must hear the caller and speak the reply in the same low-latency turn. The generative model itself takes the speech and produces the speech. A separate overnight transcript is not the conversation. Which interface fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "The Realtime API for speech-in and speech-out on a realtime model such as gpt-realtime.",
+          "why": "The architecture guide assigns low-latency, speech-in and speech-out conversations for live voice agents to the Realtime API."
+        },
+        {
+          "id": "B",
+          "text": "Batch transcription of the call recording, with TTS applied the next morning.",
+          "why": "Batch transcription is for large volumes of audio processed asynchronously. The guide separates that from a live turn. The caller is waiting on speech in and speech out now, which the Realtime API row describes."
+        },
+        {
+          "id": "C",
+          "text": "Custom voice only, so the reply uses a brand voice and the caller is not transcribed.",
+          "why": "Custom voice builds a brand speaking voice for text to speech. It does not take the caller's audio into the generative model. The live agent needs speech in and speech out, which is the Realtime API."
+        },
+        {
+          "id": "D",
+          "text": "Azure Translator text translation of a typed sentence.",
+          "why": "The guide says to use Azure Translator for text documents, not for a live spoken turn. Translator never hears the caller. The spoken agent turn is the Realtime API."
+        }
+      ],
+      "concept": "The models it names include gpt-realtime, gpt-realtime-mini, gpt-4o-realtime-preview, and gpt-4o-mini-realtime-preview. That is the generative model taking audio and speaking back in the turn. This maps to: Implement workflows to convert speech to text and text to speech for agentic interactions."
+    },
+    {
+      "id": "tx-006",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Integrate speech as an agent modality, including custom speech models",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/custom-speech-overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "The same voice agent keeps mishearing product SKUs and plant names on a noisy shop floor. You can supply the term list and recorded calls with transcripts. The spoken reply should stay on the existing neural voice. Which change fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Custom neural voice trained on a narrator, so the SKUs are spoken more clearly.",
+          "why": "Custom voice creates a synthetic speaking voice from human speech samples. It does not change how the agent recognizes what the caller said. Recognition of domain words is custom speech."
+        },
+        {
+          "id": "B",
+          "text": "A custom speech model trained with the term list and with audio plus reference transcripts.",
+          "why": "Custom speech augments the base model for domain vocabulary by training on text."
+        },
+        {
+          "id": "C",
+          "text": "A longer system message that lists every SKU and asks the speech model to try harder.",
+          "why": "Custom speech trains a recognition model on your terms and your audio. A system message on the chat model does not retune the recognizer that is mishearing the shop floor. The overview describes text data and audio-with-transcripts as the training inputs."
+        },
+        {
+          "id": "D",
+          "text": "Azure Translator, because an unrecognized SKU is a translation problem.",
+          "why": "Translator translates text. The failure is recognition of domain words in noisy audio. Custom speech is the recognition model trained for that vocabulary and those audio conditions."
+        }
+      ],
+      "concept": "And for the audio conditions of the app by training on audio with reference transcripts. A custom speech model can be used for real-time speech to text, speech translation, and batch transcription. The existing neural voice can stay; this change is on the recognition side the agent hears. This maps to: Integrate speech as an agent modality, including custom speech models."
+    },
+    {
+      "id": "tx-007",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Enable multimodal reasoning from audio inputs",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-services/speech-recognition-generation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A QA reviewer must judge a recorded oral answer. A transcript is not an acceptable input: the reasoning has to run on the audio in one model call, together with the language judgment. Word accuracy on noisy jargon is already fine. Which model call fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Batch speech to text, then Azure Language sentiment on the transcript.",
+          "why": "The guide says not to use Azure Speech to analyze sentiment; text sentiment belongs to Azure Language, and that path starts from text. This stem forbids a transcript as the input and asks for one model call on the audio. The audio chat models are the row for reasoning on speech input in a single call."
+        },
+        {
+          "id": "B",
+          "text": "Custom speech, retrained so the transcript contains more of the jargon.",
+          "why": "Custom speech is for domain vocabulary and noisy audio when the base recognizer is not enough. The stem says word accuracy is already fine, and the missing piece is reasoning on the audio itself. Custom speech still yields text."
+        },
+        {
+          "id": "C",
+          "text": "A chat completions audio model, such as gpt-audio or gpt-4o-audio-preview, with the recording as audio input.",
+          "why": "The guide says to use Azure OpenAI audio when the workload combines speech input with reasoning."
+        },
+        {
+          "id": "D",
+          "text": "Text to speech with gpt-4o-mini-tts, reading the rubric aloud.",
+          "why": "gpt-4o-mini-tts synthesizes speech from text, including prompt-guided style. It does not take the recorded answer as the input to a reasoning call. The input here is audio that must be judged."
+        }
+      ],
+      "concept": "Summarization, or language understanding in a single model call. Chat Completions audio models, including gpt-4o-audio-preview, gpt-4o-mini-audio-preview, gpt-audio, and gpt-audio-mini, take audio input and do that language work in one call. This maps to: Enable multimodal reasoning from audio inputs."
+    },
+    {
+      "id": "tx-008",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Translate speech into other languages by using language models and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-translation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A kiosk microphone hears Japanese, and the source language is known. During the same spoken turn it must answer in spoken English. There is no text document to translate. Which service fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Azure Translator text translation of a document the visitor never typed.",
+          "why": "Text translation translates source text. The kiosk has audio, and the speech translation page is the one that takes an audio stream in a specified source language and returns translated text, synthesized speech, or both."
+        },
+        {
+          "id": "B",
+          "text": "Custom speech in Japanese, with no translation target.",
+          "why": "Custom speech improves recognition for domain words and audio conditions. It does not, by itself, return spoken English from Japanese audio. Speech translation is the API that returns the translated speech."
+        },
+        {
+          "id": "C",
+          "text": "Batch transcription in Japanese, stored for an agent to read the next day.",
+          "why": "Batch transcription produces text later. The kiosk must speak English during the turn. Standard speech translation returns synthesized speech from the live audio stream."
+        },
+        {
+          "id": "D",
+          "text": "Speech translation's standard API: Japanese audio in, synthesized English speech out.",
+          "why": "The standard speech translation API takes an input audio stream in a specified source language and can return translated text."
+        }
+      ],
+      "concept": "Synthesized speech, or both. Interim results arrive as speech is detected. That matches a known source language and a spoken target in the same turn. Live Interpreter is the related path when you do not set the input language. This maps to: Translate speech into other languages by using language models and Foundry Tools."
+    },
+    {
+      "id": "tx-009",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Implement solutions to extract entities, topics, summaries, and structured JSON outputs by using generative prompting and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A research desk indexes briefing notes. For each note it must pull People, Organizations, and Locations from the predefined type set, list the main topic phrases, and build a short summary by picking existing sentences rather than rewriting them. No custom entity labels and no hand-authored JSON schema are required. Which Azure Language combination fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Train a custom named entity recognition project on labeled briefing notes before any extraction runs.",
+          "why": "Custom NER is for categories you define and train. The desk needs the predefined entity types that prebuilt NER already returns, not a labeled custom model."
+        },
+        {
+          "id": "B",
+          "text": "Call entity linking alone so every mention resolves to a Wikipedia page instead of type labels and topic phrases.",
+          "why": "Entity linking disambiguates mentions to Wikipedia. It does not return key phrases or an extractive summary built from selected sentences."
+        },
+        {
+          "id": "C",
+          "text": "Use prebuilt named entity recognition, key phrase extraction, and extractive summarization on the existing Language resource.",
+          "why": "Prebuilt NER returns predefined types, key phrase extraction lists main topics, and extractive summarization selects key sentences without a custom schema."
+        },
+        {
+          "id": "D",
+          "text": "Run only abstractive summarization so the model invents a new paragraph that covers entities and topics in prose.",
+          "why": "Abstractive summarization generates new wording. It does not separately extract predefined entity types or return a list of key phrases as first-class outputs."
+        }
+      ],
+      "concept": "Azure Language maps predefined entity categories to prebuilt NER, main topics and phrases to key phrase extraction, and selecting key sentences from the source to extractive summarization, without requiring custom labels or a caller-defined JSON schema."
+    },
+    {
+      "id": "tx-010",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Configure detection of sentiment, tone, safety issues, and sensitive content",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A hotel chain stores guest comments and already expects a negative, neutral, or positive label with confidence for each sentence and for the whole comment. Product managers also need the aspect of the stay that the opinion targets, such as room or breakfast. No redaction of personal data and no safety moderation are in scope. Which Language feature fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Personally identifiable information detection to redact guest names before scoring polarity.",
+          "why": "PII detection finds and can redact personal data. The scenario already ruled out redaction and needs polarity plus aspect-linked opinions instead."
+        },
+        {
+          "id": "B",
+          "text": "Text analytics for health to label clinical entities inside the guest comments.",
+          "why": "Text analytics for health extracts medical information from clinical text. Hotel guest comments are not clinical documents and that feature does not score aspect-based sentiment."
+        },
+        {
+          "id": "C",
+          "text": "Language detection alone to confirm each comment is written in English before storage.",
+          "why": "Language detection only identifies the language of the text. It does not assign sentiment labels or link opinions to product aspects."
+        },
+        {
+          "id": "D",
+          "text": "Sentiment analysis with opinion mining so sentence and document scores pair with the aspects guests mention.",
+          "why": "Sentiment analysis labels negative, neutral, or positive at sentence and document level with confidence scores, and opinion mining links those opinions to aspects."
+        }
+      ],
+      "concept": "Sentiment analysis returns negative, neutral, and positive labels with confidence at sentence and document scope, and opinion mining adds aspect-based targets for those opinions without requiring model customization."
+    },
+    {
+      "id": "tx-011",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Build solutions that translate text by using Azure Translator in Foundry Tools or LLM-powered translation flows",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/translator/text-translation/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A catalog sync pushes millions of SKU descriptions through Azure Translator API version 2026-06-06. Translations must stay literal, billing must follow source-text characters, and nobody asked for formal or informal tone controls. The payload is plain text, not speech. Which translation path fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Standard Neural Machine Translation on Translator, which bills by source-text characters for high-volume literal traffic.",
+          "why": "The 2026-06-06 overview keeps high-volume literal workloads on NMT, which is billed by source-text characters rather than tokens."
+        },
+        {
+          "id": "B",
+          "text": "LLM-based translation with tone set to informal so every SKU sounds conversational.",
+          "why": "LLM translation is for adaptive wording, tone, or richer context and bills by tokens. The sync needs literal, character-billed NMT without tone controls."
+        },
+        {
+          "id": "C",
+          "text": "Speech translation with synthesized audio output for each SKU description.",
+          "why": "Speech translation operates on spoken audio streams. The catalog job is plain text and does not need speech-to-speech or speech-to-text translation."
+        },
+        {
+          "id": "D",
+          "text": "Document translation that preserves Word formatting for every SKU string.",
+          "why": "Document translation targets formatted documents. Individual SKU description strings are text translation workloads, not document files."
+        }
+      ],
+      "concept": "Translator 2026-06-06 lets you choose NMT or LLM; NMT is billed by source-text characters and is the path Learn recommends for high-volume literal translation, while LLM paths add tone and adaptive controls at token cost."
+    },
+    {
+      "id": "tx-012",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Customize language model outputs for domain tasks, such as compliance summarization and domain extraction",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/openai/how-to/structured-outputs",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "Legal ops needs each policy memo reduced to JSON with riskLevel, ownerTeam, and reviewDate. The field list changes twice a year, there is no labeled training set, and valid JSON that ignores those fields is not acceptable. Which approach fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Enable JSON mode only so the model returns any well-formed JSON object without a schema.",
+          "why": "JSON mode guarantees valid JSON but not adherence to a supplied schema. The memo fields must match the defined properties, which structured outputs enforce."
+        },
+        {
+          "id": "B",
+          "text": "Use structured outputs with a strict JSON schema for riskLevel, ownerTeam, and reviewDate, then validate before downstream use.",
+          "why": "Structured outputs bind the model to a JSON Schema on Chat Completions or Responses so required fields are present, which fits a changing compliance schema without labeled training."
+        },
+        {
+          "id": "C",
+          "text": "Fine-tune a custom model on thousands of labeled memos so the weights learn the three fields.",
+          "why": "There is no labeled training set, and the schema changes twice a year. Structured outputs apply the schema at inference without fine-tuning."
+        },
+        {
+          "id": "D",
+          "text": "Call prebuilt named entity recognition and map People entities into the three JSON field names.",
+          "why": "Prebuilt NER returns predefined entity types. It does not force a caller-defined compliance schema with riskLevel, ownerTeam, and reviewDate."
+        }
+      ],
+      "concept": "Structured outputs make the model follow a JSON Schema you supply on Chat Completions response_format or Responses text.format, which is stricter than JSON mode and fits schema-bound compliance extraction without a labeled training set."
+    },
+    {
+      "id": "tx-013",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Implement workflows to convert speech to text and text to speech for agentic interactions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-services/speech-recognition-generation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A support bot must take the caller's live audio, reason inside the generative model, and speak the reply in the same low-latency turn. Chaining a separate speech-to-text service, a text chat model, and a text-to-speech voice is not the design. Which interface fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Batch transcription with Whisper through the Audio API on overnight call recordings.",
+          "why": "Batch or file-based transcription handles prerecorded audio after the call. It is not a low-latency speech-in and speech-out conversation in one realtime model turn."
+        },
+        {
+          "id": "B",
+          "text": "Azure Speech fast transcription for short prerecorded clips, then a separate neural TTS call.",
+          "why": "Fast transcription and a later TTS call still split recognition and synthesis outside one generative realtime conversation. The bot needs speech-in and speech-out on a realtime model."
+        },
+        {
+          "id": "C",
+          "text": "The Realtime API with a realtime model such as gpt-realtime for speech-in and speech-out in one turn.",
+          "why": "Learn maps low-latency live voice agents to the Realtime API on models such as gpt-realtime, where the generative model takes speech and speaks back."
+        },
+        {
+          "id": "D",
+          "text": "Pronunciation assessment to score the caller's fluency before any reply is spoken.",
+          "why": "Pronunciation assessment evaluates accuracy and fluency for language learning. It does not run a generative speech-in and speech-out agent conversation."
+        }
+      ],
+      "concept": "Azure OpenAI Realtime API models such as gpt-realtime provide low-latency speech-in and speech-out conversations so a generative voice agent can hear and speak in one turn without a separate STT plus TTS chain."
+    },
+    {
+      "id": "tx-014",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Integrate speech as an agent modality, including custom speech models",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/custom-speech-overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "Floor technicians shout chemical names and lot codes over conveyor noise, and the base speech-to-text model keeps missing those terms. You can upload a phrase list plus recorded audio with reference transcripts. The agent's spoken replies should keep using the current neural voice unchanged. Which change fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Replace the neural voice with a custom neural voice trained on a brand spokesperson.",
+          "why": "Custom voice changes how the agent speaks. The problem is recognition of domain terms under noise, and the spoken reply voice must stay as it is."
+        },
+        {
+          "id": "B",
+          "text": "Switch only to language identification so the service guesses which language is spoken on the floor.",
+          "why": "Language identification detects which language is present. It does not train domain vocabulary or acoustic conditions for the chemical names and lot codes."
+        },
+        {
+          "id": "C",
+          "text": "Enable pronunciation assessment so each technician receives a fluency score after every utterance.",
+          "why": "Pronunciation assessment scores learner speech. It does not improve recognition of shop-floor jargon for the agent modality."
+        },
+        {
+          "id": "D",
+          "text": "Train a custom speech model with the term list and with audio paired to reference transcripts, then use it for recognition.",
+          "why": "Custom speech augments the base model with domain vocabulary from text and with acoustic conditions from audio plus reference transcripts, without changing the neural TTS voice."
+        }
+      ],
+      "concept": "Custom speech improves recognition of domain-specific vocabulary and challenging audio by training on text and on audio with reference transcripts, and the resulting model can serve real-time speech to text while leaving the existing neural voice for replies."
+    },
+    {
+      "id": "tx-015",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Enable multimodal reasoning from audio inputs",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-services/speech-recognition-generation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "Compliance must score a recorded oral briefing for completeness and tone. Reviewers reject any workflow that first turns the recording into text and then judges the transcript. Word error rate on the jargon is already acceptable. The judgment and the audio must share one model call. Which call fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Chat Completions audio model such as gpt-audio or gpt-4o-audio-preview with the recording supplied as audio input.",
+          "why": "Chat Completions audio models combine audio input with language reasoning or summarization in a single call, which matches judging the recording without a separate transcript step."
+        },
+        {
+          "id": "B",
+          "text": "Batch transcription alone so reviewers read the plain text transcript offline.",
+          "why": "Batch transcription produces text from prerecorded audio. Reviewers refused a transcript-first workflow, and transcription alone does not perform the language judgment in the same call."
+        },
+        {
+          "id": "C",
+          "text": "A custom speech endpoint tuned only to lower word error rate on the jargon.",
+          "why": "Custom speech improves recognition accuracy. The scenario already accepts word accuracy and needs multimodal reasoning on the audio itself, not another transcription model."
+        },
+        {
+          "id": "D",
+          "text": "Neural text-to-speech that reads a written checklist back to the compliance officer.",
+          "why": "Text-to-speech synthesizes speech from text. It does not reason over a recorded oral briefing as audio input."
+        }
+      ],
+      "concept": "When the workload must combine speech input with downstream reasoning or summarization in one call, Learn points to Chat Completions audio models such as gpt-audio and gpt-4o-audio-preview rather than a separate transcription-then-text pipeline."
+    },
+    {
+      "id": "tx-016",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Translate speech into other languages by using language models and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-translation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A museum headset hears a guide speaking German, and the source language is configured in advance. Visitors must hear a spoken French version during the same turn. There is no document file to send to Translator. Which service path fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Azure Translator text translation on a German transcript produced overnight after the tour ends.",
+          "why": "Text translation needs written input and overnight processing misses the same-turn spoken reply. The headset needs real-time speech translation, not a delayed text job."
+        },
+        {
+          "id": "B",
+          "text": "Speech translation with the standard API: German audio in and synthesized French speech out in the same turn.",
+          "why": "The standard speech translation API accepts a specified source language and can return translated text, synthesized speech, or both during the spoken turn."
+        },
+        {
+          "id": "C",
+          "text": "Live Interpreter only because the source language is unknown and may switch mid-sentence without configuration.",
+          "why": "Live Interpreter fits unspecified or switching input languages. Here the German source is known and configured, so the standard speech translation API is the matching path."
+        },
+        {
+          "id": "D",
+          "text": "Document translation that preserves PowerPoint formatting for the museum script.",
+          "why": "Document translation works on files and formatting. The headset hears live audio and must produce spoken French, not a translated document."
+        }
+      ],
+      "concept": "Speech translation's standard API takes a configured source-language audio stream and can return translated text, synthesized speech, or both in real time, which fits known-source speech-to-speech without a text document."
+    },
+    {
+      "id": "tx-017",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Implement solutions to extract entities, topics, summaries, and structured JSON outputs by using generative prompting and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A city communications office archives weekly newsletters. For each issue it must pull People, Organizations, and Locations from the predefined type set, list the main topic phrases, and build a short summary by selecting existing sentences rather than rewriting them. No custom entity labels and no hand-authored JSON schema are required. Which Azure Language combination fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Prebuilt named entity recognition, key phrase extraction, and extractive summarization in Azure Language.",
+          "why": "Prebuilt NER returns predefined types, key phrase extraction lists main topics, and extractive summarization selects key sentences without a custom schema."
+        },
+        {
+          "id": "B",
+          "text": "Train a custom named entity recognition project on labeled newsletters before any extraction runs.",
+          "why": "Custom NER is for categories you define and train. The office needs the predefined entity types that prebuilt NER already returns, not a labeled custom model."
+        },
+        {
+          "id": "C",
+          "text": "Call entity linking alone so every mention resolves to a Wikipedia page instead of type labels and topic phrases.",
+          "why": "Entity linking disambiguates mentions to Wikipedia. It does not return key phrases or an extractive summary built from selected sentences."
+        },
+        {
+          "id": "D",
+          "text": "Run only abstractive summarization so the model invents a new paragraph that covers entities and topics in prose.",
+          "why": "Abstractive summarization generates new wording. It does not separately extract predefined entity types or return a list of key phrases as first-class outputs."
+        }
+      ],
+      "concept": "Azure Language maps predefined entity categories to prebuilt NER, main topics and phrases to key phrase extraction, and selecting key sentences from the source to extractive summarization, without requiring custom labels or a caller-defined JSON schema."
+    },
+    {
+      "id": "tx-018",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Apply language model text analysis",
+      "bullet": "Configure detection of sentiment, tone, safety issues, and sensitive content",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/sentiment-opinion-mining/overview",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "An appliance warranty portal stores owner feedback and already expects a negative, neutral, or positive label with confidence for each sentence and for the whole comment. Product managers also need the aspect of the product that the opinion targets, such as motor noise or door seal. No redaction of personal data and no safety moderation are in scope. Which Language feature fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Text PII detection with redaction, because an owner opinion is sensitive content.",
+          "why": "PII detection finds and redacts personal data. The portal already wants sentiment labels and aspect opinions, and personal-data redaction is explicitly out of scope."
+        },
+        {
+          "id": "B",
+          "text": "Sentiment analysis with opinion mining on the existing Azure Language resource.",
+          "why": "Sentiment scores sentence and document polarity with confidence, and opinion mining ties those opinions to product aspects."
+        },
+        {
+          "id": "C",
+          "text": "The four harm-category filters, scoring hate, sexual, violence, and self-harm.",
+          "why": "Harm categories moderate unsafe content severity. They do not return negative, neutral, or positive sentiment or map opinions to aspects such as motor noise."
+        },
+        {
+          "id": "D",
+          "text": "Key phrase extraction, using the longest phrase as the sentiment label.",
+          "why": "Key phrase extraction lists main topics. It does not assign polarity labels with confidence or perform aspect-based opinion mining."
+        }
+      ],
+      "concept": "Sentiment analysis labels text negative, neutral, or positive at sentence and document level with confidence scores from 0 to 1. Opinion mining adds the aspects those opinions refer to. The Language feature retires on 31 March 2029 and remains the fit when existing stores already expect those scores. This maps to: Configure detection of sentiment, tone, safety issues, and sensitive content."
+    },
+    {
+      "id": "tx-019",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Implement workflows to convert speech to text and text to speech for agentic interactions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/data-guide/ai-services/speech-recognition-generation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A drive-through order assistant must take the customer's live audio, reason inside the generative model, and speak the reply in the same low-latency turn. Chaining a separate speech-to-text service, a text chat model, and a text-to-speech voice is not the design. Which interface fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Batch transcription of the order recording, with TTS applied the next morning.",
+          "why": "Batch transcription processes prerecorded audio asynchronously and cannot complete a live speech-in and speech-out agent turn in real time."
+        },
+        {
+          "id": "B",
+          "text": "Custom voice only, so the reply uses a brand voice and the caller is never transcribed.",
+          "why": "Custom voice synthesizes brand TTS from text. It does not give a generative model live speech input or produce the reasoned speech reply in one turn."
+        },
+        {
+          "id": "C",
+          "text": "The Realtime API with a realtime model such as gpt-realtime for speech-in and speech-out in one turn.",
+          "why": "The Realtime API is built for low-latency speech-in and speech-out conversations on models such as gpt-realtime."
+        },
+        {
+          "id": "D",
+          "text": "Azure Translator text translation of a typed sentence the customer never spoke.",
+          "why": "Translator moves written text between languages. It does not accept live microphone audio or return spoken generative replies in the same turn."
+        }
+      ],
+      "concept": "Azure OpenAI's Realtime API supports low-latency speech-in and speech-out on models such as gpt-realtime, gpt-realtime-mini, and the gpt-4o realtime previews, so the generative model hears and speaks in one turn without a separate STT-chat-TTS chain. This maps to: Implement workflows to convert speech to text and text to speech for agentic interactions."
+    },
+    {
+      "id": "tx-020",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Implement text analysis solutions",
+      "subsection": "Implement speech solutions",
+      "bullet": "Translate speech into other languages by using language models and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-translation",
+      "guideUrl": "../guide/text-analysis.html",
+      "stem": "A clinic waiting-room speaker hears a nurse speaking Spanish, and the source language is configured in advance. Patients must hear a spoken Mandarin version during the same turn. There is no document file to send to Translator. Which service path fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Azure Translator text translation of a document the nurse never typed.",
+          "why": "Translator text and document APIs move written content. This scenario needs spoken Spanish audio in and synthesized Mandarin speech out in the same turn."
+        },
+        {
+          "id": "B",
+          "text": "Custom speech in Spanish, with no translation target configured.",
+          "why": "Custom speech improves recognition for domain audio. It does not translate spoken Spanish into synthesized Mandarin during the turn."
+        },
+        {
+          "id": "C",
+          "text": "Batch transcription in Spanish, stored for a clerk to read the next day.",
+          "why": "Batch transcription yields delayed text of the recording. Patients need live spoken Mandarin in the same turn, not an overnight transcript."
+        },
+        {
+          "id": "D",
+          "text": "Speech translation with the standard API: Spanish audio in and synthesized Mandarin speech out in the same turn.",
+          "why": "The standard speech translation API takes a known source language and can return synthesized speech in the target language with interim results."
+        }
+      ],
+      "concept": "Speech translation's standard API accepts an input audio stream in a specified source language and returns translated text, synthesized speech, or both in the target language, with interim results as speech is detected. Live Interpreter is the related path when the source language is unspecified. This maps to: Translate speech into other languages by using language models and Foundry Tools."
+    }
+  ]
+}

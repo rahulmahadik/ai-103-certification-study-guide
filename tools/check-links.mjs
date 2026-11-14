@@ -39,6 +39,11 @@ const EXPECTED_NAV = {
   'glossary.html': { Home: 'index.html', 'Study guide': 'guide/index.html', 'Cheat sheet': 'cheatsheet.html', Practice: 'practice/index.html', Glossary: null },
   'guide/index.html': { Home: '../index.html', 'Study guide': null, 'Cheat sheet': '../cheatsheet.html', Practice: '../practice/index.html', Glossary: '../glossary.html' },
   'practice/index.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
+  'practice/plan-and-manage.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
+  'practice/generative-and-agentic.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
+  'practice/computer-vision.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
+  'practice/text-analysis.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
+  'practice/information-extraction.html': { Home: '../index.html', 'Study guide': '../guide/index.html', 'Cheat sheet': '../cheatsheet.html', Practice: null, Glossary: '../glossary.html' },
 };
 
 const files = htmlFiles(DOCS);

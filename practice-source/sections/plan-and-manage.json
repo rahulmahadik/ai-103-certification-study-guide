@@ -1,0 +1,1450 @@
+{
+  "sectionId": "plan-and-manage",
+  "skillArea": "Plan and manage an Azure AI solution",
+  "weight": "25–30%",
+  "outlineAsOf": "2026-04-16",
+  "status": "ready",
+  "holdNote": "",
+  "items": [
+    {
+      "id": "pm-001",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate model for each task, including large language models (LLMs), small language models, multimodal models, and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/plan-and-prepare.html",
+      "stem": "A claims desk processes thousands of plain-text emails a day. The only required output is predefined entities — people, organizations, quantities, and dates — with no custom labels and no model training. Which choice fits that task?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A small language model deployed for on-device inference at branch offices.",
+          "why": "A small language model is a fit when the constraint is cheap, local inference. This desk runs in the cloud, and the required output is the prebuilt entity catalog, which Azure Language already returns without a custom model."
+        },
+        {
+          "id": "B",
+          "text": "Prebuilt named entity recognition in Azure Language in Foundry Tools.",
+          "why": "The Language decision table maps “extract categories of information without creating a custom model” on unstructured text to prebuilt named entity recognition."
+        },
+        {
+          "id": "C",
+          "text": "A multimodal model that accepts images and audio as well as text.",
+          "why": "A multimodal model is the right class when the input includes images or audio. These emails are plain text, so the extra modalities do not change the entity-extraction decision."
+        },
+        {
+          "id": "D",
+          "text": "A large language model fine-tuned on a new set of custom entity labels.",
+          "why": "Custom labels are the Custom NER path, and the team said they have no training set and want the predefined categories. Fine-tuning a large language model adds a model-training project this task does not need."
+        }
+      ],
+      "concept": "People, organizations, quantities, and dates are that preconfigured set. This maps to: Choose an appropriate model for each task, including large language models (LLMs), small language models, multimodal models, and Foundry Tools."
+    },
+    {
+      "id": "pm-002",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose the appropriate Foundry services for generative tasks, grounding, vector search, agent workflows, or multimodal processing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/tools.html",
+      "stem": "A benefits agent must answer from three live sources: a SharePoint policy library, claim PDFs in Blob Storage, and an existing Azure AI Search index. Several agents should share that retrieval setup, and answers must cite the source. Which service fits?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "A chat deployment whose system message is overwritten nightly with copied policy text.",
+          "why": "A system message can carry a short excerpt, but it is not a knowledge base over SharePoint, Blob Storage, and a search index. Foundry IQ exists because the model cannot see that proprietary data on its own."
+        },
+        {
+          "id": "B",
+          "text": "A Content Understanding analyzer that extracts fields from each file and stops there.",
+          "why": "Content Understanding reads a file into structured fields. It does not give several agents one permission-aware knowledge base that queries SharePoint, blob, and an existing index and returns citations."
+        },
+        {
+          "id": "C",
+          "text": "file_search against one PDF uploaded into a single vector store.",
+          "why": "file_search grounds a model in files you upload for that store. One PDF does not keep three live enterprise stores current, and it is not the shared multi-source knowledge base the page describes."
+        },
+        {
+          "id": "D",
+          "text": "A Foundry IQ knowledge base over those sources, connected to the agent.",
+          "why": "Foundry IQ is a knowledge base of one or more knowledge sources, including Blob Storage, SharePoint, and existing search indexes."
+        }
+      ],
+      "concept": "Agents share it, and agentic retrieval returns grounded answers with citations. Some retrieval features are still preview depending on API version. This maps to: Choose the appropriate Foundry services for generative tasks, grounding, vector search, agent workflows, or multimodal processing."
+    },
+    {
+      "id": "pm-003",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate method for retrieval and indexing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Support staff look up a parts catalog. Some questions include the exact SKU, and others describe the same part in everyday words that never appear in the title. The index already stores plain text and embeddings. Which retrieval method should they use?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "One hybrid query that runs full-text and vector retrieval together.",
+          "why": "A hybrid query contains one or more text searches and one or more vector searches."
+        },
+        {
+          "id": "B",
+          "text": "Full-text search only, because the SKU must match the stored words.",
+          "why": "Full-text search matches plain text stored in the index, which catches the exact SKU. It does not compare embeddings, so a description that never uses the title words is the half this option drops. The retrieval guide lists hybrid when both text and vectors are required."
+        },
+        {
+          "id": "C",
+          "text": "Vector search only, because the paraphrases are the harder case.",
+          "why": "Vector search compares the query embedding with vector fields, which can match a description that shares no title words. The same guide says to use full-text when keywords or entities differ even if the meaning is similar. An exact SKU is that keyword, so vector-only is incomplete."
+        },
+        {
+          "id": "D",
+          "text": "A fine-tuned chat model, and stop querying the index.",
+          "why": "The retrieval phase chooses vector, keyword, or hybrid queries against the index. Fine-tuning changes the chat model. It does not look up the SKU or the paraphrase in the catalog."
+        }
+      ],
+      "concept": "The service runs them and merges the results with Reciprocal Rank Fusion. The SKU is a full-text match, and the everyday description is a vector similarity match, so this catalog needs both in the same request. This maps to: Choose an appropriate method for retrieval and indexing."
+    },
+    {
+      "id": "pm-004",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose appropriate memory, tool, and knowledge integration services for agent solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-memory",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A shopping agent must remember a returning customer's size and preferred language on a later visit, without retaining the full transcript. Company return-policy pages are maintained separately, and the customer is not uploading a document. Which integration stores the preference?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Foundry IQ knowledge base of the company's return-policy library.",
+          "why": "The memory article points Foundry IQ at curated organizational content. Return policy is that kind of content. A shopper's size is user-specific context learned over time, so the knowledge base is the wrong store for it."
+        },
+        {
+          "id": "B",
+          "text": "file_search over a size chart the customer uploads on every visit.",
+          "why": "The same article reserves file search for user-provided documents during an interaction. Nobody is uploading a chart here, and a file store is not a durable user profile that survives to the next visit."
+        },
+        {
+          "id": "C",
+          "text": "A memory store that keeps user-profile memory for the preference.",
+          "why": "User-profile memory is the long-term store for durable preferences such as language and product defaults."
+        },
+        {
+          "id": "D",
+          "text": "Short-term session context that lives only inside the current conversation.",
+          "why": "Short-term memory tracks the current session. It is the right continuity for this visit's turns. A later visit needs the distilled preference, which the article assigns to long-term memory rather than to session context."
+        }
+      ],
+      "concept": "The service extracts and consolidates them so a later session can recall the size without the full transcript. Memory was in preview on the recheck date. This maps to: Choose appropriate memory, tool, and knowledge integration services for agent solutions."
+    },
+    {
+      "id": "pm-005",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Design Azure infrastructure for AI apps and agent-based solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/architecture",
+      "guideUrl": "../guide/plan-and-prepare.html",
+      "stem": "Two product teams will build agents and run evaluations. They must share model deployments and network policy, and neither team should see the other's agents, files, or evaluation results. Which layout matches that split?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "One Foundry resource, with a separate project for each team.",
+          "why": "The architecture guide calls out multi-team access as isolated projects that share model deployments and centralized governance."
+        },
+        {
+          "id": "B",
+          "text": "A separate Foundry resource for every developer, each with its own deployments.",
+          "why": "A resource per developer repeats model deployments and splits network policy. The page uses one resource so IT governs once, and uses projects when teams need isolation inside that resource."
+        },
+        {
+          "id": "C",
+          "text": "One shared project, so both teams edit the same agents and evaluations.",
+          "why": "A single project is the recommended default for one developer. Agents, files, and evaluations are project assets, so two teams in one project do not get the isolation the architecture describes."
+        },
+        {
+          "id": "D",
+          "text": "A standalone Azure OpenAI resource, with no Foundry project.",
+          "why": "A standalone Azure OpenAI resource is the page's option when the workload is completions only. These teams need agent hosting and evaluations, which the Foundry resource and its projects are there to provide."
+        }
+      ],
+      "concept": "The resource holds networking, security, and deployments. Each project is the boundary for files, agents, and evaluations. This maps to: Design Azure infrastructure for AI apps and agent-based solutions."
+    },
+    {
+      "id": "pm-006",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Choose appropriate deployment options",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/models.html",
+      "stem": "An interactive benefits chat is pay-per-token, and prompts and responses must be processed only inside the EU data zone. Throughput does not need to be reserved. Which deployment type fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Global Standard, because it offers the highest quota.",
+          "why": "Global Standard is the default for general workloads and the highest quota, and it is pay-per-token. Global processing may run in any Azure region, so it misses the EU data-zone requirement."
+        },
+        {
+          "id": "B",
+          "text": "Data Zone Provisioned, so capacity is reserved inside the zone.",
+          "why": "Data Zone Provisioned keeps processing inside the data zone and bills reserved provisioned throughput units. The chat does not need reserved throughput, so the pay-per-token data-zone type is the match."
+        },
+        {
+          "id": "C",
+          "text": "Data Zone Standard, pay-per-token processing inside the data zone.",
+          "why": "Data Zone Standard processes prompts and responses only inside the Microsoft-specified data zone, including the EU, and it is pay-per-token."
+        },
+        {
+          "id": "D",
+          "text": "Developer, because it is pay-per-token and can run in any region.",
+          "why": "Developer is for evaluating a fine-tuned model. It lasts 24 hours, has no SLA, and has no data-residency guarantee, so it is neither a production chat deployment nor an EU processing boundary."
+        }
+      ],
+      "concept": "The selection table recommends it when processing must stay in a data zone and capacity is not reserved. This maps to: Choose appropriate deployment options."
+    },
+    {
+      "id": "pm-007",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Configure model and agent deployments",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Three applications must call the same model, the same instructions, and the same tools. When that definition changes, the team wants to publish a new version instead of editing each application. What should they configure?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Developer deployment used only to score a fine-tuned model for a day.",
+          "why": "A Developer deployment is a short-lived evaluation target for a fine-tuned model. It does not store a reusable agent definition that several applications call, and it is not how you version instructions and tools together."
+        },
+        {
+          "id": "B",
+          "text": "A named, versioned prompt agent that stores the model, instructions, and tools.",
+          "why": "An agent is a persisted definition that combines the model, instructions, and tools, stored as a named, versioned asset."
+        },
+        {
+          "id": "C",
+          "text": "A copy of the system message pasted into each application.",
+          "why": "A pasted system message can shape one call, and the three copies will drift the next time the instructions change. The runtime article uses an agent when the model, instructions, and tools must be reused."
+        },
+        {
+          "id": "D",
+          "text": "A fine-tune that bakes the instructions into the weights and drops the tools.",
+          "why": "Fine-tuning changes model weights. It does not publish a versioned definition of instructions and tools that the applications share. The page's reusable unit for that combination is the agent."
+        }
+      ],
+      "concept": "Use one when many requests need the same behavior, and point the applications at that agent instead of copying the definition. This maps to: Configure model and agent deployments."
+    },
+    {
+      "id": "pm-008",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Integrate Foundry projects with continuous integration and continuous deployment (CI/CD) pipelines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluation-github-action",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A GitHub Actions workflow publishes a Foundry agent from the project. The release must stop when an evaluation pass rate falls below the agreed threshold, and the workflow must sign in without a stored client secret. What should the pipeline do?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Deploy on every push to main, and skip evaluation to save tokens.",
+          "why": "Skipping evaluation removes the pre-production check the workflow article is for. A push would reach production with no pass-rate gate, which is the failure the team is trying to catch."
+        },
+        {
+          "id": "B",
+          "text": "Store a client secret in the workflow, and deploy whether or not the scores fall.",
+          "why": "The documented sign-in is GitHub OpenID Connect through the Azure login action, and the article says not to add a client secret. Deploying after a failed pass rate also ignores the quality gate."
+        },
+        {
+          "id": "C",
+          "text": "Run the evaluation, ignore a failing pass rate, and deploy the agent anyway.",
+          "why": "Running the evaluators and then deploying anyway does not gate the release. With --fail-on, a completed run below the pass-rate threshold is a quality breach and the command exits non-zero."
+        },
+        {
+          "id": "D",
+          "text": "Sign in with GitHub OIDC, and fail the run when the pass rate misses the threshold.",
+          "why": "The article signs the workflow in with OpenID Connect so it does not store a client secret, then uses azd --fail-on pass-rate to block the pull request when the threshold is missed."
+        }
+      ],
+      "concept": "The page marks this evaluation path as preview, so confirm that status before you treat it as a production SLA. This maps to: Integrate Foundry projects with continuous integration and continuous deployment (CI/CD) pipelines."
+    },
+    {
+      "id": "pm-009",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Manage quotas, scaling, rate limits, and cost footprints for model and agent workloads",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A nightly job classifies a large file of closed tickets and can wait until the next day. It currently shares the Global Standard deployment used by live chat, and chat is disrupted while the job runs. Which change removes that contention at a lower token price?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Move the nightly file to a Developer deployment and leave chat unchanged.",
+          "why": "Developer is a 24-hour deployment for evaluating a fine-tuned model, with no SLA. It is not the quota split for a recurring production file, and it is deleted when the lifetime ends."
+        },
+        {
+          "id": "B",
+          "text": "Move the nightly file to Data Zone Provisioned so capacity is reserved.",
+          "why": "Data Zone Provisioned reserves throughput inside a data zone. This job has no data-zone rule and no need for reserved online capacity. It is a large asynchronous file, which the page prices as batch."
+        },
+        {
+          "id": "C",
+          "text": "Move the nightly file to Global Batch, which has its own enqueued token quota.",
+          "why": "Global Batch takes a large request file asynchronously, targets completion within 24 hours, and costs 50 percent less than Global Standard."
+        },
+        {
+          "id": "D",
+          "text": "Send the same file as more parallel calls on the Global Standard deployment.",
+          "why": "More parallel online calls draw on the same Global Standard quota that chat is already losing. The page moves this pattern to batch precisely so online workloads are not disrupted."
+        }
+      ],
+      "concept": "Its enqueued token quota is separate, so the online chat deployment is not disrupted. This maps to: Manage quotas, scaling, rate limits, and cost footprints for model and agent workloads."
+    },
+    {
+      "id": "pm-010",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Monitor model performance, drift, safety events, and grounding quality",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Last month a fixed set of claims questions passed groundedness and safety thresholds. The same questions, unchanged, now fail. Live traffic volume is steady, so the mix of user questions is not what changed. Which run shows that drift?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A scheduled evaluation that scores that same test dataset.",
+          "why": "Scheduled evaluation runs quality and safety checks on test datasets to detect system drift."
+        },
+        {
+          "id": "B",
+          "text": "Continuous evaluation that samples whatever production traffic arrives today.",
+          "why": "Continuous evaluation scores a sample of live production traffic. It tells you how today's users are going. It does not hold the question set fixed, so a drop can be a change in what people asked."
+        },
+        {
+          "id": "C",
+          "text": "A token-consumption chart for the deployment.",
+          "why": "Token consumption is an operational cost and volume signal. It does not score groundedness or safety on a frozen question set, so it cannot show that those quality scores drifted."
+        },
+        {
+          "id": "D",
+          "text": "Raising the content-filter threshold so fewer responses are blocked.",
+          "why": "A higher block threshold hides more output. It does not measure whether groundedness or safety on the fixed set moved away from last month's baseline."
+        }
+      ],
+      "concept": "The questions did not change, so a falling groundedness or safety score means the system moved, which is the drift signal on the observability page. This maps to: Monitor model performance, drift, safety events, and grounding quality."
+    },
+    {
+      "id": "pm-011",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Monitor data ingestion quality, search index health, and relevance performance",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A benefits agent grounds on an indexed blob knowledge source. Answers still quote a policy that was replaced three weeks ago. The model and the prompts did not change, and the indexer schedule for that source was turned off the same week. What should the team restore?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Fine-tune the chat model on the old policy text so the wording matches.",
+          "why": "Fine-tuning would teach the model the stale policy. The FAQ ties freshness of an indexed source to indexer runs, not to a change in the chat model's weights."
+        },
+        {
+          "id": "B",
+          "text": "Treat the blob source as remote, so it is already querying the live policy.",
+          "why": "Remote knowledge sources query the external system on demand, so their data is current without an indexer. An indexed blob source is the other kind: it ingests into an index, and it does not stay current while the indexer schedule is off."
+        },
+        {
+          "id": "C",
+          "text": "Disable the content filter so the model can quote the replacement policy.",
+          "why": "A content filter blocks harmful categories. It does not refresh an indexed knowledge source. The new policy is missing because ingestion stopped, not because a filter removed it."
+        },
+        {
+          "id": "D",
+          "text": "The recurring indexer schedule, so the indexed source refreshes again.",
+          "why": "Indexed knowledge sources ingest through indexers, and incremental refresh follows the indexer schedule."
+        }
+      ],
+      "concept": "With that schedule off, the index still holds the three-week-old policy, so relevance against the new text cannot recover until ingestion runs again. Remote sources are the ones that stay current without that schedule. This maps to: Monitor data ingestion quality, search index health, and relevance performance."
+    },
+    {
+      "id": "pm-012",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Configure security, including managed identity, private networking, keyless credentials, and role policies",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/environment-setup",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A production application may only invoke an agent. It must not create or edit agents. It authenticates with a managed identity, and inbound access from the public internet must be off. Which configuration matches?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Foundry Account Owner on the application, with the public endpoint left open.",
+          "why": "Foundry Account Owner is the role for creating the account and project. The application only invokes an agent, and leaving public inbound access enabled misses the private-endpoint requirement on the setup page."
+        },
+        {
+          "id": "B",
+          "text": "Foundry Agent Consumer on the managed identity, a private endpoint, and public inbound access disabled.",
+          "why": "Foundry Agent Consumer is the role for calling agent endpoints without creating or editing agents."
+        },
+        {
+          "id": "C",
+          "text": "Foundry User on the application, reached over the public endpoint.",
+          "why": "Foundry User is the role for creating and editing agents, which is wider than invoke-only. The public endpoint also leaves inbound access open, which this application is not allowed to use."
+        },
+        {
+          "id": "D",
+          "text": "A shared key in application settings, and no Microsoft Entra role on the caller.",
+          "why": "The documented environment signs in with a managed identity and then scopes that identity with a role. A shared key has no invoke-only role assignment, and it does not turn public inbound access off."
+        }
+      ],
+      "concept": "The setup templates authenticate with a managed identity. Inbound isolation is a private endpoint with public inbound access disabled, and that applies across the setup modes. This maps to: Configure security, including managed identity, private networking, keyless credentials, and role policies."
+    },
+    {
+      "id": "pm-013",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Configure safety filters, guardrails, risk detection, and content moderation",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/guardrails/default-safety-policies",
+      "guideUrl": "../guide/responsible-ai.html",
+      "stem": "A public benefits bot must block violence and self-harm when the classifier rates them medium or high, on both the user prompt and the completion. It must also block jailbreak attempts in the user prompt. Which control does that?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "A system message that tells the model to refuse unsafe requests.",
+          "why": "A system message influences the model and does not classify severity. The safety policy blocks with a content filter when content meets the configured threshold, on the prompt and on the completion."
+        },
+        {
+          "id": "B",
+          "text": "Document-attack detection only, left at its default of off.",
+          "why": "Document-attack detection scans document content and is off until you enable it. It does not grade violence or self-harm on prompts and completions, and it is not the user-prompt jailbreak control."
+        },
+        {
+          "id": "C",
+          "text": "User-prompt attack detection, with the four harm categories left unconfigured.",
+          "why": "User-prompt attack detection scans the user input for jailbreak attempts. Without the core-harm filters, medium and high violence and self-harm on prompts and completions are not blocked."
+        },
+        {
+          "id": "D",
+          "text": "Medium blocking on violence and self-harm for prompts and completions, plus user-prompt attack detection.",
+          "why": "The Medium blocking level blocks content classified at medium or high severity, and the core-harm filters evaluate both prompts and completions."
+        }
+      ],
+      "concept": "User-prompt attack detection is the separate control that scans the user input for jailbreak attempts. Blocked input returns an error; blocked output can return a filtered completion. This maps to: Configure safety filters, guardrails, risk detection, and content moderation."
+    },
+    {
+      "id": "pm-014",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Apply responsible AI instrumentation, including evaluators, safety evaluations, and explanation tooling",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+      "guideUrl": "../guide/models.html",
+      "stem": "Reviewers of a grounded claims assistant can see that an answer failed a check, but not why. They need a score and a written reason for whether the answer stayed inside the retrieved passages. Which instrumentation provides that?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A ROUGE score against one reference paragraph.",
+          "why": "ROUGE measures overlap with a reference string. It does not judge whether the answer stayed inside the retrieved passages, and it does not return a reason about fabrication."
+        },
+        {
+          "id": "B",
+          "text": "The Groundedness evaluator, which returns a score and a reason.",
+          "why": "Groundedness measures whether the response stays inside the given context without fabricating."
+        },
+        {
+          "id": "C",
+          "text": "The content-filter finish reason when a harm category blocks the completion.",
+          "why": "A content-filter finish reason means a harm category blocked or filtered the completion. It does not explain whether a response that was allowed was grounded in the retrieved passages."
+        },
+        {
+          "id": "D",
+          "text": "The model's HarmBench attack-success rate on its public model card.",
+          "why": "HarmBench is a safety benchmark of the base model, published before this assistant ran. It does not score this answer against these retrieved passages, and it does not explain a failed groundedness check."
+        }
+      ],
+      "concept": "The evaluator returns a 1–5 score, a pass or fail against the threshold, and a reason field that states that judgment. That reason is the explanation the reviewers are missing. This maps to: Apply responsible AI instrumentation, including evaluators, safety evaluations, and explanation tooling."
+    },
+    {
+      "id": "pm-015",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Implement auditing through trace logging, provenance metadata, and approval workflows",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-agent-setup",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "After a disputed refund, compliance must reconstruct the user prompt, the retrieval steps, and the tool arguments and results. Nothing was recorded. What should they connect so later runs leave that trail?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "An Application Insights resource on the project, so server-side tracing stores those operations.",
+          "why": "Server-side tracing turns on when an Application Insights resource is connected to the project."
+        },
+        {
+          "id": "B",
+          "text": "A content filter, which records a block when text is harmful.",
+          "why": "A content filter acts on harmful categories. It does not store the prompt, the retrieval steps, and the tool arguments for a refund that was allowed. The audit trail on this page is the trace."
+        },
+        {
+          "id": "C",
+          "text": "Tool approval on the refund tool, and no trace connection.",
+          "why": "Approval makes the runtime wait before that tool runs. It is the control for a future refund, not a stored record of prompts, retrieval, and tool results from runs that already happened."
+        },
+        {
+          "id": "D",
+          "text": "A higher tokens-per-minute quota on the chat deployment.",
+          "why": "A higher quota lets more requests through. It does not record what the agent retrieved or which tool arguments it sent. Without the Application Insights connection, the page says there is no server-side trace to inspect."
+        }
+      ],
+      "concept": "Traces capture prompt content, retrieval operations, and tool arguments and results, which is the reconstruction compliance asked for. Tracing for prompt and hosted agents is generally available; treat other agent types as the page marks them. This maps to: Implement auditing through trace logging, provenance metadata, and approval workflows."
+    },
+    {
+      "id": "pm-016",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Govern agent behavior with oversight modes, constraints, and tool-access controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A billing agent may read an account balance on its own. Issuing a refund must stop and wait until a person confirms that tool call. Which control matches that split?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set require_approval to always on every tool, including the balance lookup.",
+          "why": "always makes the runtime present that tool and wait before invoking it. Putting it on the balance lookup blocks a read the business allows to run on its own. Approval is set per tool."
+        },
+        {
+          "id": "B",
+          "text": "Add an instruction to ask first, and set require_approval to never on the refund tool.",
+          "why": "An instruction asks the model to behave. With require_approval set to never, the runtime is not required to present the refund and wait. The page makes that wait a property of the tool, and the runtime is what enforces it."
+        },
+        {
+          "id": "C",
+          "text": "Set require_approval to always on the refund tool and never on the balance lookup.",
+          "why": "require_approval is per tool, with always or never."
+        },
+        {
+          "id": "D",
+          "text": "Remove the refund tool so the agent can only discuss refunds in prose.",
+          "why": "Removing the tool prevents a refund call, including a refund a person has already confirmed. The required control is oversight on that tool, not the loss of the tool."
+        }
+      ],
+      "concept": "always tells the agent runtime to present the pending refund and wait for confirmation before invoking it. never leaves the balance lookup able to run without that wait. The toolbox endpoint itself does not block the call; the runtime does. This maps to: Govern agent behavior with oversight modes, constraints, and tool-access controls."
+    },
+    {
+      "id": "pm-017",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate model for each task, including large language models (LLMs), small language models, multimodal models, and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/plan-and-prepare.html",
+      "stem": "A hospital intake pipeline reads unstructured clinical notes. The team needs medical entities such as conditions, medications, and dosages extracted without building or training a custom model. Which choice fits that task?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A multimodal model that scores radiology images alongside the notes.",
+          "why": "A multimodal model is the right class when images or audio are required inputs. These notes are unstructured text, and the decision table points at a text health feature, not at extra modalities."
+        },
+        {
+          "id": "B",
+          "text": "A large language model fine-tuned on a new set of hospital-specific entity labels.",
+          "why": "Fine-tuning assumes custom labels and a training project. The team said they will not build a custom model, and the Language overview maps clinical extraction without training to Text analytics for health."
+        },
+        {
+          "id": "C",
+          "text": "Text analytics for health in Azure Language in Foundry Tools.",
+          "why": "The Language decision table maps extracting medical information from clinical text without building a model to Text analytics for health."
+        },
+        {
+          "id": "D",
+          "text": "A small language model packaged for offline inference on ward tablets.",
+          "why": "A small language model fits cheap local inference constraints. This pipeline needs the prebuilt medical entity catalog from Azure Language, not an on-device general language model."
+        }
+      ],
+      "concept": "Text analytics for health is the Foundry Tools path for clinical entities when you will not train Custom NER. This maps to: Choose an appropriate model for each task, including large language models (LLMs), small language models, multimodal models, and Foundry Tools."
+    },
+    {
+      "id": "pm-018",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose the appropriate Foundry services for generative tasks, grounding, vector search, agent workflows, or multimodal processing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/tools.html",
+      "stem": "An HR agent must answer vacation questions from a live Confluence wiki, payroll PDFs in Blob Storage, and an existing Azure AI Search index of older handbooks. Two other agents will reuse the same retrieval setup, and every answer must show citations. Which service fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Foundry IQ knowledge base over those sources, connected to each agent.",
+          "why": "Foundry IQ is a knowledge base of one or more knowledge sources, including Blob Storage and existing search indexes, shared across agents with citations."
+        },
+        {
+          "id": "B",
+          "text": "A single file_search vector store that holds one uploaded vacation PDF.",
+          "why": "file_search grounds on files you upload into that store. One PDF does not keep Confluence, blob payroll PDFs, and an existing index current for several agents."
+        },
+        {
+          "id": "C",
+          "text": "A Content Understanding analyzer that extracts fields from each handbook and stops.",
+          "why": "Content Understanding turns a file into structured fields. It does not provide a shared, citation-backed knowledge base over wiki, blob, and an existing index."
+        },
+        {
+          "id": "D",
+          "text": "A chat deployment whose system message is replaced weekly with copied handbook text.",
+          "why": "A system message can carry a short excerpt, but it is not a multi-source knowledge base. Foundry IQ exists because the model cannot see those enterprise stores on its own."
+        }
+      ],
+      "concept": "Several agents attach to one knowledge base, and agentic retrieval returns grounded answers with citations. Confirm preview status for your API version. This maps to: Choose the appropriate Foundry services for generative tasks, grounding, vector search, agent workflows, or multimodal processing."
+    },
+    {
+      "id": "pm-019",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate method for retrieval and indexing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "A retail help desk searches product docs. Shoppers sometimes paste the exact model number, and sometimes describe the same product in everyday words that never appear in the title. The index already has plain text and embeddings. Which retrieval method should they use?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Vector search only, because the paraphrases are the harder case.",
+          "why": "Vector search can match a description that shares no title words. The retrieval guide still keeps full-text when keywords or entities differ, and an exact model number is that keyword case."
+        },
+        {
+          "id": "B",
+          "text": "Full-text search only, because the model number must match stored words.",
+          "why": "Full-text search catches the exact model number in plain text. It does not compare embeddings, so everyday paraphrases that never use the title words are the half this option drops."
+        },
+        {
+          "id": "C",
+          "text": "A fine-tuned chat model, and stop querying the index.",
+          "why": "Fine-tuning changes the chat model. The retrieval phase still chooses vector, keyword, or hybrid queries against the index to look up the model number or paraphrase."
+        },
+        {
+          "id": "D",
+          "text": "One hybrid query that runs full-text and vector retrieval together.",
+          "why": "A hybrid query contains one or more text searches and one or more vector searches."
+        }
+      ],
+      "concept": "The service merges those result sets with Reciprocal Rank Fusion. The model number is a full-text match and the everyday description is a vector similarity match, so both belong in one request. This maps to: Choose an appropriate method for retrieval and indexing."
+    },
+    {
+      "id": "pm-020",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose appropriate memory, tool, and knowledge integration services for agent solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-memory",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A travel agent must recall a returning traveler's dietary restriction and preferred seat class on a later trip, without keeping the full chat history. Fare rules live in a separate curated library, and the traveler is not uploading a document. Which integration stores the preference?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A Foundry IQ knowledge base of the company's fare-rule library.",
+          "why": "Foundry IQ holds curated organizational content such as fare rules. A traveler's dietary restriction is user-specific context learned over time, so the knowledge base is the wrong store for it."
+        },
+        {
+          "id": "B",
+          "text": "A memory store that keeps user-profile memory for the preference.",
+          "why": "User-profile memory is the long-term store for durable preferences such as diet and seat defaults."
+        },
+        {
+          "id": "C",
+          "text": "file_search over a meal card the traveler uploads on every trip.",
+          "why": "File search is for user-provided documents during an interaction. Nobody is uploading a card here, and a file store is not a durable profile that survives to the next trip."
+        },
+        {
+          "id": "D",
+          "text": "Short-term session context that lives only inside the current conversation.",
+          "why": "Short-term memory tracks this visit's turns. A later trip needs the distilled preference, which the memory article assigns to long-term user-profile memory."
+        }
+      ],
+      "concept": "The service extracts and consolidates durable preferences so a later session can recall them without the full transcript. Memory was in preview on the recheck date. This maps to: Choose appropriate memory, tool, and knowledge integration services for agent solutions."
+    },
+    {
+      "id": "pm-021",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Design Azure infrastructure for AI apps and agent-based solutions",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/architecture",
+      "guideUrl": "../guide/plan-and-prepare.html",
+      "stem": "A claims team and a fraud team will each build agents and run evaluations. They must share model deployments and the same network controls, and neither team should see the other's agents, files, or evaluation results. Which layout matches that split?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "One shared project, so both teams edit the same agents and evaluations.",
+          "why": "A single project is the default for one developer. Agents, files, and evaluations are project assets, so two teams in one project do not get the isolation the architecture describes."
+        },
+        {
+          "id": "B",
+          "text": "A separate Foundry resource for every developer, each with its own deployments.",
+          "why": "A resource per developer repeats deployments and splits network policy. The page uses one resource so IT governs once, and uses projects when teams need isolation inside that resource."
+        },
+        {
+          "id": "C",
+          "text": "A standalone Azure OpenAI resource, with no Foundry project.",
+          "why": "A standalone Azure OpenAI resource fits completions-only workloads. These teams need agent hosting and evaluations, which the Foundry resource and its projects provide."
+        },
+        {
+          "id": "D",
+          "text": "One Foundry resource, with a separate project for each team.",
+          "why": "The architecture guide calls out multi-team access as isolated projects that share model deployments and centralized governance."
+        }
+      ],
+      "concept": "The resource holds networking, security, and deployments. Each project is the boundary for files, agents, and evaluations. This maps to: Design Azure infrastructure for AI apps and agent-based solutions."
+    },
+    {
+      "id": "pm-022",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Choose appropriate deployment options",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/models.html",
+      "stem": "An interactive support chat is billed pay-per-token. Prompts and responses must be processed only inside the US data zone, and the team does not want reserved throughput. Which deployment type fits?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Global Standard, because it offers the highest quota.",
+          "why": "Global Standard is pay-per-token with the highest quota, but global processing may run in any Azure region, so it misses the US data-zone requirement."
+        },
+        {
+          "id": "B",
+          "text": "Data Zone Standard, pay-per-token processing inside the data zone.",
+          "why": "Data Zone Standard processes prompts and responses only inside the Microsoft-specified data zone, including the US, and it is pay-per-token."
+        },
+        {
+          "id": "C",
+          "text": "Data Zone Provisioned, so capacity is reserved inside the zone.",
+          "why": "Data Zone Provisioned keeps processing inside the data zone but bills reserved provisioned throughput units. This chat does not need reserved throughput."
+        },
+        {
+          "id": "D",
+          "text": "Developer, because it is pay-per-token and can run in any region.",
+          "why": "Developer is for evaluating a fine-tuned model for 24 hours, with no SLA and no data-residency guarantee, so it is not a production US data-zone chat deployment."
+        }
+      ],
+      "concept": "The selection table recommends Data Zone Standard when processing must stay in a data zone and capacity is not reserved. This maps to: Choose appropriate deployment options."
+    },
+    {
+      "id": "pm-023",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Configure model and agent deployments",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/runtime-components",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Four line-of-business apps must call the same model, instructions, and tools. When that definition changes, the team wants to publish a new version once instead of editing each app. What should they configure?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A fine-tune that bakes the instructions into the weights and drops the tools.",
+          "why": "Fine-tuning changes model weights. It does not publish a versioned definition of instructions and tools that several applications share."
+        },
+        {
+          "id": "B",
+          "text": "A Developer deployment used only to score a fine-tuned model for a day.",
+          "why": "A Developer deployment is a short-lived evaluation target. It does not store a reusable, versioned agent definition that applications call."
+        },
+        {
+          "id": "C",
+          "text": "A named, versioned prompt agent that stores the model, instructions, and tools.",
+          "why": "An agent is a persisted definition that combines the model, instructions, and tools, stored as a named, versioned asset."
+        },
+        {
+          "id": "D",
+          "text": "A copy of the system message pasted into each application.",
+          "why": "Pasted system messages drift the next time instructions change. The runtime article uses an agent when the model, instructions, and tools must be reused together."
+        }
+      ],
+      "concept": "Point the applications at that agent instead of copying the definition into each caller. This maps to: Configure model and agent deployments."
+    },
+    {
+      "id": "pm-024",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Integrate Foundry projects with continuous integration and continuous deployment (CI/CD) pipelines",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/how-to/evaluation-github-action",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A GitHub Actions workflow publishes a Foundry agent. Releases must stop when evaluation pass rate falls below the agreed threshold, and the workflow must authenticate without a stored client secret. What should the pipeline do?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Sign in with GitHub OIDC, and fail the run when the pass rate misses the threshold.",
+          "why": "The article signs in with OpenID Connect so it does not store a client secret, then uses azd --fail-on pass-rate to block the release when the threshold is missed."
+        },
+        {
+          "id": "B",
+          "text": "Store a client secret in the workflow, and deploy whether or not the scores fall.",
+          "why": "The documented sign-in is GitHub OpenID Connect through the Azure login action, not a stored client secret, and deploying after a failed pass rate ignores the quality gate."
+        },
+        {
+          "id": "C",
+          "text": "Deploy on every push to main, and skip evaluation to save tokens.",
+          "why": "Skipping evaluation removes the pre-production check the workflow article is for, so a push could reach production with no pass-rate gate."
+        },
+        {
+          "id": "D",
+          "text": "Run the evaluation, ignore a failing pass rate, and deploy the agent anyway.",
+          "why": "With --fail-on, a completed run below the pass-rate threshold exits non-zero. Ignoring that failure does not gate the release."
+        }
+      ],
+      "concept": "The page marks this evaluation path as preview, so confirm that status before you treat it as a production SLA. This maps to: Integrate Foundry projects with continuous integration and continuous deployment (CI/CD) pipelines."
+    },
+    {
+      "id": "pm-025",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Manage quotas, scaling, rate limits, and cost footprints for model and agent workloads",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A weekend job summarizes thousands of closed surveys and can finish by Monday. It currently shares the Global Standard deployment used by the live help desk, and the desk slows while the job runs. Which change removes that contention at a lower token price?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Send the same file as more parallel calls on the Global Standard deployment.",
+          "why": "More parallel online calls draw on the same Global Standard quota the help desk is already losing. The page moves this pattern to batch so online workloads are not disrupted."
+        },
+        {
+          "id": "B",
+          "text": "Move the weekend file to Global Batch, which has its own enqueued token quota.",
+          "why": "Global Batch takes a large request file asynchronously, targets completion within 24 hours, and costs 50 percent less than Global Standard."
+        },
+        {
+          "id": "C",
+          "text": "Move the weekend file to a Developer deployment and leave the desk unchanged.",
+          "why": "Developer is a 24-hour deployment for evaluating a fine-tuned model, with no SLA. It is not the quota split for a recurring production file."
+        },
+        {
+          "id": "D",
+          "text": "Move the weekend file to Data Zone Provisioned so capacity is reserved.",
+          "why": "Data Zone Provisioned reserves online throughput inside a data zone. This job has no data-zone rule and is a large asynchronous file, which the page prices as batch."
+        }
+      ],
+      "concept": "Its enqueued token quota is separate, so the online help-desk deployment is not disrupted. This maps to: Manage quotas, scaling, rate limits, and cost footprints for model and agent workloads."
+    },
+    {
+      "id": "pm-026",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Monitor model performance, drift, safety events, and grounding quality",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/observability",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "Last quarter a fixed regression set of policy questions passed groundedness and safety thresholds. The same unchanged questions now fail. Live traffic volume is steady, so the mix of user questions is not what changed. Which run shows that drift?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Continuous evaluation that samples whatever production traffic arrives today.",
+          "why": "Continuous evaluation scores a sample of live traffic. It does not hold the question set fixed, so a drop can be a change in what people asked rather than system drift."
+        },
+        {
+          "id": "B",
+          "text": "A token-consumption chart for the deployment.",
+          "why": "Token consumption is an operational cost and volume signal. It does not score groundedness or safety on a frozen question set."
+        },
+        {
+          "id": "C",
+          "text": "Raising the content-filter threshold so fewer responses are blocked.",
+          "why": "A higher block threshold changes what is filtered. It does not measure whether groundedness or safety on the fixed set moved away from last quarter's baseline."
+        },
+        {
+          "id": "D",
+          "text": "A scheduled evaluation that scores that same test dataset.",
+          "why": "Scheduled evaluation runs quality and safety checks on test datasets to detect system drift."
+        }
+      ],
+      "concept": "Because the questions did not change, a falling groundedness or safety score means the system moved, which is the drift signal on the observability page. This maps to: Monitor model performance, drift, safety events, and grounding quality."
+    },
+    {
+      "id": "pm-027",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Monitor data ingestion quality, search index health, and relevance performance",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/foundry-iq-faq",
+      "guideUrl": "../guide/information-extraction.html",
+      "stem": "A facilities agent grounds on an indexed blob knowledge source. Answers still quote a building-access policy that was replaced a month ago. The model and prompts did not change, and the indexer schedule for that source was disabled the same week. What should the team restore?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "The recurring indexer schedule, so the indexed source refreshes again.",
+          "why": "Indexed knowledge sources ingest through indexers, and incremental refresh follows the indexer schedule."
+        },
+        {
+          "id": "B",
+          "text": "Fine-tune the chat model on the old policy text so the wording matches.",
+          "why": "Fine-tuning would teach the stale policy. The FAQ ties freshness of an indexed source to indexer runs, not to a change in chat-model weights."
+        },
+        {
+          "id": "C",
+          "text": "Disable the content filter so the model can quote the replacement policy.",
+          "why": "A content filter blocks harmful categories. It does not refresh an indexed knowledge source whose ingestion stopped."
+        },
+        {
+          "id": "D",
+          "text": "Treat the blob source as remote, so it is already querying the live policy.",
+          "why": "Remote knowledge sources query the external system on demand. An indexed blob source ingests into an index and does not stay current while the indexer schedule is off."
+        }
+      ],
+      "concept": "With that schedule off, the index still holds the month-old policy, so relevance against the new text cannot recover until ingestion runs again. Remote sources are the ones that stay current without that schedule. This maps to: Monitor data ingestion quality, search index health, and relevance performance."
+    },
+    {
+      "id": "pm-028",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Configure security, including managed identity, private networking, keyless credentials, and role policies",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/environment-setup",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A back-office app may only invoke an agent. It must not create or edit agents. It authenticates with a managed identity, and inbound access from the public internet must be off. Which configuration matches?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Foundry User on the application, reached over the public endpoint.",
+          "why": "Foundry User can create and edit agents, which is wider than invoke-only, and the public endpoint leaves inbound access open."
+        },
+        {
+          "id": "B",
+          "text": "Foundry Account Owner on the application, with the public endpoint left open.",
+          "why": "Foundry Account Owner is for creating the account and project. Leaving public inbound access enabled also misses the private-endpoint requirement."
+        },
+        {
+          "id": "C",
+          "text": "Foundry Agent Consumer on the managed identity, a private endpoint, and public inbound access disabled.",
+          "why": "Foundry Agent Consumer is the role for calling agent endpoints without creating or editing agents."
+        },
+        {
+          "id": "D",
+          "text": "A shared key in application settings, and no Microsoft Entra role on the caller.",
+          "why": "The documented environment signs in with a managed identity scoped by a role. A shared key has no invoke-only role assignment and does not turn public inbound access off."
+        }
+      ],
+      "concept": "The setup templates authenticate with a managed identity. Inbound isolation is a private endpoint with public inbound access disabled across the setup modes. This maps to: Configure security, including managed identity, private networking, keyless credentials, and role policies."
+    },
+    {
+      "id": "pm-029",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Configure safety filters, guardrails, risk detection, and content moderation",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/guardrails/default-safety-policies",
+      "guideUrl": "../guide/responsible-ai.html",
+      "stem": "A public campus chatbot must block violence and self-harm when the classifier rates them medium or high, on both the user prompt and the completion. It must also block jailbreak attempts in the user prompt. Which control does that?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Medium blocking on violence and self-harm for prompts and completions, plus user-prompt attack detection.",
+          "why": "The Medium blocking level blocks content classified at medium or high severity, and the core-harm filters evaluate both prompts and completions."
+        },
+        {
+          "id": "B",
+          "text": "A system message that tells the model to refuse unsafe requests.",
+          "why": "A system message influences the model and does not classify severity. The safety policy blocks with a content filter when content meets the configured threshold."
+        },
+        {
+          "id": "C",
+          "text": "Document-attack detection only, left at its default of off.",
+          "why": "Document-attack detection scans document content and is off until enabled. It does not grade violence or self-harm on prompts and completions, and it is not the user-prompt jailbreak control."
+        },
+        {
+          "id": "D",
+          "text": "User-prompt attack detection, with the four harm categories left unconfigured.",
+          "why": "User-prompt attack detection catches jailbreak attempts, but without core-harm filters, medium and high violence and self-harm on prompts and completions are not blocked."
+        }
+      ],
+      "concept": "User-prompt attack detection is the separate control that scans the user input for jailbreak attempts. Blocked input returns an error; blocked output can return a filtered completion. This maps to: Configure safety filters, guardrails, risk detection, and content moderation."
+    },
+    {
+      "id": "pm-030",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Apply responsible AI instrumentation, including evaluators, safety evaluations, and explanation tooling",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/concepts/evaluation-evaluators/rag-evaluators",
+      "guideUrl": "../guide/models.html",
+      "stem": "Reviewers of a grounded policy assistant can see that an answer failed a check, but not why. They need a score and a written reason for whether the answer stayed inside the retrieved passages. Which instrumentation provides that?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A ROUGE score against one reference paragraph.",
+          "why": "ROUGE measures overlap with a reference string. It does not judge whether the answer stayed inside the retrieved passages or return a reason about fabrication."
+        },
+        {
+          "id": "B",
+          "text": "The content-filter finish reason when a harm category blocks the completion.",
+          "why": "A content-filter finish reason means a harm category blocked or filtered the completion. It does not explain whether an allowed response was grounded in the retrieved passages."
+        },
+        {
+          "id": "C",
+          "text": "The Groundedness evaluator, which returns a score and a reason.",
+          "why": "Groundedness measures whether the response stays inside the given context without fabricating."
+        },
+        {
+          "id": "D",
+          "text": "The model's HarmBench attack-success rate on its public model card.",
+          "why": "HarmBench is a base-model safety benchmark published before this assistant ran. It does not score this answer against these retrieved passages."
+        }
+      ],
+      "concept": "The evaluator returns a 1–5 score, a pass or fail against the threshold, and a reason field that states that judgment for the reviewers. This maps to: Apply responsible AI instrumentation, including evaluators, safety evaluations, and explanation tooling."
+    },
+    {
+      "id": "pm-031",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Implement auditing through trace logging, provenance metadata, and approval workflows",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/trace-agent-setup",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "After a disputed account credit, compliance must reconstruct the user prompt, the retrieval steps, and the tool arguments and results. Nothing was recorded. What should they connect so later runs leave that trail?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "A content filter, which records a block when text is harmful.",
+          "why": "A content filter acts on harmful categories. It does not store the prompt, retrieval steps, and tool arguments for a credit that was allowed."
+        },
+        {
+          "id": "B",
+          "text": "Tool approval on the credit tool, and no trace connection.",
+          "why": "Approval makes the runtime wait before that tool runs. It is not a stored record of prompts, retrieval, and tool results from runs that already happened."
+        },
+        {
+          "id": "C",
+          "text": "A higher tokens-per-minute quota on the chat deployment.",
+          "why": "A higher quota lets more requests through. It does not record what the agent retrieved or which tool arguments it sent."
+        },
+        {
+          "id": "D",
+          "text": "An Application Insights resource on the project, so server-side tracing stores those operations.",
+          "why": "Server-side tracing turns on when an Application Insights resource is connected to the project."
+        }
+      ],
+      "concept": "Traces capture prompt content, retrieval operations, and tool arguments and results for later reconstruction. Tracing for prompt and hosted agents is generally available; treat other agent types as the page marks them. This maps to: Implement auditing through trace logging, provenance metadata, and approval workflows."
+    },
+    {
+      "id": "pm-032",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Govern agent behavior with oversight modes, constraints, and tool-access controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A payroll agent may read a paycheck amount on its own. Posting a correction must stop and wait until a person confirms that tool call. Which control matches that split?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set require_approval to always on every tool, including the paycheck lookup.",
+          "why": "always makes the runtime present that tool and wait before invoking it. Putting it on the paycheck lookup blocks a read the business allows to run on its own."
+        },
+        {
+          "id": "B",
+          "text": "Set require_approval to always on the correction tool and never on the paycheck lookup.",
+          "why": "require_approval is per tool, with always or never."
+        },
+        {
+          "id": "C",
+          "text": "Add an instruction to ask first, and set require_approval to never on the correction tool.",
+          "why": "An instruction asks the model to behave. With require_approval set to never, the runtime is not required to present the correction and wait before invoking it."
+        },
+        {
+          "id": "D",
+          "text": "Remove the correction tool so the agent can only discuss corrections in prose.",
+          "why": "Removing the tool prevents a correction call, including one a person has already confirmed. The required control is oversight on that tool, not the loss of the tool."
+        }
+      ],
+      "concept": "always tells the agent runtime to present the pending correction and wait for confirmation before invoking it. never leaves the paycheck lookup able to run without that wait. This maps to: Govern agent behavior with oversight modes, constraints, and tool-access controls."
+    },
+    {
+      "id": "pm-033",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate model for each task, including large language models (LLMs), small language models, multimodal models, and Foundry Tools",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/ai-services/language-service/overview",
+      "guideUrl": "../guide/plan-and-prepare.html",
+      "stem": "A logistics desk processes thousands of plain-text shipment emails a day. The only required output is predefined entities — people, organizations, quantities, and dates — with no custom labels and no model training. Which choice fits that task?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "A frontier multimodal LLM fine-tuned weekly on every email so entity labels stay current.",
+          "why": "Fine-tuning a multimodal LLM is unnecessary when prebuilt NER already extracts the predefined entity set without training."
+        },
+        {
+          "id": "B",
+          "text": "Prebuilt named entity recognition in Azure Language in Foundry Tools.",
+          "why": "Prebuilt NER extracts people, organizations, quantities, and dates from unstructured text without custom training."
+        },
+        {
+          "id": "C",
+          "text": "Custom NER trained from scratch because predefined entity types always require labeled data.",
+          "why": "Custom NER is for your own labels; the scenario asks for the preconfigured predefined types with no training."
+        },
+        {
+          "id": "D",
+          "text": "A code-generation small language model because shipment IDs look like source identifiers.",
+          "why": "Code models target source-code tasks; extracting people, organizations, quantities, and dates is an NER job."
+        }
+      ],
+      "concept": "When you only need predefined entity categories from unstructured text with no custom labels, choose prebuilt NER in Azure Language rather than training a custom model or an LLM."
+    },
+    {
+      "id": "pm-034",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose the appropriate Foundry services for generative tasks, grounding, vector search, agent workflows, or multimodal processing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/concepts/what-is-foundry-iq",
+      "guideUrl": "../guide/tools.html",
+      "stem": "A legal agent must answer from three live sources: a Teams wiki of playbooks, contract PDFs in Blob Storage, and an existing Azure AI Search index of older opinions. Several agents should share that retrieval setup, and answers must cite the source. Which service fits?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "A single system prompt that pastes every contract PDF and never uses a shared knowledge base.",
+          "why": "Pasting all contracts into a prompt does not create a shareable multi-source knowledge base with citations."
+        },
+        {
+          "id": "B",
+          "text": "A standalone speech-to-text deployment because legal documents are read aloud.",
+          "why": "Speech-to-text does not ground agents across wiki, Blob, and Search sources or return cited answers."
+        },
+        {
+          "id": "C",
+          "text": "A Foundry IQ knowledge base over those sources, connected to the agent.",
+          "why": "Foundry IQ builds a multi-source knowledge base that agents share and returns grounded answers with citations."
+        },
+        {
+          "id": "D",
+          "text": "A Developer-tier fine-tune deployment with a 24-hour lifetime and no retrieval layer.",
+          "why": "A short-lived fine-tune does not connect live wiki, Blob, and Search sources or provide shared cited retrieval."
+        }
+      ],
+      "concept": "When several agents must share grounded retrieval across SharePoint-like wikis, Blob, and Azure AI Search with citations, choose a Foundry IQ knowledge base connected to the agents."
+    },
+    {
+      "id": "pm-035",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Choose the appropriate Foundry services for generative AI and agents",
+      "bullet": "Choose an appropriate method for retrieval and indexing",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/rag/rag-information-retrieval",
+      "guideUrl": "../guide/optimize.html",
+      "stem": "Maintenance staff search a work-order wiki. Some questions paste the exact work-order ID, and others describe the same job in everyday words that never appear in the title. The index already stores plain text and embeddings. Which retrieval method should they use?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Full-text only, because everyday paraphrases always match exact title tokens.",
+          "why": "Everyday paraphrases often miss exact title tokens; full-text alone fails the colloquial half of this workload."
+        },
+        {
+          "id": "B",
+          "text": "Vector only, because exact work-order IDs never benefit from keyword matching.",
+          "why": "Exact IDs are classic full-text matches; vector-only search can miss precise identifier lookups."
+        },
+        {
+          "id": "C",
+          "text": "Disable the index and ask the chat model to invent matching work orders from memory.",
+          "why": "Inventing work orders without retrieval ignores the index and cannot reliably find the right documents."
+        },
+        {
+          "id": "D",
+          "text": "One hybrid query that runs full-text and vector retrieval together.",
+          "why": "Hybrid runs keyword and vector searches and merges with Reciprocal Rank Fusion, covering IDs and paraphrases."
+        }
+      ],
+      "concept": "When queries mix exact identifiers with everyday paraphrases and the index has text plus embeddings, use a hybrid full-text and vector query so both match types contribute via fusion."
+    },
+    {
+      "id": "pm-036",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Set up AI solutions in Foundry",
+      "bullet": "Choose appropriate deployment options",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/models.html",
+      "stem": "An interactive facilities chat is billed pay-per-token. Prompts and responses must be processed only inside the APAC data zone, and the team does not want reserved throughput. Which deployment type fits?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Data Zone Standard, pay-per-token processing inside the data zone.",
+          "why": "Data Zone Standard keeps processing in the data zone on pay-per-token billing without reserved PTUs."
+        },
+        {
+          "id": "B",
+          "text": "Global Standard so prompts may be processed in any Azure region worldwide.",
+          "why": "Global Standard may process inferencing outside the APAC data zone, which violates the residency requirement."
+        },
+        {
+          "id": "C",
+          "text": "Data Zone Provisioned with reserved PTUs even though capacity must not be reserved.",
+          "why": "Provisioned types reserve capacity; the scenario explicitly does not want reserved throughput."
+        },
+        {
+          "id": "D",
+          "text": "Global Batch only, because interactive chat always targets a 24-hour turnaround.",
+          "why": "Global Batch is for async jobs with a 24-hour target, not interactive pay-per-token chat in a data zone."
+        }
+      ],
+      "concept": "Choose Data Zone Standard when interactive traffic must stay pay-per-token and prompts and responses must be processed only inside a Microsoft data zone without reserved capacity."
+    },
+    {
+      "id": "pm-037",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Manage quotas, scaling, rate limits, and cost footprints for model and agent workloads",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/foundry-models/concepts/deployment-types",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "An overnight job translates a large archive of closed tickets and can finish by the next afternoon. It currently shares the Global Standard deployment used by live chat, and chat is disrupted while the job runs. Which change removes that contention at a lower token price?",
+      "answer": "B",
+      "options": [
+        {
+          "id": "A",
+          "text": "Keep both workloads on the same Global Standard deployment and raise temperature during the job.",
+          "why": "Temperature does not separate quotas; both workloads still contend on the same online deployment."
+        },
+        {
+          "id": "B",
+          "text": "Move the overnight archive to Global Batch, which has its own enqueued token quota.",
+          "why": "Global Batch uses a separate enqueued quota at a discount, so live chat is not disrupted by the archive job."
+        },
+        {
+          "id": "C",
+          "text": "Switch only the live chat to Global Batch so interactive users wait up to 24 hours.",
+          "why": "Batch targets async 24-hour jobs; putting interactive chat on batch harms responsiveness and still leaves archive contention unresolved correctly."
+        },
+        {
+          "id": "D",
+          "text": "Delete the Global Standard deployment and run everything through a single-model Developer tier.",
+          "why": "Developer tier is for short-lived fine-tune evaluation and does not solve async archive quota separation for chat."
+        }
+      ],
+      "concept": "Move large async, delay-tolerant jobs to Global Batch so they use a separate enqueued token quota at lower cost and stop contending with interactive Global Standard traffic."
+    },
+    {
+      "id": "pm-038",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Manage, monitor, and secure AI systems",
+      "bullet": "Configure security, including managed identity, private networking, keyless credentials, and role policies",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/environment-setup",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "A lobby kiosk application may only invoke an agent. It must not create or edit agents. It authenticates with a managed identity, and inbound access from the public internet must be off. Which configuration matches?",
+      "answer": "C",
+      "options": [
+        {
+          "id": "A",
+          "text": "Foundry Account Owner on a user key, with public inbound access left enabled for convenience.",
+          "why": "Account Owner and public inbound exceed invoke-only least privilege and leave the endpoint reachable from the internet."
+        },
+        {
+          "id": "B",
+          "text": "Foundry User on a shared API key so the kiosk can create agents when needed.",
+          "why": "Foundry User can create and edit agents, and API keys are not the managed-identity path this scenario requires."
+        },
+        {
+          "id": "C",
+          "text": "Foundry Agent Consumer on the managed identity, a private endpoint, and public inbound access disabled.",
+          "why": "Agent Consumer allows invoke-only access; private endpoint with public inbound disabled isolates inbound traffic."
+        },
+        {
+          "id": "D",
+          "text": "No role assignment and open public endpoints so any anonymous caller can invoke the agent.",
+          "why": "Anonymous public access violates managed-identity auth and the requirement to disable public inbound access."
+        }
+      ],
+      "concept": "For invoke-only apps, assign Foundry Agent Consumer to the managed identity and isolate inbound traffic with a private endpoint while disabling public inbound access."
+    },
+    {
+      "id": "pm-039",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Configure safety filters, guardrails, risk detection, and content moderation",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/guardrails/default-safety-policies",
+      "guideUrl": "../guide/responsible-ai.html",
+      "stem": "A public library chatbot must block violence and self-harm when the classifier rates them medium or high, on both the user prompt and the completion. It must also block jailbreak attempts in the user prompt. Which control does that?",
+      "answer": "D",
+      "options": [
+        {
+          "id": "A",
+          "text": "Disable all core-harm filters and rely only on a polite system prompt.",
+          "why": "A system prompt alone does not block medium or high violence and self-harm on prompts and completions."
+        },
+        {
+          "id": "B",
+          "text": "Block only low-severity hate on completions and ignore jailbreak detection on prompts.",
+          "why": "That misses medium/high violence and self-harm on both sides and skips user-prompt attack detection."
+        },
+        {
+          "id": "C",
+          "text": "Enable document attack detection only, with core-harm filters left off for prompts and completions.",
+          "why": "Document attack detection does not replace medium blocking of violence and self-harm or jailbreak scanning of user prompts."
+        },
+        {
+          "id": "D",
+          "text": "Medium blocking on violence and self-harm for prompts and completions, plus user-prompt attack detection.",
+          "why": "Medium blocking covers medium and high core-harm on input and output; prompt-attack detection catches jailbreaks."
+        }
+      ],
+      "concept": "Default-style Medium blocking on core-harm categories evaluates prompts and completions, while separate user-prompt attack detection scans jailbreak attempts in user input."
+    },
+    {
+      "id": "pm-040",
+      "origin": "original",
+      "outlineAsOf": "2026-04-16",
+      "rechecked": "2026-11-14",
+      "skillArea": "Plan and manage an Azure AI solution",
+      "subsection": "Implement responsible AI across generative AI and agentic systems",
+      "bullet": "Govern agent behavior with oversight modes, constraints, and tool-access controls",
+      "learnUrl": "https://learn.microsoft.com/en-us/azure/foundry/agents/how-to/tools/toolbox",
+      "guideUrl": "../guide/agents-and-operations.html",
+      "stem": "An inventory agent may read on-hand stock on its own. Writing off damaged goods must stop and wait until a person confirms that tool call. Which control matches that split?",
+      "answer": "A",
+      "options": [
+        {
+          "id": "A",
+          "text": "Set require_approval to always on the write-off tool and never on the stock lookup.",
+          "why": "always pauses the write-off for confirmation; never lets the stock lookup run without that wait."
+        },
+        {
+          "id": "B",
+          "text": "Set require_approval to never on both tools and rely on a system prompt to remember the split.",
+          "why": "A system prompt does not enforce approval; never lets both tools run without a human pause."
+        },
+        {
+          "id": "C",
+          "text": "Set require_approval to always on the stock lookup and never on the write-off.",
+          "why": "That inverts the policy: routine reads would wait while damaging write-offs could run immediately."
+        },
+        {
+          "id": "D",
+          "text": "Remove both tools from the toolbox so the model invents stock counts and write-offs.",
+          "why": "Removing tools removes governance of real actions; the agent would invent results instead of calling controlled tools."
+        }
+      ],
+      "concept": "Govern tool access per action with require_approval: always for high-impact tools that must wait for a person, and never for low-risk reads the agent may run on its own."
+    }
+  ]
+}

@@ -14,7 +14,7 @@
  * Run with: npm run guide
  */
 
-import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { metaTags } from './seo.mjs';
@@ -24,6 +24,8 @@ import { externalLinksInNewTab, wrapTables, remapFonts, hoistFiguresOutOfGrids, 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const SOURCE = join(ROOT, 'design-source', 'AI-103 Notes.dc.html');
 const OUT_DIR = join(ROOT, 'docs', 'guide');
+const PRACTICE_SRC = join(ROOT, 'practice-source');
+const PRACTICE_OUT = join(ROOT, 'docs', 'practice');
 
 /** The wrapper that opens every module in the source. */
 const SPLIT_MARKER = 'break-before:page';
@@ -693,7 +695,7 @@ ${stageMarkup}
     <div class="sides">
 ${extras}
       <a class="side" href="../cheatsheet.html"><b>Cheat sheet</b><span>One page: every decision table and the scenario cues. For revision, and for looking one thing up.</span></a>
-      <a class="side" href="../practice/index.html"><b>Practice</b><span>Section quizzes (coming) plus Microsoft’s official practice assessment.</span></a>
+      <a class="side" href="../practice/index.html"><b>Practice</b><span>One at a time — Previous / Next / Submit. Also use Microsoft’s official practice assessment for style and difficulty.</span></a>
       <a class="side" href="../glossary.html"><b>Glossary</b><span>Every term the outline names, one line each, plus all 38 abbreviations spelled out.</span></a>
     </div>
   </section>
@@ -703,15 +705,48 @@ ${extras}
 );
 console.log('built docs/guide/index.html');
 
-/* ------------------------------------------------------- practice hub */
+/* ------------------------------------------------------- practice hub + quizzes */
 
-mkdirSync(join(ROOT, 'docs', 'practice'), { recursive: true });
+mkdirSync(PRACTICE_OUT, { recursive: true });
+mkdirSync(join(PRACTICE_OUT, 'data'), { recursive: true });
+
+const practiceSections = readdirSync(join(PRACTICE_SRC, 'sections'))
+  .filter((f) => f.endsWith('.json'))
+  .map((f) => {
+    const data = JSON.parse(readFileSync(join(PRACTICE_SRC, 'sections', f), 'utf8'));
+    writeFileSync(join(PRACTICE_OUT, 'data', f), JSON.stringify(data));
+    return data;
+  })
+  .sort((a, b) => a.sectionId.localeCompare(b.sectionId));
+
+const practiceOrder = [
+  'plan-and-manage',
+  'generative-and-agentic',
+  'computer-vision',
+  'text-analysis',
+  'information-extraction',
+];
+practiceSections.sort(
+  (a, b) => practiceOrder.indexOf(a.sectionId) - practiceOrder.indexOf(b.sectionId)
+);
+
+const sectionRows = practiceSections
+  .map((s) => {
+    const n = s.items?.length || 0;
+    const ready = s.status === 'ready' && n > 0;
+    const status = ready
+      ? `<a href="${s.sectionId}.html">${n} questions</a>`
+      : 'Coming';
+    return `<tr><td>${s.skillArea}</td><td>${s.weight}</td><td>${status}</td></tr>`;
+  })
+  .join('\n      ');
+
 writeFileSync(
-  join(ROOT, 'docs', 'practice', 'index.html'),
+  join(PRACTICE_OUT, 'index.html'),
   page({
     title: 'Practice',
     blurb:
-      'Section-wise AI-103 practice quizzes for GitHub Pages are coming soon. Until then, use Microsoft’s official practice assessment and revise from the study guide and cheat sheet.',
+      'Original AI-103 practice quizzes: two questions per outline concept, one at a time with Previous/Next/Submit, no sign-in. Review shows a short why, then the concept.',
     head,
     depth: 1,
     path: 'practice/index.html',
@@ -722,26 +757,22 @@ writeFileSync(
 <main class="home" style="padding-top:2rem;max-width:52rem">
   <p class="eyebrow" style="margin:0 0 .4rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Exam AI-103</p>
   <h1 style="margin:0 0 .6rem;font-family:'Barlow Condensed','Inter',sans-serif;font-weight:800;font-size:2.4rem;letter-spacing:-.02em;color:var(--ink)">Practice</h1>
-  <p style="margin:0 0 1.4rem;font-size:1.05rem;color:var(--body);max-width:40rem">Section quizzes will live here — one simple set per skill area, static on GitHub Pages, original questions only. No dumps, no recalled exam items.</p>
+  <p style="margin:0 0 1.4rem;font-size:1.05rem;color:var(--body);max-width:40rem">One question at a time with <strong>Previous / Next / Submit</strong> — every official outline concept has practice items (extra questions on high-weight topics like RAG, agents, safety, and retrieval), grouped by skill area, static on GitHub Pages, <strong>no sign-in</strong>. Submit is always available. After submit, review shows a short why for the correct answer, then the concept. Not dumps, not the real exam, not a Microsoft scaled score of 700.</p>
 
   <div style="background:var(--wash);border:1px solid var(--hair);padding:1rem 1.15rem;margin:0 0 1.5rem">
-    <p style="margin:0 0 .45rem;font-weight:600;color:var(--ink)">Official practice first</p>
-    <p style="margin:0;font-size:.98rem">Microsoft’s <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">AI-103 study guide</a> points at the <strong>AI Skills Navigator</strong> practice assessment for Azure AI Apps and Agents Developer Associate. Use that for a timed, exam-shaped check while these section quizzes are written.</p>
+    <p style="margin:0 0 .45rem;font-weight:600;color:var(--ink)">Official practice (separate)</p>
+    <p style="margin:0;font-size:.98rem">Microsoft’s <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">AI-103 study guide</a> points at the <strong>AI Skills Navigator</strong> practice assessment (Microsoft sign-in). That product shows <em>style, wording and difficulty</em> — not exam length. Our quizzes below need no account.</p>
   </div>
 
-  <h2 style="font-size:1.15rem;margin:0 0 .7rem;color:var(--ink)">Planned sections</h2>
-  <table class="plain">
-    <thead><tr><th style="width:58%">Skill area</th><th style="width:16%">Weight</th><th>Status</th></tr></thead>
+  <h2 style="font-size:1.15rem;margin:0 0 .7rem;color:var(--ink)">Sections</h2>
+  <table class="plain pq-section-table">
+    <thead><tr><th style="width:58%">Skill area</th><th style="width:16%">Weight</th><th>Quiz</th></tr></thead>
     <tbody>
-      <tr><td>Plan and manage an Azure AI solution</td><td>25–30%</td><td>Coming</td></tr>
-      <tr><td>Implement generative AI and agentic solutions</td><td>30–35%</td><td>Coming</td></tr>
-      <tr><td>Implement computer vision solutions</td><td>10–15%</td><td>Coming</td></tr>
-      <tr><td>Implement text analysis solutions</td><td>10–15%</td><td>Coming</td></tr>
-      <tr><td>Implement information extraction solutions</td><td>10–15%</td><td>Coming</td></tr>
+      ${sectionRows}
     </tbody>
   </table>
 
-  <p style="margin:1.5rem 0 0;font-size:.95rem;color:var(--dim)">Meanwhile: <a href="../guide/index.html">study guide</a> · <a href="../cheatsheet.html">cheat sheet</a> · <a href="../glossary.html">glossary</a></p>
+  <p style="margin:1.5rem 0 0;font-size:.95rem;color:var(--dim)">Also: <a href="../guide/index.html">study guide</a> · <a href="../guide/labs.html">labs</a> · <a href="../cheatsheet.html">cheat sheet</a> · <a href="../glossary.html">glossary</a></p>
 </main>
 ${pageFooter('../')}
 </div>
@@ -749,3 +780,43 @@ ${pageFooter('../')}
   })
 );
 console.log('built docs/practice/index.html');
+
+for (const section of practiceSections) {
+  if (section.status !== 'ready' || !section.items?.length) continue;
+  const shortTitle =
+    section.sectionId === 'plan-and-manage'
+      ? 'Plan and manage'
+      : section.sectionId === 'generative-and-agentic'
+        ? 'Generative AI and agents'
+        : section.sectionId === 'computer-vision'
+          ? 'Computer vision'
+          : section.sectionId === 'text-analysis'
+            ? 'Text analysis'
+            : 'Information extraction';
+
+  writeFileSync(
+    join(PRACTICE_OUT, `${section.sectionId}.html`),
+    page({
+      title: `Practice · ${shortTitle}`,
+      blurb: `AI-103 practice for ${section.skillArea} (${section.weight}). One question at a time, no sign-in. Review: short why, then concept, plus Microsoft Learn.`,
+      head,
+      depth: 1,
+      path: `practice/${section.sectionId}.html`,
+      type: 'page',
+      extraKeywords: ['AI-103 practice', shortTitle, 'AI-103 MCQ'],
+      body: `${sitebar('practice', 1)}
+<div class="sheet-wrap">
+<main class="home" style="padding-top:2rem;max-width:52rem">
+  <p class="eyebrow" style="margin:0 0 .4rem;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)">Practice · ${section.weight}</p>
+  <h1 style="margin:0 0 .6rem;font-family:'Barlow Condensed','Inter',sans-serif;font-weight:800;font-size:2.1rem;letter-spacing:-.02em;color:var(--ink)">${shortTitle}</h1>
+  <p style="margin:0 0 1rem"><a href="index.html">← All practice sections</a></p>
+  <div id="quiz-root" data-src="data/${section.sectionId}.json"></div>
+</main>
+${pageFooter('../')}
+</div>
+<script src="../assets/practice-quiz.js" defer></script>
+`,
+    })
+  );
+  console.log(`built docs/practice/${section.sectionId}.html (${section.items.length} items)`);
+}
