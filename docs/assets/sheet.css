@@ -223,11 +223,56 @@ a:hover { color: var(--accent); }
 .pq-learn { margin: .65rem 0 0; font-size: .92rem; }
 .pq-section-table td a { font-weight: 600; }
 
+/* Practice hub + quiz shells (also used outside index.html). */
+main.home {
+  max-width: 68rem;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2rem) 4rem;
+}
+main.home.practice {
+  max-width: 52rem;
+  padding-top: 2rem;
+}
+.practice-panel {
+  display: block;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  box-shadow: 0 1px 0 rgba(11, 33, 54, .04);
+}
+table.plain {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  overflow: hidden;
+}
+table.plain th {
+  text-align: left;
+  font-size: 12px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding: .7rem 1rem;
+  border-bottom: 1px solid var(--hair);
+  background: var(--wash);
+}
+table.plain td {
+  padding: .75rem 1rem;
+  border-bottom: 1px solid #EDF2F6;
+  vertical-align: top;
+}
+table.plain tr:last-child td { border-bottom: 0; }
+table.plain td b { color: var(--ink); }
+
 @media (max-width: 640px) {
   .pq-option { grid-template-columns: auto 1fr; }
   .pq-option input { grid-row: 1 / span 2; }
   .pq-opt-letter { grid-column: 2; }
   .pq-opt-text { grid-column: 2; }
+  table.plain th, table.plain td { padding: .65rem .75rem; }
 }
 
 /* --- layout -------------------------------------------------------------- */

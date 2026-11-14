@@ -51,7 +51,7 @@ function buildFonts() {
         `  font-family: '${family}';\n` +
         `  font-style: normal;\n` +
         `  font-weight: ${weight};\n` +
-        `  font-display: block;\n` +
+        `  font-display: swap;\n` +
         `  src: url('fonts/${file}') format('woff2');\n` +
         `}`
       );
