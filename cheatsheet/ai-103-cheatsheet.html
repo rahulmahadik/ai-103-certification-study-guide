@@ -671,7 +671,7 @@ svg.diagram { width: 100%; display: block; }
         <ul>
           <li>Make images and video from text prompts and reference media</li>
           <li>Inpainting, mask-based edits, prompt-driven changes</li>
-          <li>Edit generated video; image generation controls are size, quality and count (n) — there is no seed</li>
+          <li>Edit generated video; controls are size, quality (incl. xhigh/max/auto on GPT-image-2.5) and count (n) — generations has no seed; use current GPT-image-2.5 models (gpt-image-1 shut down 23 Oct 2026)</li>
         </ul>
         <h4><svg class="ic ic-s"><use href="#i-eye"/></svg> Multimodal understanding</h4>
         <ul>
@@ -724,12 +724,12 @@ svg.diagram { width: 100%; display: block; }
         </ul>
         <h4><svg class="ic ic-s"><use href="#i-scan"/></svg> Extract from documents</h4>
         <ul>
-          <li>Pipelines that combine OCR, layout analysis and field extraction — on v4.0 the <b>general document</b> model is gone (layout returns key-value pairs if you ask for them) and <b>business card</b> is deprecated; both still appear in older question banks</li>
+          <li>Pipelines that combine OCR, layout analysis and field extraction — on v4.0 the <b>general document</b> model is gone (layout returns key-value pairs if you ask for them) and <b>business card</b> is deprecated; both still appear in older AI-102 material</li>
           <li>Content Understanding turns mixed documents, images and audio into structured output an agent can cite</li>
           <li>Analyzers that return structured or markdown output</li>
         </ul>
         <div class="tip"><svg class="ic"><use href="#i-lightbulb"/></svg><span><em>Schema first.</em> Field names, types and which ones are required, decided before you build. The schema is the contract with whatever consumes the output.</span></div>
-        <div class="tip"><svg class="ic"><use href="#i-layers"/></svg><span><em>Standard or pro.</em> <b>Standard</b> reads one file and pulls the fields out. <b>Pro</b> reasons over several inputs at once and can weigh them against reference data — for judgement, not for reading.</span></div>
+        <div class="tip"><svg class="ic"><use href="#i-layers"/></svg><span><em>Standard or pro (exam wording).</em> <b>Standard</b> is the fast single-pass extract. The old <b>pro</b> preview API is retired; today’s equivalent is <b>agentic mode</b> (documents, one file per request, multistep reasoning) — keep the exam word “pro-mode”, expect the portal to say agentic.</span></div>
       </div>
     </section>
 
@@ -1258,7 +1258,7 @@ svg.diagram { width: 100%; display: block; }
     <div class="right">
       Compiled by <strong>Rahul Mahadik</strong> · linkedin.com/in/rahulmahadik<br>
       Sourced from the official Microsoft Learn AI-103 study guide and Azure product documentation.<br>
-      Verified August 2026 — re-check learn.microsoft.com before you book. Licensed CC BY 4.0.<br>
+      Outline rechecked November 2026 (skills as of 16 April 2026). Product examples rechecked the same day — re-check learn.microsoft.com before you book. Licensed CC BY 4.0.<br>
       Microsoft, Azure and Microsoft Foundry are trademarks of Microsoft Corporation.
       Not affiliated with, endorsed by or sponsored by Microsoft.
     </div>

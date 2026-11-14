@@ -137,7 +137,7 @@ vocabulary is already there.
 ## How to use this repository
 
 **Preparing properly.** Work through the [study guide](https://rahulmahadik.github.io/ai-103-certification-study-guide/guide/) in order, doing the matching
-lab as you finish each part. The [lab ladder](https://rahulmahadik.github.io/ai-103-certification-study-guide/guide/labs.html) is eight builds, each ending
+lab as you finish each part. The [lab ladder](https://rahulmahadik.github.io/ai-103-certification-study-guide/guide/labs.html) is nine builds, each ending
 with something that actually runs — treat one as finished only when you can rebuild it from an
 empty resource group without looking anything up.
 
@@ -152,19 +152,21 @@ outline names.
 | Phase | Time | What you do |
 | --- | --- | --- |
 | 1. Ground yourself | 1 evening | Read the overview and part 1. Create a Foundry project and find its endpoint. |
-| 2. Work the heavy middle | 2 weeks | Parts 2–5, one part every two or three evenings, with the matching lab each time. |
+| 2. Work the heavy middle | 2 weeks | Parts 2–5 (generative apps, 30–35%), one part every two or three evenings, with the matching lab each time. |
 | 3. Responsible AI | 2 evenings | Part 6. Short, heavily tested, and almost entirely lists you can memorise. |
-| 4. The specialist areas | 1 week | Parts 7–9. 30–45% between them, and mostly "which service" decisions. |
-| 5. Build one real thing | 1 week | Lab 8. This is what makes the rest stick. |
-| 6. Revise | 2 evenings | The cheat sheet. Nothing new. |
+| 4. Agents and operations | 3–4 evenings | Part 10 — agents (still in the 30–35% area) plus manage/monitor/secure (25–30%). The Learn path barely covers this. |
+| 5. The specialist areas | 1 week | Parts 7–9. 30–45% between them, and mostly "which service" decisions. |
+| 6. Build the missing labs | 1 week | Lab 8 (one Foundry agent) and lab 9 (structured extraction). This is what makes Parts 9–10 stick. |
+| 7. Revise | 2 evenings | The cheat sheet. Nothing new. |
 
 ---
 
 ## Building it yourself
 
-Everything is static HTML. There is no framework, no bundler and no runtime JavaScript, and
-**nothing loads from a CDN** — fonts and icons are installed as devDependencies and vendored into
-`docs/assets/` at build time.
+Everything is static HTML. There is no framework and no bundler, and **nothing loads from a CDN** —
+fonts and icons are installed as devDependencies and vendored into `docs/assets/` at build time.
+The guide pages need no runtime JavaScript; the cheat-sheet board page uses a small script only to
+fit the fixed poster to the viewport.
 
 ```bash
 npm install          # puppeteer, the icon set and the fonts
@@ -225,9 +227,9 @@ that every candidate agrees to.
 
 ## Accuracy and staleness
 
-Everything here was verified against official Microsoft pages in **August 2026**. Microsoft
-changes certification pages without notice, sometimes substantially. Before you book anything,
-re-check:
+Skills outline rechecked **November 2026** (still measured as of **16 April 2026**). Product
+examples in the guide were rechecked the same day against Microsoft Learn. Microsoft changes
+certification and product pages without notice. Before you book anything, re-check:
 
 - [Exam AI-103 study guide](https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103)
 - [Microsoft Certified: Azure AI Apps and Agents Developer Associate](https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-apps-and-agents-developer-associate/)

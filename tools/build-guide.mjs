@@ -125,7 +125,7 @@ const SECTIONS = [
     keywords: ['AI-103 labs','Azure AI practice','hands-on Foundry'],
     nav: 'Practice labs',
     title: 'Lab practice, and what survives the vendor race',
-    blurb: 'An eight-lab ladder that ends with something that actually runs, plus which skills transfer to any vendor.',
+    blurb: 'A nine-lab ladder that ends with something that actually runs, plus which skills transfer to any vendor.',
   },
   {
     slug: 'glossary',
@@ -209,7 +209,7 @@ function pageFooter(up = '../') {
   return `<footer class="pagefoot no-print">
   <p>Compiled by <a href="https://www.linkedin.com/in/rahulmahadik" target="_blank" rel="noopener">Rahul Mahadik</a>
      from the official <a href="https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/ai-103" target="_blank" rel="noopener">Microsoft Learn AI-103 study guide</a>
-     and Azure product documentation. Verified August 2026 — re-check learn.microsoft.com before you book.</p>
+     and Azure product documentation. Outline rechecked November 2026 (skills as of 16 April 2026). Product examples rechecked the same day — re-check learn.microsoft.com before you book.</p>
   <p>Text licensed <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>.
      Microsoft, Azure and Microsoft Foundry are trademarks of Microsoft Corporation.
      This project is not affiliated with, endorsed by, or sponsored by Microsoft.
@@ -584,7 +584,7 @@ const STAGES = [
     name: 'Build something that answers',
     time: 'two weeks',
     weight: '30–35%',
-    why: 'The largest skill area. Models, the two chat APIs, tools, and the three ways to make output better.',
+    why: 'The generative half of the largest skill area. Models, the two chat APIs, tools, and the ways to make output better — including reflection and RAG.',
     slugs: ['models', 'chat-app', 'tools', 'optimize'],
     then: 'Do the matching lab as you finish each page — reading these without building is wasted time.',
   },
@@ -592,10 +592,10 @@ const STAGES = [
     n: '3',
     name: 'Make it safe and run it',
     time: 'four evenings',
-    weight: '25–30%',
-    why: 'Responsible AI is short, heavily tested and mostly lists. Agents and operations is the part the Learn path skips.',
+    weight: '25–35%',
+    why: 'Responsible AI and operations sit in plan-and-manage (25–30%). Agents sit in generative AI and agents (30–35%). The Learn path skips most of Part 10.',
     slugs: ['responsible-ai', 'agents-and-operations'],
-    then: 'Memorise the four stages, the four layers and the four harm categories. They are free marks.',
+    then: 'Memorise the four stages, the four layers and the four harm categories, then build lab 8 (one agent).',
   },
   {
     n: '4',
@@ -604,7 +604,7 @@ const STAGES = [
     weight: '30–45%',
     why: 'Vision, text and extraction. Mostly “which service does this scenario want”, rather than code.',
     slugs: ['computer-vision', 'text-analysis', 'information-extraction'],
-    then: 'Drill the scenario cues on the cheat sheet until the wording alone gives you the answer.',
+    then: 'Drill the scenario cues on the cheat sheet, then finish lab 9 (structured extraction).',
   },
 ];
 
