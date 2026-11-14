@@ -21,7 +21,7 @@ const SOURCE = join(ROOT, "docs", "cheatsheet-board.html");
 const OUT_DIR = join(ROOT, 'docs', 'assets');
 
 const BOARD_WIDTH = 1920;
-const BOARD_HEIGHT = 6800;
+const BOARD_HEIGHT = 7000;
 
 const SHEETS = [
   { id: 'board-1', slug: 'ai-103-cheatsheet' },

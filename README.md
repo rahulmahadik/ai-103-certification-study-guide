@@ -204,7 +204,7 @@ GitHub Pages workflow runs that build on every push to `main` and publishes the 
 ### Editing the cheat sheet
 
 [`cheatsheet/ai-103-cheatsheet.html`](cheatsheet/ai-103-cheatsheet.html) is one file: markup,
-styles and inline SVG diagrams. The board is a fixed 1920 × 6800 box, so `npm run render` **fails
+styles and inline SVG diagrams. The board is a fixed 1920 × 7000 box, so `npm run render` **fails
 the build** if your edit pushes content past the bottom edge rather than shipping a cropped
 poster. If it does, either trim a panel or raise `BOARD_HEIGHT` in
 [`tools/render-cheatsheet.mjs`](tools/render-cheatsheet.mjs) and the matching `height` in the
